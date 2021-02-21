@@ -92,8 +92,8 @@ void() zombie_stand15 = [ $stand15, zombie_stand1 ] { ai_stand(); };
 
 void() zombie_cruc1 = [ $cruc_1, zombie_cruc2 ]
 {
-	if (random() < 0.1)
-		sound(self, CHAN_VOICE, "zombie/idle_w2.wav", 1, ATTN_STATIC);
+    if (random() < 0.1)
+        sound(self, CHAN_VOICE, "zombie/idle_w2.wav", 1, ATTN_STATIC);
 };
 void() zombie_cruc2 = [ $cruc_2, zombie_cruc3 ] { self.nextthink = time + 0.1 + random()*0.1; };
 void() zombie_cruc3 = [ $cruc_3, zombie_cruc4 ] { self.nextthink = time + 0.1 + random()*0.1; };
@@ -121,9 +121,9 @@ void() zombie_walk17 = [ $walk17, zombie_walk18 ] { ai_walk(0); };
 void() zombie_walk18 = [ $walk18, zombie_walk19 ] { ai_walk(0); };
 void() zombie_walk19 = [ $walk19, zombie_walk1 ]
 {
-	ai_walk(0);
-	if (random() < 0.2)
-		sound(self, CHAN_VOICE, "zombie/z_idle.wav", 1, ATTN_IDLE);
+    ai_walk(0);
+    if (random() < 0.2)
+        sound(self, CHAN_VOICE, "zombie/z_idle.wav", 1, ATTN_IDLE);
 };
 
 void() zombie_run1 = [ $run1, zombie_run2 ] { ai_run(1); self.inpain = 0; };
@@ -145,11 +145,11 @@ void() zombie_run16 = [ $run16, zombie_run17 ] { ai_run(7); };
 void() zombie_run17 = [ $run17, zombie_run18 ] { ai_run(3); };
 void() zombie_run18 = [ $run18, zombie_run1 ]
 {
-	ai_run(8);
-	if (random() < 0.2)
-		sound(self, CHAN_VOICE, "zombie/z_idle.wav", 1, ATTN_IDLE);
-	if (random() > 0.8)
-		sound(self, CHAN_VOICE, "zombie/z_idle1.wav", 1, ATTN_IDLE);
+    ai_run(8);
+    if (random() < 0.2)
+        sound(self, CHAN_VOICE, "zombie/z_idle.wav", 1, ATTN_IDLE);
+    if (random() > 0.8)
+        sound(self, CHAN_VOICE, "zombie/z_idle1.wav", 1, ATTN_IDLE);
 };
 
 /*
@@ -162,19 +162,19 @@ ATTACKS
 
 void() ZombieGrenadeTouch =
 {
-	if (other == self.owner)
-		return; // don't explode on owner
-	if (other.takedamage)
-	{
-		T_Damage(other, self, self.owner, 10 );
-		sound(self, CHAN_WEAPON, "zombie/z_hit.wav", 1, ATTN_NORM);
-		remove(self);
-		return;
-	}
-	sound(self, CHAN_WEAPON, "zombie/z_miss.wav", 1, ATTN_NORM); // bounce sound
-	self.velocity = '0 0 0';
-	self.avelocity = '0 0 0';
-	self.touch = SUB_Remove;
+    if (other == self.owner)
+        return; // don't explode on owner
+    if (other.takedamage)
+    {
+        T_Damage(other, self, self.owner, 10 );
+        sound(self, CHAN_WEAPON, "zombie/z_hit.wav", 1, ATTN_NORM);
+        remove(self);
+        return;
+    }
+    sound(self, CHAN_WEAPON, "zombie/z_miss.wav", 1, ATTN_NORM); // bounce sound
+    self.velocity = '0 0 0';
+    self.avelocity = '0 0 0';
+    self.touch = SUB_Remove;
 };
 
 /*
@@ -184,38 +184,38 @@ ZombieFireGrenade
 */
 void(vector st) ZombieFireGrenade =
 {
-	entity missile;
-	vector org;
+    entity missile;
+    vector org;
 
-	sound(self, CHAN_WEAPON, "zombie/z_shot1.wav", 1, ATTN_NORM);
+    sound(self, CHAN_WEAPON, "zombie/z_shot1.wav", 1, ATTN_NORM);
 
-	missile = spawn();
-	missile.owner = self;
-	missile.movetype = MOVETYPE_BOUNCE;
-	missile.solid = SOLID_BBOX;
+    missile = spawn();
+    missile.owner = self;
+    missile.movetype = MOVETYPE_BOUNCE;
+    missile.solid = SOLID_BBOX;
 
 // calc org
-	org = self.origin + st_x * v_forward + st_y * v_right + (st_z - 24) * v_up;
+    org = self.origin + st_x * v_forward + st_y * v_right + (st_z - 24) * v_up;
 
 // set missile speed
 
-	makevectors(self.angles);
+    makevectors(self.angles);
 
-	missile.velocity = normalize(self.enemy.origin - org);
-	missile.velocity = missile.velocity * 600;
-	missile.velocity_z = 200;
+    missile.velocity = normalize(self.enemy.origin - org);
+    missile.velocity = missile.velocity * 600;
+    missile.velocity_z = 200;
 
-	missile.avelocity = '3000 1000 2000';
+    missile.avelocity = '3000 1000 2000';
 
-	missile.touch = ZombieGrenadeTouch;
+    missile.touch = ZombieGrenadeTouch;
 
 // set missile duration
-	missile.nextthink = time + 2.5;
-	missile.think = SUB_Remove;
+    missile.nextthink = time + 2.5;
+    missile.think = SUB_Remove;
 
-	setmodel(missile, "progs/zom_gib.mdl");
-	setsize(missile, '0 0 0', '0 0 0');
-	setorigin(missile, org);
+    setmodel(missile, "progs/zom_gib.mdl");
+    setsize(missile, '0 0 0', '0 0 0');
+    setorigin(missile, org);
 };
 
 
@@ -263,16 +263,16 @@ void() zombie_attc12 = [ $attc12, zombie_run1 ] { ai_face(); ZombieFireGrenade('
 
 void() zombie_missile =
 {
-	float r;
+    float r;
 
-	r = random();
+    r = random();
 
-	if (r < 0.3)
-		zombie_atta1();
-	else if (r < 0.6)
-		zombie_attb1();
-	else
-		zombie_attc1();
+    if (r < 0.3)
+        zombie_atta1();
+    else if (r < 0.6)
+        zombie_attb1();
+    else
+        zombie_attc1();
 };
 
 
@@ -361,8 +361,8 @@ void() zombie_paind13 = [ $paind13, zombie_run1 ] {};
 
 void() zombie_paine1 = [ $paine1, zombie_paine2 ]
 {
-	sound(self, CHAN_VOICE, "zombie/z_pain.wav", 1, ATTN_NORM);
-	self.health = 60;
+    sound(self, CHAN_VOICE, "zombie/z_pain.wav", 1, ATTN_NORM);
+    self.health = 60;
 };
 void() zombie_paine2 = [ $paine2, zombie_paine3 ] { ai_pain(8); };
 void() zombie_paine3 = [ $paine3, zombie_paine4 ] { ai_pain(5); };
@@ -374,26 +374,26 @@ void() zombie_paine8 = [ $paine8, zombie_paine9 ] { ai_pain(1); };
 void() zombie_paine9 = [ $paine9, zombie_paine10 ] { ai_pain(2); };
 void() zombie_paine10 = [ $paine10, zombie_paine11 ]
 {
-	sound(self, CHAN_BODY, "zombie/z_fall.wav", 1, ATTN_NORM);
-	self.solid = SOLID_NOT;
+    sound(self, CHAN_BODY, "zombie/z_fall.wav", 1, ATTN_NORM);
+    self.solid = SOLID_NOT;
 };
 void() zombie_paine11 = [ $paine11, zombie_paine12 ]
 {
-	self.nextthink = self.nextthink + 5;
-	self.health = 60;
+    self.nextthink = self.nextthink + 5;
+    self.health = 60;
 };
 void() zombie_paine12 = [ $paine12, zombie_paine13 ]
 {
-	// see if ok to stand up
-	self.health = 60;
-	sound(self, CHAN_VOICE, "zombie/z_idle.wav", 1, ATTN_IDLE);
-	self.solid = SOLID_SLIDEBOX;
-	if (!walkmove(0, 0))
-	{
-		self.think = zombie_paine11;
-		self.solid = SOLID_NOT;
-		return;
-	}
+    // see if ok to stand up
+    self.health = 60;
+    sound(self, CHAN_VOICE, "zombie/z_idle.wav", 1, ATTN_IDLE);
+    self.solid = SOLID_SLIDEBOX;
+    if (!walkmove(0, 0))
+    {
+        self.think = zombie_paine11;
+        self.solid = SOLID_NOT;
+        return;
+    }
 };
 void() zombie_paine13 = [ $paine13, zombie_paine14 ] {};
 void() zombie_paine14 = [ $paine14, zombie_paine15 ] {};
@@ -416,11 +416,11 @@ void() zombie_paine30 = [ $paine30, zombie_run1 ] {};
 
 void() zombie_die =
 {
-	sound(self, CHAN_VOICE, "zombie/z_gib.wav", 1, ATTN_NORM);
-	ThrowHead("progs/h_zombie.mdl", self.health);
-	ThrowGib("progs/gib1.mdl", self.health);
-	ThrowGib("progs/gib2.mdl", self.health);
-	ThrowGib("progs/gib3.mdl", self.health);
+    sound(self, CHAN_VOICE, "zombie/z_gib.wav", 1, ATTN_NORM);
+    ThrowHead("progs/h_zombie.mdl", self.health);
+    ThrowGib("progs/gib1.mdl", self.health);
+    ThrowGib("progs/gib2.mdl", self.health);
+    ThrowGib("progs/gib3.mdl", self.health);
 };
 
 /*
@@ -444,51 +444,51 @@ FIXME: don't use pain_finished because of nightmare hack
 */
 void(entity attacker, float take) zombie_pain =
 {
-	float r;
+    float r;
 
-	self.health = 60; // allways reset health
+    self.health = 60; // allways reset health
 
-	if (take < 9)
-		return; // totally ignore
+    if (take < 9)
+        return; // totally ignore
 
-	if (self.inpain == 2)
-		return; // down on ground, so don't reset any counters
+    if (self.inpain == 2)
+        return; // down on ground, so don't reset any counters
 
 // go down immediately if a big enough hit
-	if (take >= 25)
-	{
-		self.inpain = 2;
-		zombie_paine1();
-		return;
-	}
+    if (take >= 25)
+    {
+        self.inpain = 2;
+        zombie_paine1();
+        return;
+    }
 
-	if (self.inpain)
-	{
+    if (self.inpain)
+    {
 // if hit again in next gre seconds while not in pain frames, definately drop
-		self.pain_finished = time + 3;
-		return; // currently going through an animation, don't change
-	}
+        self.pain_finished = time + 3;
+        return; // currently going through an animation, don't change
+    }
 
-	if (self.pain_finished > time)
-	{
+    if (self.pain_finished > time)
+    {
 // hit again, so drop down
-		self.inpain = 2;
-		zombie_paine1();
-		return;
-	}
+        self.inpain = 2;
+        zombie_paine1();
+        return;
+    }
 
 // gp into one of the fast pain animations
-	self.inpain = 1;
+    self.inpain = 1;
 
-	r = random();
-	if (r < 0.25)
-		zombie_paina1();
-	else if (r < 0.5)
-		zombie_painb1();
-	else if (r < 0.75)
-		zombie_painc1();
-	else
-		zombie_paind1();
+    r = random();
+    if (r < 0.25)
+        zombie_paina1();
+    else if (r < 0.5)
+        zombie_painb1();
+    else if (r < 0.75)
+        zombie_painc1();
+    else
+        zombie_paind1();
 };
 
 //============================================================================
@@ -499,47 +499,47 @@ If crucified, stick the bounding box 12 pixels back into a wall to look right.
 */
 void() monster_zombie =
 {
-	if (deathmatch)
-	{
-		remove(self);
-		return;
-	}
+    if (deathmatch)
+    {
+        remove(self);
+        return;
+    }
 
-	precache_model("progs/zombie.mdl");
-	precache_model("progs/h_zombie.mdl");
-	precache_model("progs/zom_gib.mdl");
+    precache_model("progs/zombie.mdl");
+    precache_model("progs/h_zombie.mdl");
+    precache_model("progs/zom_gib.mdl");
 
-	precache_sound("zombie/z_idle.wav");
-	precache_sound("zombie/z_idle1.wav");
-	precache_sound("zombie/z_shot1.wav");
-	precache_sound("zombie/z_gib.wav");
-	precache_sound("zombie/z_pain.wav");
-	precache_sound("zombie/z_pain1.wav");
-	precache_sound("zombie/z_fall.wav");
-	precache_sound("zombie/z_miss.wav");
-	precache_sound("zombie/z_hit.wav");
-	precache_sound("zombie/idle_w2.wav");
+    precache_sound("zombie/z_idle.wav");
+    precache_sound("zombie/z_idle1.wav");
+    precache_sound("zombie/z_shot1.wav");
+    precache_sound("zombie/z_gib.wav");
+    precache_sound("zombie/z_pain.wav");
+    precache_sound("zombie/z_pain1.wav");
+    precache_sound("zombie/z_fall.wav");
+    precache_sound("zombie/z_miss.wav");
+    precache_sound("zombie/z_hit.wav");
+    precache_sound("zombie/idle_w2.wav");
 
-	self.solid = SOLID_SLIDEBOX;
-	self.movetype = MOVETYPE_STEP;
+    self.solid = SOLID_SLIDEBOX;
+    self.movetype = MOVETYPE_STEP;
 
-	setmodel(self, "progs/zombie.mdl");
+    setmodel(self, "progs/zombie.mdl");
 
-	setsize(self, '-16 -16 -24', '16 16 40');
-	self.health = 60;
+    setsize(self, '-16 -16 -24', '16 16 40');
+    self.health = 60;
 
-	self.th_stand = zombie_stand1;
-	self.th_walk = zombie_walk1;
-	self.th_run = zombie_run1;
-	self.th_pain = zombie_pain;
-	self.th_die = zombie_die;
-	self.th_missile = zombie_missile;
+    self.th_stand = zombie_stand1;
+    self.th_walk = zombie_walk1;
+    self.th_run = zombie_run1;
+    self.th_pain = zombie_pain;
+    self.th_die = zombie_die;
+    self.th_missile = zombie_missile;
 
-	if (self.spawnflags & SPAWN_CRUCIFIED)
-	{
-		self.movetype = MOVETYPE_NONE;
-		zombie_cruc1();
-	}
-	else
-		walkmonster_start();
+    if (self.spawnflags & SPAWN_CRUCIFIED)
+    {
+        self.movetype = MOVETYPE_NONE;
+        zombie_cruc1();
+    }
+    else
+        walkmonster_start();
 };

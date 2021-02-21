@@ -58,75 +58,75 @@ $frame paind17 paind18 paind19
 
 void() Laser_Touch =
 {
-	vector org;
+    vector org;
 
-	if (other == self.owner)
-		return; // don't explode on owner
+    if (other == self.owner)
+        return; // don't explode on owner
 
-	if (pointcontents(self.origin) == CONTENT_SKY)
-	{
-		remove(self);
-		return;
-	}
+    if (pointcontents(self.origin) == CONTENT_SKY)
+    {
+        remove(self);
+        return;
+    }
 
-	sound(self, CHAN_WEAPON, "enforcer/enfstop.wav", 1, ATTN_STATIC);
-	org = self.origin - 8*normalize(self.velocity);
+    sound(self, CHAN_WEAPON, "enforcer/enfstop.wav", 1, ATTN_STATIC);
+    org = self.origin - 8*normalize(self.velocity);
 
-	if (other.health)
-	{
-		SpawnBlood(org, self.velocity*0.2, 15);
-		T_Damage(other, self, self.owner, 15);
-	}
-	else
-	{
-		WriteByte(MSG_BROADCAST, SVC_TEMPENTITY);
-		WriteByte(MSG_BROADCAST, TE_GUNSHOT);
-		WriteCoord(MSG_BROADCAST, org_x);
-		WriteCoord(MSG_BROADCAST, org_y);
-		WriteCoord(MSG_BROADCAST, org_z);
-	}
+    if (other.health)
+    {
+        SpawnBlood(org, self.velocity*0.2, 15);
+        T_Damage(other, self, self.owner, 15);
+    }
+    else
+    {
+        WriteByte(MSG_BROADCAST, SVC_TEMPENTITY);
+        WriteByte(MSG_BROADCAST, TE_GUNSHOT);
+        WriteCoord(MSG_BROADCAST, org_x);
+        WriteCoord(MSG_BROADCAST, org_y);
+        WriteCoord(MSG_BROADCAST, org_z);
+    }
 
-	remove(self);
+    remove(self);
 };
 
 void(vector org, vector vec) LaunchLaser =
 {
-	if (self.classname == "monster_enforcer")
-		sound(self, CHAN_WEAPON, "enforcer/enfire.wav", 1, ATTN_NORM);
+    if (self.classname == "monster_enforcer")
+        sound(self, CHAN_WEAPON, "enforcer/enfire.wav", 1, ATTN_NORM);
 
-	vec = normalize(vec);
+    vec = normalize(vec);
 
-	newmis = spawn();
-	newmis.owner = self;
-	newmis.movetype = MOVETYPE_FLY;
-	newmis.solid = SOLID_BBOX;
-	newmis.effects = EF_DIMLIGHT;
+    newmis = spawn();
+    newmis.owner = self;
+    newmis.movetype = MOVETYPE_FLY;
+    newmis.solid = SOLID_BBOX;
+    newmis.effects = EF_DIMLIGHT;
 
-	setmodel(newmis, "progs/laser.mdl");
-	setsize(newmis, '0 0 0', '0 0 0');
+    setmodel(newmis, "progs/laser.mdl");
+    setsize(newmis, '0 0 0', '0 0 0');
 
-	setorigin(newmis, org);
+    setorigin(newmis, org);
 
-	newmis.velocity = vec * 600;
-	newmis.angles = vectoangles(newmis.velocity);
+    newmis.velocity = vec * 600;
+    newmis.angles = vectoangles(newmis.velocity);
 
-	newmis.nextthink = time + 5;
-	newmis.think = SUB_Remove;
-	newmis.touch = Laser_Touch;
+    newmis.nextthink = time + 5;
+    newmis.think = SUB_Remove;
+    newmis.touch = Laser_Touch;
 };
 
 
 
 void() enforcer_fire =
 {
-	vector org;
+    vector org;
 
-	self.effects = self.effects | EF_MUZZLEFLASH;
-	makevectors(self.angles);
+    self.effects = self.effects | EF_MUZZLEFLASH;
+    makevectors(self.angles);
 
-	org = self.origin + v_forward * 30 + v_right * 8.5 + '0 0 16';
+    org = self.origin + v_forward * 30 + v_right * 8.5 + '0 0 16';
 
-	LaunchLaser(org, self.enemy.origin - self.origin);
+    LaunchLaser(org, self.enemy.origin - self.origin);
 };
 
 //============================================================================
@@ -141,9 +141,9 @@ void() enf_stand7 = [ $stand7, enf_stand1 ] { ai_stand(); };
 
 void() enf_walk1 = [ $walk1 , enf_walk2 ]
 {
-	if (random() < 0.2)
-		sound(self, CHAN_VOICE, "enforcer/idle1.wav", 1, ATTN_IDLE);
-	ai_walk(2);
+    if (random() < 0.2)
+        sound(self, CHAN_VOICE, "enforcer/idle1.wav", 1, ATTN_IDLE);
+    ai_walk(2);
 };
 void() enf_walk2 = [ $walk2 , enf_walk3 ] { ai_walk(4); };
 void() enf_walk3 = [ $walk3 , enf_walk4 ] { ai_walk(4); };
@@ -163,9 +163,9 @@ void() enf_walk16 = [ $walk16, enf_walk1 ] { ai_walk(2); };
 
 void() enf_run1 = [ $run1  , enf_run2 ]
 {
-	if (random() < 0.2)
-		sound(self, CHAN_VOICE, "enforcer/idle1.wav", 1, ATTN_IDLE);
-	ai_run(18);
+    if (random() < 0.2)
+        sound(self, CHAN_VOICE, "enforcer/idle1.wav", 1, ATTN_IDLE);
+    ai_run(18);
 };
 void() enf_run2 = [ $run2  , enf_run3 ] { ai_run(14); };
 void() enf_run3 = [ $run3  , enf_run4 ] { ai_run(7); };
@@ -190,8 +190,8 @@ void() enf_atk12 = [ $attack8, enf_atk13 ] { ai_face(); };
 void() enf_atk13 = [ $attack9, enf_atk14 ] { ai_face(); };
 void() enf_atk14 = [ $attack10, enf_run1 ]
 {
-	ai_face();
-	SUB_CheckRefire(enf_atk1);
+    ai_face();
+    SUB_CheckRefire(enf_atk1);
 };
 
 void() enf_paina1 = [ $paina1, enf_paina2 ] {};
@@ -236,38 +236,38 @@ void() enf_paind19 = [ $paind19, enf_run1 ] {};
 
 void(entity attacker, float damage) enf_pain =
 {
-	float r;
+    float r;
 
-	r = random();
-	if (self.pain_finished > time)
-		return;
+    r = random();
+    if (self.pain_finished > time)
+        return;
 
 
-	if (r < 0.5)
-		sound(self, CHAN_VOICE, "enforcer/pain1.wav", 1, ATTN_NORM);
-	else
-		sound(self, CHAN_VOICE, "enforcer/pain2.wav", 1, ATTN_NORM);
+    if (r < 0.5)
+        sound(self, CHAN_VOICE, "enforcer/pain1.wav", 1, ATTN_NORM);
+    else
+        sound(self, CHAN_VOICE, "enforcer/pain2.wav", 1, ATTN_NORM);
 
-	if (r < 0.2)
-	{
-		self.pain_finished = time + 1;
-		enf_paina1();
-	}
-	else if (r < 0.4)
-	{
-		self.pain_finished = time + 1;
-		enf_painb1();
-	}
-	else if (r < 0.7)
-	{
-		self.pain_finished = time + 1;
-		enf_painc1();
-	}
-	else
-	{
-		self.pain_finished = time + 2;
-		enf_paind1();
-	}
+    if (r < 0.2)
+    {
+        self.pain_finished = time + 1;
+        enf_paina1();
+    }
+    else if (r < 0.4)
+    {
+        self.pain_finished = time + 1;
+        enf_painb1();
+    }
+    else if (r < 0.7)
+    {
+        self.pain_finished = time + 1;
+        enf_painc1();
+    }
+    else
+    {
+        self.pain_finished = time + 2;
+        enf_paind1();
+    }
 };
 
 //============================================================================
@@ -279,9 +279,9 @@ void() enf_die1 = [ $death1, enf_die2 ] {};
 void() enf_die2 = [ $death2, enf_die3 ] {};
 void() enf_die3 = [ $death3, enf_die4 ]
 {
-	self.solid = SOLID_NOT;
-	self.ammo_cells = 5;
-	DropBackpack();
+    self.solid = SOLID_NOT;
+    self.ammo_cells = 5;
+    DropBackpack();
 };
 void() enf_die4 = [ $death4, enf_die5 ] { ai_forward(14); };
 void() enf_die5 = [ $death5, enf_die6 ] { ai_forward(2); };
@@ -299,9 +299,9 @@ void() enf_fdie1 = [ $fdeath1, enf_fdie2 ] {};
 void() enf_fdie2 = [ $fdeath2, enf_fdie3 ] {};
 void() enf_fdie3 = [ $fdeath3, enf_fdie4 ]
 {
-	self.solid = SOLID_NOT;
-	self.ammo_cells = 5;
-	DropBackpack();
+    self.solid = SOLID_NOT;
+    self.ammo_cells = 5;
+    DropBackpack();
 };
 void() enf_fdie4 = [ $fdeath4, enf_fdie5 ] {};
 void() enf_fdie5 = [ $fdeath5, enf_fdie6 ] {};
@@ -316,22 +316,22 @@ void() enf_fdie11 = [ $fdeath11, enf_fdie11 ] {};
 void() enf_die =
 {
 // check for gib
-	if (self.health < -35)
-	{
-		sound(self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NORM);
-		ThrowHead("progs/h_mega.mdl", self.health);
-		ThrowGib("progs/gib1.mdl", self.health);
-		ThrowGib("progs/gib2.mdl", self.health);
-		ThrowGib("progs/gib3.mdl", self.health);
-		return;
-	}
+    if (self.health < -35)
+    {
+        sound(self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NORM);
+        ThrowHead("progs/h_mega.mdl", self.health);
+        ThrowGib("progs/gib1.mdl", self.health);
+        ThrowGib("progs/gib2.mdl", self.health);
+        ThrowGib("progs/gib3.mdl", self.health);
+        return;
+    }
 
 // regular death
-	sound(self, CHAN_VOICE, "enforcer/death1.wav", 1, ATTN_NORM);
-	if (random() > 0.5)
-		enf_die1();
-	else
-		enf_fdie1();
+    sound(self, CHAN_VOICE, "enforcer/death1.wav", 1, ATTN_NORM);
+    if (random() > 0.5)
+        enf_die1();
+    else
+        enf_fdie1();
 };
 
 
@@ -340,40 +340,40 @@ void() enf_die =
 */
 void() monster_enforcer =
 {
-	if (deathmatch)
-	{
-		remove(self);
-		return;
-	}
-	precache_model2 ("progs/enforcer.mdl");
-	precache_model2 ("progs/h_mega.mdl");
-	precache_model2 ("progs/laser.mdl");
+    if (deathmatch)
+    {
+        remove(self);
+        return;
+    }
+    precache_model2 ("progs/enforcer.mdl");
+    precache_model2 ("progs/h_mega.mdl");
+    precache_model2 ("progs/laser.mdl");
 
-	precache_sound2 ("enforcer/death1.wav");
-	precache_sound2 ("enforcer/enfire.wav");
-	precache_sound2 ("enforcer/enfstop.wav");
-	precache_sound2 ("enforcer/idle1.wav");
-	precache_sound2 ("enforcer/pain1.wav");
-	precache_sound2 ("enforcer/pain2.wav");
-	precache_sound2 ("enforcer/sight1.wav");
-	precache_sound2 ("enforcer/sight2.wav");
-	precache_sound2 ("enforcer/sight3.wav");
-	precache_sound2 ("enforcer/sight4.wav");
+    precache_sound2 ("enforcer/death1.wav");
+    precache_sound2 ("enforcer/enfire.wav");
+    precache_sound2 ("enforcer/enfstop.wav");
+    precache_sound2 ("enforcer/idle1.wav");
+    precache_sound2 ("enforcer/pain1.wav");
+    precache_sound2 ("enforcer/pain2.wav");
+    precache_sound2 ("enforcer/sight1.wav");
+    precache_sound2 ("enforcer/sight2.wav");
+    precache_sound2 ("enforcer/sight3.wav");
+    precache_sound2 ("enforcer/sight4.wav");
 
-	self.solid = SOLID_SLIDEBOX;
-	self.movetype = MOVETYPE_STEP;
+    self.solid = SOLID_SLIDEBOX;
+    self.movetype = MOVETYPE_STEP;
 
-	setmodel(self, "progs/enforcer.mdl");
+    setmodel(self, "progs/enforcer.mdl");
 
-	setsize(self, '-16 -16 -24', '16 16 40');
-	self.health = 80;
+    setsize(self, '-16 -16 -24', '16 16 40');
+    self.health = 80;
 
-	self.th_stand = enf_stand1;
-	self.th_walk = enf_walk1;
-	self.th_run = enf_run1;
-	self.th_pain = enf_pain;
-	self.th_die = enf_die;
-	self.th_missile = enf_atk1;
+    self.th_stand = enf_stand1;
+    self.th_walk = enf_walk1;
+    self.th_run = enf_run1;
+    self.th_pain = enf_pain;
+    self.th_die = enf_die;
+    self.th_missile = enf_atk1;
 
-	walkmonster_start();
+    walkmonster_start();
 };

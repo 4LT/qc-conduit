@@ -76,58 +76,58 @@ void() hk_idle_sound;
 
 void(float offset) hknight_shot =
 {
-	vector offang;
-	vector org, vec;
+    vector offang;
+    vector org, vec;
 
-	offang = vectoangles(self.enemy.origin - self.origin);
-	offang_y = offang_y + offset * 6;
+    offang = vectoangles(self.enemy.origin - self.origin);
+    offang_y = offang_y + offset * 6;
 
-	makevectors(offang);
+    makevectors(offang);
 
-	org = self.origin + self.mins + self.size*0.5 + v_forward * 20;
+    org = self.origin + self.mins + self.size*0.5 + v_forward * 20;
 
 // set missile speed
-	vec = normalize(v_forward);
-	vec_z = 0 - vec_z + (random() - 0.5)*0.1;
+    vec = normalize(v_forward);
+    vec_z = 0 - vec_z + (random() - 0.5)*0.1;
 
-	launch_spike(org, vec);
-	newmis.classname = "knightspike";
-	setmodel(newmis, "progs/k_spike.mdl");
-	setsize(newmis, VEC_ORIGIN, VEC_ORIGIN);
-	newmis.velocity = vec*300;
-	sound(self, CHAN_WEAPON, "hknight/attack1.wav", 1, ATTN_NORM);
+    launch_spike(org, vec);
+    newmis.classname = "knightspike";
+    setmodel(newmis, "progs/k_spike.mdl");
+    setsize(newmis, VEC_ORIGIN, VEC_ORIGIN);
+    newmis.velocity = vec*300;
+    sound(self, CHAN_WEAPON, "hknight/attack1.wav", 1, ATTN_NORM);
 };
 
 void() CheckForCharge =
 {
 // check for mad charge
 if (!enemy_vis)
-	return;
+    return;
 if (time < self.attack_finished)
-	return;
+    return;
 if ( fabs(self.origin_z - self.enemy.origin_z) > 20)
-	return; // too much height change
+    return; // too much height change
 if ( vlen(self.origin - self.enemy.origin) < 80)
-	return; // use regular attack
+    return; // use regular attack
 
 // charge
-	SUB_AttackFinished(2);
-	hknight_char_a1();
+    SUB_AttackFinished(2);
+    hknight_char_a1();
 
 };
 
 void() CheckContinueCharge =
 {
-	if (time > self.attack_finished)
-	{
-		SUB_AttackFinished(3);
-		hknight_run1();
-		return; // done charging
-	}
-	if (random() > 0.5)
-		sound(self, CHAN_WEAPON, "knight/sword2.wav", 1, ATTN_NORM);
-	else
-		sound(self, CHAN_WEAPON, "knight/sword1.wav", 1, ATTN_NORM);
+    if (time > self.attack_finished)
+    {
+        SUB_AttackFinished(3);
+        hknight_run1();
+        return; // done charging
+    }
+    if (random() > 0.5)
+        sound(self, CHAN_WEAPON, "knight/sword2.wav", 1, ATTN_NORM);
+    else
+        sound(self, CHAN_WEAPON, "knight/sword1.wav", 1, ATTN_NORM);
 };
 
 //===========================================================================
@@ -146,8 +146,8 @@ void() hknight_stand9 = [ $stand9, hknight_stand1 ] { ai_stand(); };
 
 void() hknight_walk1 = [ $walk1, hknight_walk2 ]
 {
-	hk_idle_sound();
-	ai_walk(2);
+    hk_idle_sound();
+    ai_walk(2);
 };
 void() hknight_walk2 = [ $walk2, hknight_walk3 ] { ai_walk(5); };
 void() hknight_walk3 = [ $walk3, hknight_walk4 ] { ai_walk(5); };
@@ -173,9 +173,9 @@ void() hknight_walk20 = [ $walk20, hknight_walk1 ] { ai_walk(2); };
 
 void() hknight_run1 = [ $run1, hknight_run2 ]
 {
-	hk_idle_sound();
-	ai_run(20);
-	CheckForCharge();
+    hk_idle_sound();
+    ai_run(20);
+    CheckForCharge();
 };
 void() hknight_run2 = [ $run2, hknight_run3 ] { ai_run(25); };
 void() hknight_run3 = [ $run3, hknight_run4 ] { ai_run(18); };
@@ -199,8 +199,8 @@ void() hknight_die1 = [ $death1, hknight_die2 ] { ai_forward(10); };
 void() hknight_die2 = [ $death2, hknight_die3 ] { ai_forward(8); };
 void() hknight_die3 = [ $death3, hknight_die4 ]
 {
-	self.solid = SOLID_NOT;
-	ai_forward(7);
+    self.solid = SOLID_NOT;
+    ai_forward(7);
 };
 void() hknight_die4 = [ $death4, hknight_die5 ] {};
 void() hknight_die5 = [ $death5, hknight_die6 ] {};
@@ -225,22 +225,22 @@ void() hknight_dieb9 = [ $deathb9, hknight_dieb9 ] {};
 void() hknight_die =
 {
 // check for gib
-	if (self.health < -40)
-	{
-		sound(self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NORM);
-		ThrowHead("progs/h_hellkn.mdl", self.health);
-		ThrowGib("progs/gib1.mdl", self.health);
-		ThrowGib("progs/gib2.mdl", self.health);
-		ThrowGib("progs/gib3.mdl", self.health);
-		return;
-	}
+    if (self.health < -40)
+    {
+        sound(self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NORM);
+        ThrowHead("progs/h_hellkn.mdl", self.health);
+        ThrowGib("progs/gib1.mdl", self.health);
+        ThrowGib("progs/gib2.mdl", self.health);
+        ThrowGib("progs/gib3.mdl", self.health);
+        return;
+    }
 
 // regular death
-	sound(self, CHAN_VOICE, "hknight/death1.wav", 1, ATTN_NORM);
-	if (random() > 0.5)
-		hknight_die1();
-	else
-		hknight_dieb1();
+    sound(self, CHAN_VOICE, "hknight/death1.wav", 1, ATTN_NORM);
+    if (random() > 0.5)
+        hknight_die1();
+    else
+        hknight_dieb1();
 };
 
 
@@ -314,9 +314,9 @@ void() hknight_char_a16 = [ $char_a16, hknight_run1 ] { ai_charge(13); };
 
 void() hknight_char_b1 = [ $char_b1, hknight_char_b2 ]
 {
-	CheckContinueCharge();
-	ai_charge(23);
-	ai_melee();
+    CheckContinueCharge();
+    ai_charge(23);
+    ai_melee();
 };
 void() hknight_char_b2 = [ $char_b2, hknight_char_b3 ] { ai_charge(17); ai_melee(); };
 void() hknight_char_b3 = [ $char_b3, hknight_char_b4 ] { ai_charge(12); ai_melee(); };
@@ -380,90 +380,90 @@ void() hknight_watk22 = [ $w_attack22, hknight_run1 ] { ai_charge(3); };
 
 void() hk_idle_sound =
 {
-	if (random() < 0.2)
-		sound(self, CHAN_VOICE, "hknight/idle.wav", 1, ATTN_NORM);
+    if (random() < 0.2)
+        sound(self, CHAN_VOICE, "hknight/idle.wav", 1, ATTN_NORM);
 };
 
 void(entity attacker, float damage) hknight_pain =
 {
-	if (self.pain_finished > time)
-		return;
+    if (self.pain_finished > time)
+        return;
 
-	sound(self, CHAN_VOICE, "hknight/pain1.wav", 1, ATTN_NORM);
+    sound(self, CHAN_VOICE, "hknight/pain1.wav", 1, ATTN_NORM);
 
-	if (time - self.pain_finished > 5)
-	{ // allways go into pain frame if it has been a while
-		hknight_pain1();
-		self.pain_finished = time + 1;
-		return;
-	}
+    if (time - self.pain_finished > 5)
+    { // allways go into pain frame if it has been a while
+        hknight_pain1();
+        self.pain_finished = time + 1;
+        return;
+    }
 
-	if ((random()*30 > damage))
-		return; // didn't flinch
+    if ((random()*30 > damage))
+        return; // didn't flinch
 
-	self.pain_finished = time + 1;
-	hknight_pain1();
+    self.pain_finished = time + 1;
+    hknight_pain1();
 };
 
 float hknight_type;
 
 void() hknight_melee =
 {
-	hknight_type = hknight_type + 1;
+    hknight_type = hknight_type + 1;
 
-	sound(self, CHAN_WEAPON, "hknight/slash1.wav", 1, ATTN_NORM);
-	if (hknight_type == 1)
-		hknight_slice1();
-	else if (hknight_type == 2)
-		hknight_smash1();
-	else if (hknight_type == 3)
-	{
-		hknight_watk1();
-		hknight_type = 0;
-	}
+    sound(self, CHAN_WEAPON, "hknight/slash1.wav", 1, ATTN_NORM);
+    if (hknight_type == 1)
+        hknight_slice1();
+    else if (hknight_type == 2)
+        hknight_smash1();
+    else if (hknight_type == 3)
+    {
+        hknight_watk1();
+        hknight_type = 0;
+    }
 };
 
 /*QUAKED monster_hell_knight (1 0 0) (-16 -16 -24) (16 16 40) Ambush
 */
 void() monster_hell_knight =
 {
-	if (deathmatch)
-	{
-		remove(self);
-		return;
-	}
-	precache_model2 ("progs/hknight.mdl");
-	precache_model2 ("progs/k_spike.mdl");
-	precache_model2 ("progs/h_hellkn.mdl");
+    if (deathmatch)
+    {
+        remove(self);
+        return;
+    }
+    precache_model2 ("progs/hknight.mdl");
+    precache_model2 ("progs/k_spike.mdl");
+    precache_model2 ("progs/h_hellkn.mdl");
 
 
-	precache_sound2 ("hknight/attack1.wav");
-	precache_sound2 ("hknight/death1.wav");
-	precache_sound2 ("hknight/pain1.wav");
-	precache_sound2 ("hknight/sight1.wav");
-	precache_sound("hknight/hit.wav"); // used by C code, so don't sound2
-	precache_sound2 ("hknight/slash1.wav");
-	precache_sound2 ("hknight/idle.wav");
-	precache_sound2 ("hknight/grunt.wav");
+    precache_sound2 ("hknight/attack1.wav");
+    precache_sound2 ("hknight/death1.wav");
+    precache_sound2 ("hknight/pain1.wav");
+    precache_sound2 ("hknight/sight1.wav");
+    precache_sound("hknight/hit.wav"); // used by C code, so don't sound2
+    precache_sound2 ("hknight/slash1.wav");
+    precache_sound2 ("hknight/idle.wav");
+    precache_sound2 ("hknight/grunt.wav");
 
-	precache_sound("knight/sword1.wav");
-	precache_sound("knight/sword2.wav");
+    precache_sound("knight/sword1.wav");
+    precache_sound("knight/sword2.wav");
 
-	self.solid = SOLID_SLIDEBOX;
-	self.movetype = MOVETYPE_STEP;
+    self.solid = SOLID_SLIDEBOX;
+    self.movetype = MOVETYPE_STEP;
 
-	setmodel(self, "progs/hknight.mdl");
+    setmodel(self, "progs/hknight.mdl");
 
-	setsize(self, '-16 -16 -24', '16 16 40');
-	self.health = 250;
+    setsize(self, '-16 -16 -24', '16 16 40');
+    self.health = 250;
 
-	self.th_stand = hknight_stand1;
-	self.th_walk = hknight_walk1;
-	self.th_run = hknight_run1;
-	self.th_melee = hknight_melee;
-	self.th_missile = hknight_magicc1;
-	self.th_pain = hknight_pain;
-	self.th_die = hknight_die;
+    self.th_stand = hknight_stand1;
+    self.th_walk = hknight_walk1;
+    self.th_run = hknight_run1;
+    self.th_melee = hknight_melee;
+    self.th_missile = hknight_magicc1;
+    self.th_pain = hknight_pain;
+    self.th_die = hknight_die;
 
-	walkmonster_start();
+    walkmonster_start();
 };
