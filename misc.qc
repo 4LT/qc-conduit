@@ -688,3 +688,30 @@ void() misc_noisemaker =
     self.nextthink = time + 0.1 + random();
     self.think = noise_think;
 };
+
+void() DbgIoUse =
+{
+    string prefix;
+
+    if (self.message && self.message != "") {
+        prefix = self.message;
+    } else {
+        prefix = "Received:";
+    }
+
+    if (activator.classname == "player") {
+        centerprint4(
+                activator,
+                prefix,
+                " \b",
+                ftos(self.io_received),
+                "\b"
+        );
+    }
+};
+
+void() dbg_io = 
+{
+    self.use = DbgIoUse;
+};
+

@@ -550,6 +550,13 @@ float AS_MISSILE = 4;
 //
 .float count; // for counting triggers
 
+//
+// I/O
+//
+.float io_send;
+.float io_received;
+.float io_arg2;
+
 
 //
 // plats / doors / buttons
@@ -673,6 +680,13 @@ void(string s) changelevel = #70;
 void(string var, string val) cvar_set = #72; // sets cvar.value
 
 void(entity client, string s) centerprint = #73; // sprint, but in middle
+
+void(entity client, string s1, string s2) centerprint2 = #73;
+void(entity client, string s1, string s2, string s3) centerprint3 = #73;
+void(entity client, string s1, string s2, string s3, string s4) centerprint4 = #73;
+void(entity client, string s1, string s2, string s3, string s4, string s5) centerprint5 = #73;
+void(entity client, string s1, string s2, string s3, string s4, string s5, string s6) centerprint6 = #73;
+void(entity client, string s1, string s2, string s3, string s4, string s5, string s6, string s7) centerprint7 = #73;
 
 void(vector pos, string samp, float vol, float atten) ambientsound = #74;
 

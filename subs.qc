@@ -238,6 +238,7 @@ void() SUB_UseTargets =
     {
     // create a temp object to fire at a later time
         t = spawn();
+        t.io_send = self.io_send;
         t.classname = "DelayedUse";
         t.nextthink = time + self.delay;
         t.think = DelayThink;
@@ -292,10 +293,10 @@ void() SUB_UseTargets =
             otemp = other;
             self = t;
             other = stemp;
-            if (self.use != SUB_Null)
+            if (self.use != SUB_Null && self.use)
             {
-                if (self.use)
-                    self.use();
+                self.io_received = other.io_send;
+                self.use();
             }
             self = stemp;
             other = otemp;

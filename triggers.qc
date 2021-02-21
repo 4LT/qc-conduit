@@ -19,6 +19,11 @@
 
 entity s;
 
+void() IoRelay =
+{
+    self.io_send = self.io_received;
+    SUB_UseTargets();
+};
 
 void() trigger_reactivate =
 {
@@ -196,9 +201,13 @@ This fixed size trigger cannot be touched, it can only be fired by other events.
 */
 void() trigger_relay =
 {
-    self.use = SUB_UseTargets;
+    self.use = IoRelay;
 };
 
+void() trigger_const =
+{
+    self.use = SUB_UseTargets;
+};
 
 //=============================================================================
 
