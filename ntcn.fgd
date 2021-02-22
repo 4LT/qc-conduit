@@ -616,6 +616,7 @@
         8 : "Max (Highest)"
     ]
     io_arg2(integer) : "2nd Operand" : 0
+	delay(string) : "Delay before trigger" : "0"
 ]
 
 @PointClass base(Appearflags, Target, Targetname) = math_adder : "Add to stored value"
@@ -630,4 +631,20 @@
     waitmax(integer) : "Upper Bound"
     waitmin(integer) : "Lower Bound"
     io_send(integer) : "Initial value" : 0
+	delay(string) : "Delay before trigger" : "0"
+]
+
+@PointClass base(Appearflags, TargetConst, Targetname) = math_compare : "Fire given condition"
+[
+    style(choices) : "Comparison" : 0 =
+    [
+        0 : "Less than"
+        1 : "Less than/equal"
+        2 : "Greater than"
+        3 : "Greater than/equal"
+        4 : "Equal"
+        5 : "Not equal"
+    ]
+    io_arg2(integer) : "2nd Operand" : 0
+	delay(string) : "Delay before trigger" : "0"
 ]

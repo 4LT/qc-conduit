@@ -15,6 +15,13 @@ float IOM_OP_CEIL = 6;
 float IOM_OP_MIN = 7;
 float IOM_OP_MAX = 8;
 
+float IOM_CMP_LT = 0;
+float IOM_CMP_LTE = 1;
+float IOM_CMP_GT = 2;
+float IOM_CMP_GTE = 3;
+float IOM_CMP_EQ = 4;
+float IOM_CMP_NE = 5;
+
 void() ApplyOp = {
     float reverse = self.spawnflags & IOM_SPAWNFLAG_REVERSE;
     math_err = 0;
@@ -118,8 +125,43 @@ void() math_adder = {
     self.use = AddToAdder;
 };
 
-void() math_const =
-{
+void() math_const = {
     self.use = SUB_UseTargets;
 };
 
+void() CompareAndFire = {
+    float result = 0;
+
+    switch(self.style) {
+        case IOM_CMP_LT:
+            result = self.io_received < self.io_arg2;
+            break;
+
+        case IOM_CMP_LTE:
+            result = self.io_received <= self.io_arg2;
+            break;
+
+        case IOM_CMP_GT:
+            result = self.io_received > self.io_arg2;
+            break;
+
+        case IOM_CMP_GTE:
+            result = self.io_received >= self.io_arg2;
+            break;
+
+        case IOM_CMP_NE:
+            result = self.io_received != self.io_arg2;
+            break;
+
+        default: // IOM_CMP_EQ
+            result = self.io_received == self.io_arg2;
+    }
+
+    if (result) {
+        SUB_UseTargets();
+    }
+};
+
+void() math_compare = {
+    self.use = CompareAndFire;
+};
