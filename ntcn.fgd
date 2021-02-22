@@ -49,6 +49,10 @@
 	target(target_destination) : "Target"
 	killtarget(target_destination) : "Killtarget"
 ]
+@baseclass base(Target) = IoConst [
+    io_send(integer) : "Value to send on fire" : 0
+]
+@baseclass base(Target, IoConst) = TargetConst []
 
 
 
@@ -70,7 +74,7 @@
 	targetname(target_source) : "Name"
 ]
 
-@PointClass base(Appearflags, Target, Targetname) color(200 150 150) = info_notnull : "Wildcard entity" // I love you
+@PointClass base(Appearflags, TargetConst, Targetname) color(200 150 150) = info_notnull : "Wildcard entity" // I love you
 [
 	use(string) : "self.use"
 	think(string) : "self.think"
@@ -86,7 +90,7 @@
 //
 // items
 //
-@baseclass base(Appearflags, Target, Targetname) = Item
+@baseclass base(Appearflags, TargetConst, Targetname) = Item
 [
 	message(string) : "Message"
 	target(string) : "Target"
@@ -206,7 +210,7 @@
 // monsters
 //
 
-@baseclass base(Angle, Appearflags, Target, Targetname) color(220 0 0) = Monster
+@baseclass base(Angle, Appearflags, TargetConst, Targetname) color(220 0 0) = Monster
 [
 	spawnflags(Flags) =
 	[
@@ -371,7 +375,7 @@
 //
 
 
-@SolidClass base(Angle, Appearflags, Targetname, Target) = func_door : "Basic door"
+@SolidClass base(Angle, Appearflags, Targetname, TargetConst) = func_door : "Basic door"
 [
 	speed(integer) : "Speed" : 100
 	sounds(choices) : "Sound" : 0 =
@@ -397,7 +401,7 @@
 	]
 ]
 
-@SolidClass base(Appearflags, Targetname, Target) = func_door_secret : "Secret door"
+@SolidClass base(Appearflags, Targetname, TargetConst) = func_door_secret : "Secret door"
 [
 	angle(integer) : "Direction of second move"
 	t_width(integer) : "First move length"
@@ -424,11 +428,10 @@
 @SolidClass base(Appearflags, Targetname) = func_wall : "Wall, starts animation when triggered (if supporting texture)" []
 
 
-@SolidClass base(Angle, Appearflags, Targetname) = func_button : "Button"
+@SolidClass base(Angle, Appearflags, Targetname, TargetConst) = func_button : "Button"
 [
 	speed(integer) : "Speed" : 40
 	lip(integer) : "Lip" : 4
-	target(target_source) : "Target"
 	health(integer) : "Health (shootable)"
 	sounds(choices) : "Sounds" =
 	[
@@ -507,7 +510,7 @@
 	message(string) : "Message"
 ]
 
-@SolidClass base(Trigger) = trigger_changelevel : "Trigger: Change level"
+@SolidClass base(Trigger, IoConst) = trigger_changelevel : "Trigger: Change level"
 [
 	map(string) : "Next map"
 	target(target_destination) : "Target"
@@ -517,22 +520,22 @@
 	]
 ]
 
-@SolidClass base(Trigger) = trigger_once : "Trigger: Activate once"
+@SolidClass base(Trigger, IoConst) = trigger_once : "Trigger: Activate once"
 [
 	health(integer) : "Health (shootable)"
 	spawnflags(flags) = [ 1: "Not touchable" : 0 ]
 ]
-@SolidClass base(Trigger) = trigger_multiple : "Trigger: Activate multiple"
+@SolidClass base(Trigger, IoConst) = trigger_multiple : "Trigger: Activate multiple"
 [
 	wait(string) : "Wait before reset" : "0.2"
 	health(integer) : "Health (shootable)"
 	spawnflags(flags) = [ 1: "Not touchable" : 0 ]
 ]
-@SolidClass base(Trigger) = trigger_onlyregistered : "Trigger: Registered only"
+@SolidClass base(Trigger, IoConst) = trigger_onlyregistered : "Trigger: Registered only"
 [
 	spawnflags(flags) = [ 1: "Not touchable" : 0 ]
 ]
-@SolidClass base(Trigger) = trigger_secret : "Trigger: Secret"
+@SolidClass base(Trigger, IoConst) = trigger_secret : "Trigger: Secret"
 [
 	sounds(choices) : "Sound" : 1 =
 	[
@@ -542,7 +545,7 @@
 	spawnflags(flags) = [ 1: "Not touchable" : 0 ]
 ]
 
-@SolidClass base(Appearflags, Target, Targetname) = trigger_teleport : "Trigger: Teleporter"
+@SolidClass base(Appearflags, TargetConst, Targetname) = trigger_teleport : "Trigger: Teleporter"
 [
 	spawnflags(Flags) =
 	[
@@ -564,10 +567,8 @@
 @PointClass base(Trigger) = trigger_relay : "Trigger: Relay"
 [
 ]
-@PointClass base(Trigger) = math_const : "Trigger: Send constant value"
-[
-    io_send(integer) : "Value to be sent" : 0
-]
+@PointClass base(Trigger, IoConst) = math_const : "Trigger: Send constant value"
+[]
 @PointClass base(Appearflags, Targetname) = dbg_io : "Debug: Print received value"
 [
     message(string) : "Prefix to print with value"
@@ -577,7 +578,7 @@
 	speed(integer) : "Jump Speed" : 200
 	height(integer) : "Jump Height" : 200
 ]
-@PointClass base(Appearflags, Target, Targetname) = trigger_counter : "Trigger: Counter"
+@PointClass base(Appearflags, TargetConst, Targetname) = trigger_counter : "Trigger: Counter"
 [
 	spawnflags(flags) = [ 1: "No Message" : 0 ]
 	count(integer) : "Count before trigger" : 2
@@ -626,7 +627,7 @@
         4 : "Fire on change only"
         8 : "Fire on hitting bounds only"
     ]
-    io_send(integer) : "Initial value" : 0
     waitmax(integer) : "Upper Bound"
     waitmin(integer) : "Lower Bound"
+    io_send(integer) : "Initial value" : 0
 ]
