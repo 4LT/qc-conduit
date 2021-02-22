@@ -557,7 +557,6 @@ float AS_MISSILE = 4;
 .float io_received;
 .float io_arg2;
 
-
 //
 // plats / doors / buttons
 //

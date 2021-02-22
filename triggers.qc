@@ -204,11 +204,6 @@ void() trigger_relay =
     self.use = IoRelay;
 };
 
-void() trigger_const =
-{
-    self.use = SUB_UseTargets;
-};
-
 //=============================================================================
 
 /*QUAKED trigger_secret (.5 .5 .5) ?

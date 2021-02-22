@@ -564,9 +564,9 @@
 @PointClass base(Trigger) = trigger_relay : "Trigger: Relay"
 [
 ]
-@PointClass base(Trigger) = trigger_const : "Trigger: Send constant value"
+@PointClass base(Trigger) = math_const : "Trigger: Send constant value"
 [
-    io_send(integer) : "Value to be sent"
+    io_send(integer) : "Value to be sent" : 0
 ]
 @PointClass base(Appearflags, Targetname) = dbg_io : "Debug: Print received value"
 [
@@ -595,3 +595,38 @@
 ]
 @PointClass size(16 16 16) = misc_noisemaker : "Debug entity: continuously plays enforcer sounds" []
 @PointClass size(16 16 16) = viewthing : "Debug entity: fake player model" []
+
+@PointClass base(Trigger) = math_op : "Perform op on input, fire as output"
+[
+    spawnflags(flags) =
+    [
+        1 : "Reverse operands"
+    ]
+    style(choices) : "Operator" : 0 =
+    [
+        0 : "Add"
+        1 : "Subtract"
+        2 : "Multiply"
+        3 : "Divide"
+        4 : "Modulus"
+        5 : "Round Down"
+        6 : "Round Up"
+        7 : "Min (Lowest)"
+        8 : "Max (Highest)"
+    ]
+    io_arg2(integer) : "2nd Operand" : 0
+]
+
+@PointClass base(Appearflags, Target, Targetname) = math_adder : "Add to stored value"
+[
+    spawnflags(flags) =
+    [
+        1 : "Use Upper Bound"
+        2 : "Use Lower Bound"
+        4 : "Fire on change only"
+        8 : "Fire on hitting bounds only"
+    ]
+    io_send(integer) : "Initial value" : 0
+    waitmax(integer) : "Upper Bound"
+    waitmin(integer) : "Lower Bound"
+]
