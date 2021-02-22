@@ -87,7 +87,7 @@ void() math_op = {
 };
 
 void() AddToAdder = {
-    float old_count = self.count;
+    float old_count = self.io_send;
     float hit_bound = 0;
     float change_clearance = 1;
     float bound_clearance = 1;
@@ -111,7 +111,7 @@ void() AddToAdder = {
     }
 
     if (self.spawnflags & IOM_SPAWNFLAG_FIRE_CHANGE_ONLY) {
-        if (self.count == old_count) {
+        if (self.io_send == old_count) {
             change_clearance = 0;
         }
     }
