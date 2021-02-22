@@ -34,6 +34,7 @@ void() trigger_reactivate =
 
 float SPAWNFLAG_NOMESSAGE = 1;
 float SPAWNFLAG_NOTOUCH = 1;
+float SPAWNFLAG_COUNTDOWN = 1;
 
 // the wait time has passed, so set back up for another activation
 void() multi_wait =
@@ -660,3 +661,50 @@ void() trigger_monsterjump =
     self.touch = trigger_monsterjump_touch;
 };
 
+void() StartRepeat;
+void() StepRepeat;
+
+void() StepDecrement = {
+    if (self.io_send > 0) {
+        self.io_send-= 1;
+        self.nextthink = time + self.wait;
+        self.think = StepRepeat;
+    }
+};
+
+void() StepIncrement = {
+    if (self.io_send < self.count) {
+        self.io_send+= 1;
+        self.nextthink = time + self.wait;
+        self.think = StepRepeat;
+    }
+};
+
+void() StepRepeat = {
+    SUB_UseTargets();
+
+    if (self.spawnflags & SPAWNFLAG_COUNTDOWN) {
+        StepDecrement();
+    } else {
+        StepIncrement();
+    }
+};
+
+void() StartRepeat = {
+    if (self.spawnflags & SPAWNFLAG_COUNTDOWN) {
+        self.io_send = self.count;
+    } else {
+        self.io_send = 0;
+    }
+
+    StepRepeat();
+};
+
+void() trigger_repeat = {
+    self.count = floor(max(1, self.count));
+    if (self.wait <= 0) {
+        self.wait = 0.2;
+    }
+    
+    self.use = StartRepeat;
+};

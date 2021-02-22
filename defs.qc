@@ -558,6 +558,11 @@ float AS_MISSILE = 4;
 .float io_arg2;
 
 //
+// FX
+//
+.float alpha;
+
+//
 // plats / doors / buttons
 //
 .float lip;

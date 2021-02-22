@@ -1,6 +1,7 @@
 ./progs.dat
 
 defs.qc
+math.qc
 subs.qc
 fight.qc
 ai.qc
@@ -34,5 +35,5 @@ shalrath.qc		// registered
 enforcer.qc		// registered
 oldone.qc		// registered
 
-math.qc
 io_math.qc
+control.qc

@@ -49,6 +49,9 @@
 	target(target_destination) : "Target"
 	killtarget(target_destination) : "Killtarget"
 ]
+@baseclass base(Targetname) = Controller [
+    target(target_destination) : "Control target"
+]
 @baseclass base(Target) = IoConst [
     io_send(integer) : "Value to send on fire" : 0
 ]
@@ -567,6 +570,15 @@
 @PointClass base(Trigger) = trigger_relay : "Trigger: Relay"
 [
 ]
+@PointClass base(Trigger) = trigger_repeat : "Trigger: Repeat"
+[
+    count(integer) : "Count" : 1
+    wait(float) : "Wait before refire" : "0.2"
+    spawnflags(flags) =
+    [
+        1 : "Count down" : 0
+    ]
+]
 @PointClass base(Trigger, IoConst) = math_const : "Trigger: Send constant value"
 []
 @PointClass base(Appearflags, Targetname) = dbg_io : "Debug: Print received value"
@@ -647,4 +659,12 @@
     ]
     io_arg2(integer) : "2nd Operand" : 0
 	delay(string) : "Delay before trigger" : "0"
+]
+
+@PointClass base(Appearflags, Controller) = control_vis : "Controls visibility of its target"
+[
+    spawnflags(flags) =
+    [
+        1 : "Modify solidity"
+    ]
 ]
