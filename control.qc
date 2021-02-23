@@ -28,8 +28,9 @@ void(entity ent, float opacity) ControlVisProc = {
         } else if (ent.classname == "func_illusionary") {
             // Do nothing
         } else {
-            error("Cannot control solidity of class:");
-            error(ent.classname);
+            bprint("Cannot control solidity of class: ");
+            bprint(ent.classname);
+            bprint("\n");
         }
     }
 };
@@ -48,13 +49,14 @@ void(entity ent, float send) ControlVarProc = {
     if (ent.classname == "trigger_repeat" ||
             ent.classname == "math_adder")
     {
-        error("WARNING: Unstable use of control_var on class:");
-        error(ent.classname);
+        bprint("WARNING: Unstable use of control_var on class: ");
+        bprint(ent.classname);
+        bprint("\n");
     }
 };
 
 void() ControlVarUse = {
-    BaseControl(ControlVisProc);
+    BaseControl(ControlVarProc);
 };
 
 void() control_var = {
