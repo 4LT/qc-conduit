@@ -41,3 +41,22 @@ void() ControlVisUse = {
 void() control_vis = {
     self.use = ControlVisUse;
 };
+
+void(entity ent, float send) ControlVarProc = {
+    ent.io_send = send;
+
+    if (ent.classname == "trigger_repeat" ||
+            ent.classname == "math_adder")
+    {
+        error("WARNING: Unstable use of control_var on class:");
+        error(ent.classname);
+    }
+};
+
+void() ControlVarUse = {
+    BaseControl(ControlVisProc);
+};
+
+void() control_var = {
+    self.use = ControlVarUse;
+};

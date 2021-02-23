@@ -579,7 +579,7 @@
         1 : "Count down" : 0
     ]
 ]
-@PointClass base(Trigger, IoConst) = math_const : "Trigger: Send constant value"
+@PointClass base(Trigger, IoConst) = math_var : "Trigger: Send provided value"
 []
 @PointClass base(Appearflags, Targetname) = dbg_io : "Debug: Print received value"
 [
@@ -668,3 +668,6 @@
         1 : "Modify solidity"
     ]
 ]
+
+@PointClass base(Appearflags, Controller) = control_var : "Controls send value of its target"
+[]

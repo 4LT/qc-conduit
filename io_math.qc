@@ -125,7 +125,7 @@ void() math_adder = {
     self.use = AddToAdder;
 };
 
-void() math_const = {
+void() math_var = {
     self.use = SUB_UseTargets;
 };
 
