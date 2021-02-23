@@ -7,8 +7,7 @@ float ACT_STATE_REVERSE = 2;
 void() ActuatorStop = {
     self.state = ACT_STATE_STOPPED;
     self.velocity = '0 0 0';
-    self.nextthink = -1;
-    self.cnt = time;
+    self.cnt = self.ltime;
 };
 
 void() ActuatorMove = {
@@ -17,8 +16,6 @@ void() ActuatorMove = {
     } else {
         self.state = ACT_STATE_REVERSE;
     }
-
-    self.height = self.io_received;
 
     vector next_dest = self.pos2 * self.io_received + self.pos1;
     SUB_CalcMove(next_dest, self.speed, ActuatorStop);
@@ -40,7 +37,7 @@ void() ActuatorUse = {
 
     if (self.state == ACT_STATE_STOPPED) {
         // Start moving eventually
-        if (nextmove <= time) {
+        if (nextmove <= self.ltime) {
             ActuatorMove();
         } else {
             self.think = ActuatorRecalcAndMove;
@@ -54,7 +51,8 @@ void() ActuatorUse = {
     } else {
         // Stop & reverse direction
         ActuatorStop();
-        ActuatorUse();
+        self.think = ActuatorRecalcAndMove;
+        self.nextthink = self.cnt + self.wait;
     }
 };
 
@@ -69,10 +67,11 @@ void() ActuatorInit = {
 
     // distance from position start to target dest
     self.t_length = vlen(self.pos2);
+
+    self.use = ActuatorUse;
 };
 
 void() func_actuator = {
-    self.use = ActuatorUse;
     self.movetype = MOVETYPE_PUSH;
     self.state = ACT_STATE_STOPPED;
 
@@ -99,5 +98,5 @@ void() func_actuator = {
     setmodel(self, self.model);
 
     self.think = ActuatorInit;
-    self.nextthink = time + 0.0001;
+    self.nextthink = 0.01;
 };

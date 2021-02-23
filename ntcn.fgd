@@ -676,7 +676,7 @@
 [
     speed(float) : "Speed" : 40
     dmg(float) : "Damage on block" : 2
-    wait(float) : "Wait before changing direction"
+    wait(float) : "Wait before changing direction" : 0
     spawnflags(flags) =
     [
         1 : "Solid"
