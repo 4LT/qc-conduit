@@ -627,7 +627,7 @@
         7 : "Min (Lowest)"
         8 : "Max (Highest)"
     ]
-    io_arg2(integer) : "2nd Operand" : 0
+    io_arg2(float) : "2nd Operand" : 0
 	delay(string) : "Delay before trigger" : "0"
 ]
 
@@ -640,9 +640,9 @@
         4 : "Fire on change only"
         8 : "Fire on hitting bounds only"
     ]
-    waitmax(integer) : "Upper Bound"
-    waitmin(integer) : "Lower Bound"
-    io_send(integer) : "Initial value" : 0
+    waitmax(float) : "Upper Bound"
+    waitmin(float) : "Lower Bound"
+    io_send(float) : "Initial value" : 0
 	delay(string) : "Delay before trigger" : "0"
 ]
 
@@ -657,7 +657,7 @@
         4 : "Equal"
         5 : "Not equal"
     ]
-    io_arg2(integer) : "2nd Operand" : 0
+    io_arg2(float) : "2nd Operand" : 0
 	delay(string) : "Delay before trigger" : "0"
 ]
 
@@ -671,3 +671,14 @@
 
 @PointClass base(Appearflags, Controller) = control_var : "Controls send value of its target"
 []
+
+@SolidClass base(Appearflags, Targetname, Target) = func_actuator : "Linear moving brush"
+[
+    speed(float) : "Speed" : 40
+    dmg(float) : "Damage on block" : 2
+    wait(float) : "Wait before changing direction"
+    spawnflags(flags) =
+    [
+        1 : "Solid"
+    ]
+]

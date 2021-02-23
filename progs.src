@@ -37,3 +37,4 @@ oldone.qc		// registered
 
 io_math.qc
 control.qc
+actuator.qc
