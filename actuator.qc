@@ -6,9 +6,9 @@ float ACT_STATE_REVERSE = 2;
 
 void() ActuatorStop = {
     self.state = ACT_STATE_STOPPED;
-    self.cnt = time;
     self.velocity = '0 0 0';
     self.nextthink = -1;
+    self.cnt = time;
 };
 
 void() ActuatorMove = {
@@ -25,7 +25,7 @@ void() ActuatorMove = {
 };
 
 void() CalcScalarPos = {
-    self.height = vlen(self.origin - self.pos1);
+    self.height = vlen(self.origin - self.pos1) / self.t_length;
 };
 
 void() ActuatorRecalcAndMove = {
