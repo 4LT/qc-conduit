@@ -23,7 +23,7 @@ clean:
 	rm -f progs.lno
 
 
-$(PROGS): *.qc progs.src Makefile
+$(PROGS): *.qc progs.src
 	fteqcc
 
 $(OUTPUT): $(PROGS) $(MODDIR)
