@@ -681,4 +681,20 @@
     [
         1 : "Solid"
     ]
+    sounds(choices) : "Sounds" : 0 =
+    [
+        0 : "Silent"
+        1 : "DOOR Stone"
+        2 : "DOOR Machine"
+        3 : "DOOR Stone Chain"
+        4 : "DOOR Screechy Metal"
+        5 : "DOOR/SEC Medieval"
+        6 : "DOOR/SEC Metal"
+        7 : "DOOR/SEC Base"
+        8 : "PLAT Base"
+        9 : "PLAT Chain"
+        10 : "TRAIN Ratchet"
+    ]
+    noise1(string) : "Stop noise"
+    noise2(string) : "Move noise"
 ]
