@@ -4,6 +4,13 @@ float ACT_STATE_STOPPED = 0;
 float ACT_STATE_FORWARD = 1;
 float ACT_STATE_REVERSE = 2;
 
+float ACT_BLOCKCHECK_DTIME = 0.02;
+float ACT_DMG_DTIME = 0.3;
+
+// float ACT_DMGSTYLE_GROW = 0; (DEFAULT)
+float ACT_DMGSTYLE_CONST = 1;
+float ACT_DMGSTYLE_CRUSH = 2;
+
 void() ActuatorStop = {
     self.state = ACT_STATE_STOPPED;
     self.velocity = '0 0 0';
@@ -73,6 +80,53 @@ void() ActuatorInit = {
     self.t_length = vlen(self.pos2);
 
     self.use = ActuatorUse;
+};
+
+void() ActuatorObserverThink = {
+    // if actuator is still blocked
+    if (self.owner.ltime == self.pausetime) {
+        self.nextthink = time + ACT_BLOCKCHECK_DTIME;
+        self.think = ActuatorObserverThink;
+    } else {
+        self.owner.count = 0;
+        remove(self);
+    }
+};
+
+void() ActuatorBlocked = {
+    if (self.style == ACT_DMGSTYLE_CRUSH) {
+        T_Damage(other, self, self, 300);
+    } else if (self.style == ACT_DMGSTYLE_CONST) {
+        if (time > self.pausetime) {
+            T_Damage(other, self, self, self.dmg);
+            other.velocity = '0 0 0';
+            
+            // next time to inflict damage
+            self.pausetime = time + ACT_DMG_DTIME;
+        }
+    } else {
+        if (self.count == 0) {
+            entity observer = spawn();
+            observer.nextthink = time + ACT_BLOCKCHECK_DTIME;
+            observer.think = ActuatorObserverThink;
+
+            // actuator's ltime when first blocked
+            observer.pausetime = self.ltime;
+            observer.owner = self;
+        }
+
+        if (self.count == 0 || time > self.pausetime) {
+            // damage rises quadratically
+            float damage = self.dmg * (0.5 * (self.count * self.count) + 1);
+            T_Damage(other, self, self, damage);
+            other.velocity = '0 0 0';
+
+            // next time to inflict damage
+            self.pausetime = time + ACT_DMG_DTIME;
+
+            self.count+= 1;
+        }
+    }
 };
 
 void() MoverInitSounds = {
@@ -161,6 +215,10 @@ void() func_actuator = {
         self.speed = 40;
     }
 
+    if (self.dmg <= 0) {
+        self.dmg = 2;
+    }
+
     if (self.spawnflags & ACT_SPAWNFLAG_SOLID) {
         self.solid = SOLID_BSP;
     } else {
@@ -170,8 +228,13 @@ void() func_actuator = {
     // starting point
     self.pos1 = self.origin;
 
+    // number of frames entity is blocked
+    self.count = 0;
+
     setorigin(self, self.origin);
     setmodel(self, self.model);
+
+    self.blocked = ActuatorBlocked;
 
     self.think = ActuatorInit;
     self.nextthink = 0.01;

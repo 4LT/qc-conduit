@@ -695,6 +695,12 @@
         9 : "PLAT Chain"
         10 : "TRAIN Ratchet"
     ]
+    style(choices) : "Damage model" : 0 =
+    [
+        0 : "Grow"
+        1 : "Constant"
+        2 : "Crush"
+    ]
     noise1(string) : "Stop noise"
     noise2(string) : "Move noise"
 ]
