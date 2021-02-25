@@ -95,7 +95,7 @@ void() ActuatorObserverThink = {
 
 void() ActuatorBlocked = {
     if (self.style == ACT_DMGSTYLE_CRUSH) {
-        T_Damage(other, self, self, 300);
+        T_Damage(other, self, self, self.dmg);
     } else if (self.style == ACT_DMGSTYLE_CONST) {
         if (time > self.pausetime) {
             T_Damage(other, self, self, self.dmg);
