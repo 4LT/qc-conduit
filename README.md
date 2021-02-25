@@ -1,22 +1,92 @@
 
-# Cleaned up Quake id1 v1.01 QuakeC source
+# Necrotelecomnicon
 
-This is just the QuakeC source for vanilla Quake for modders to use.
+_Based on Shpuld's Cleaned up Quake id1 v1.01 QuakeC source_
 
-Because of vagueness with licensing, Quake 1.06 source isn't necessarily a good place to start from, it did not come with any license attached. Meanwhile 1.01 is more explicitely released under GPL in the Quake-Tools source release by id software: https://github.com/id-Software/Quake-Tools
+**Necrotelecomnicon** is a Quake mod that allows entities to transfer values
+between eachother.
 
-Anyone who has done QuakeC programming knows how messy the codebase is, and that there's some known bugs there too. While I've avoided changing the code behavior, I've done a lot of very basic clean up and fixed more harmless bugs (Rotfish monster count anyone?). The major changes from v1.06 have been redone here, but there's a few multiplayer specific things in v1.06 that are not in this release (mostly killmessages). 
+## General Changes
 
-My changes done to the codebase compared to 1.01:
-- Eliminate all warnings that FTEQCC gives it
-- Fix parm7 not being set to 0 properly in SetNewParms (cells) (like in v1.06)
-- Remove DumpScore (like in v1.06)
-- Prioritize other kill messages over liquid deaths(so monster killing you in water doesn't print drowning message) (like in v1.06)
-- Add prev weapon command (like in v1.06)
-- Fix fish monster count
-- Remove all of the "local" keywords that are not used by any relevant compiler (if your compiler refuses to compile without it, use a newer compiler)
-- Lots of automatic and manual syntax cleanup
-  - Consistent spacing for frame macros
-  - Consistent use of whitespace
-  - Consistent spacing around and inside () and {}
-  - Try to eliminate mixed indentation (using 4-size tabs as suggested by original sources)
+The behavior of `SUB_UseTargets` has been modified such that a firing entity
+writes its `io_send` field to the targeted entity's `io_received` field.
+
+Any previously existing entity (with the exception of `trigger_relay`) can have 
+its `io_send` field initialized, such that it will be sent when it calls its
+targets.
+
+## Entities
+
+### trigger_relay
+
+`trigger_relay` has been modified to transfer its **received** value to its
+**send** field.  This has the effect of _relaying_ its received value to its
+target entity.
+
+For default `trigger_relay` behavior, see `math_var` below.
+
+### trigger_repeat
+
+This entity repeats firing its targeted entity `count` times; that is, it is
+fired `count` + 1 times in total when triggered.  The entity will **send** its
+current value starting from 0 and ending with `count`.  The initial firing
+occurs `delay` seconds after triggered, while the interval between subsequent
+firings is `wait` seconds.
+
+### dbg_io
+
+This entity center-prints its **received** value.  A prefix can be provided
+using the `message` field; it defaults to "Received:".
+
+### math_adder
+
+This entity stores a value which other entities can add to via **received**
+value.  The value can be bounded between a lower bound (`waitmin`) and upper
+bound (`waitmax`) as well as being directed to fire only when the value changes,
+or hits a boundary.  When it is fired, it will **send** its value to the
+targeted entity.
+
+### math_compare
+
+This entity compares its **received** value against its `io_arg2` field.  The
+comparison can be _greater than_, _less than_, _equal_, etc.  If the comparison
+evaluates to true, it fires its targeted entity.  Like the vanilla entities, 
+the `io_send` field can be set to provide a value to send to targeted entities.
+
+### math_op
+
+This entity evaluates a unary operation on its **received** value, or a binary
+operation on its **received** value and its `io_arg2` field.  Then the entity
+will **send** the result of the evaluation.  If an error occurs during
+evaluation it will not fire, instead broadcasting a message to players.
+
+### control_vis
+
+Instead of firing its target, this entity sets its target's opacity to the
+**received** value.  A flag can be set to determine whether or not to disable
+solidity when the targeted entity's opacity is effectively 0 (only works on
+`func_wall`).
+
+### control_var
+
+This entity sets its target's `io_send` value to the **received** value.
+WARNING: Will cause unstable behavior if targeting `trigger_repeater` or
+`math_adder` since both rely on maintaining the state of their `io_send` fields.
+If the targeting `trigger_relay`, `math_op`, or `func_actuator` it has no
+effect.
+
+### func_actuator
+
+This entity moves to arbitrary positions along a linear path.  You can set a
+reference point to move to via the `target` field.  BE SURE one of the brushes
+this entity is composed of is textured with "origin", otherwise the world's 
+origin will be used as a reference point.  When triggered, the **received**
+value indicates where the brush will move to -- 1 will cause it to move to its
+target, 0 will cause it to move to its initial position, 0.5 will cause it to
+move to a point half-way between, etc.  Negative values and values greater than
+1 are also valid. Damage behavior can be set to "Grow" (damage grows
+quadratically), "Constant" (damage remains the same) or "Crush" (damage is
+applied every frame to kill its blocker quickly).  The entity can also be set
+to be non-solid (useful for indicators that aren't meant to obstruct the player
+or monsters).  When a `func_actuator` stops at a destination, it will **send**
+its current **received** value.
