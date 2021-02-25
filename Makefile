@@ -8,7 +8,7 @@ FGD_OUT=$(MODDIR)/$(FGD)
 
 all: $(PROGS)
 
-chkdir: $(QUAKEDIR)/
+chkdir: 
 	if [ -z "$(QUAKEDIR)" ] ; then\
 		echo ;\
 		echo "QUAKEDIR must be set!" ;\
