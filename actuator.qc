@@ -19,6 +19,12 @@ void() ActuatorStop = {
     sound(self, CHAN_VOICE, self.noise1, 1, ATTN_NORM);
 };
 
+void() ActuatorStopAtLanding = {
+    self.io_send = self.io_received;
+    SUB_UseTargets();
+    ActuatorStop();
+};
+
 void() ActuatorMove = {
     if (self.height < self.io_received) {
         self.state = ACT_STATE_FORWARD;
@@ -27,9 +33,11 @@ void() ActuatorMove = {
     }
 
     vector next_dest = self.pos2 * self.io_received + self.pos1;
-    SUB_CalcMove(next_dest, self.speed, ActuatorStop);
 
-    sound(self, CHAN_VOICE, self.noise2, 1, ATTN_NORM);
+    if (next_dest != self.origin) {
+        SUB_CalcMove(next_dest, self.speed, ActuatorStopAtLanding);
+        sound(self, CHAN_VOICE, self.noise2, 1, ATTN_NORM);
+    }
 };
 
 void() CalcScalarPos = {
