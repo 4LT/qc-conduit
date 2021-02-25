@@ -700,12 +700,11 @@ void() DbgIoUse =
     }
 
     if (activator.classname == "player") {
-        centerprint4(
+        centerprint3(
                 activator,
                 prefix,
-                " \b",
-                ftos(self.io_received),
-                "\b"
+                " ",
+                ftos(self.io_received)
         );
     }
 };
