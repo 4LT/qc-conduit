@@ -708,3 +708,20 @@ void() trigger_repeat = {
     
     self.use = StartRepeat;
 };
+
+void() TriggerInitFire = {
+    switch (self.style) {
+        case 1:
+            self.io_send = skill;
+            break;
+    }
+    
+    self.delay = 0;
+    SUB_UseTargets();
+};
+
+void() trigger_init = {
+    self.delay = max(self.delay, 0.001);
+    self.think = TriggerInitFire;
+    self.nextthink = self.delay;
+};

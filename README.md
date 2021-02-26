@@ -33,6 +33,11 @@ current value starting from 0 and ending with `count`.  The initial firing
 occurs `delay` seconds after triggered, while the interval between subsequent
 firings is `wait` seconds.
 
+### trigger_init
+
+Fires on map load.  Can be set to **send** its provided `io_send` field or the
+current skill level.
+
 ### dbg_io
 
 This entity center-prints its **received** value.  A prefix can be provided
