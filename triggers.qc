@@ -718,6 +718,7 @@ void() TriggerInitFire = {
     
     self.delay = 0;
     SUB_UseTargets();
+    remove(self);
 };
 
 void() trigger_init = {
