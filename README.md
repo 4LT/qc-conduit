@@ -90,3 +90,10 @@ applied every frame to kill its blocker quickly).  The entity can also be set
 to be non-solid (useful for indicators that aren't meant to obstruct the player
 or monsters).  When a `func_actuator` stops at a destination, it will **send**
 its current **received** value.
+
+### func_meter
+
+Non-solid indicator that rotates about its origin (use an origin-textured
+brush).  This entity can be configured to move between a start (`angles`) and
+end (`mangle`) position.  It moves to a position relative to its **received**
+value.

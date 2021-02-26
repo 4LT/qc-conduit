@@ -672,15 +672,8 @@
 @PointClass base(Appearflags, Controller) = control_var : "Controls send value of its target"
 []
 
-@SolidClass base(Appearflags, Targetname, Target) = func_actuator : "Linear moving brush"
+@baseclass = MoverSounds
 [
-    speed(float) : "Speed" : 40
-    dmg(float) : "Damage on block" : 2
-    wait(float) : "Wait before changing direction" : 0
-    spawnflags(flags) =
-    [
-        1 : "Solid"
-    ]
     sounds(choices) : "Sounds" : 0 =
     [
         0 : "Silent"
@@ -695,12 +688,30 @@
         9 : "PLAT Chain"
         10 : "TRAIN Ratchet"
     ]
+    noise1(string) : "Stop noise"
+    noise2(string) : "Move noise"
+]
+
+@SolidClass base(Appearflags, Targetname, Target, MoverSounds) = func_actuator : "Linear moving brush"
+[
+    speed(float) : "Speed" : 40
+    dmg(float) : "Damage on block" : 2
+    wait(float) : "Wait before changing direction" : 0
+    spawnflags(flags) =
+    [
+        1 : "Solid"
+    ]
     style(choices) : "Damage model" : 0 =
     [
         0 : "Grow"
         1 : "Constant"
         2 : "Crush"
     ]
-    noise1(string) : "Stop noise"
-    noise2(string) : "Move noise"
+]
+
+@SolidClass base(Appearflags, Targetname, Target, MoverSounds) = func_meter : "Rotating indicator"
+[
+    speed(float) : "Speed (deg/s)" : 45
+    angles(string) : "Initial orientation" : "0 0 0"
+    mangle(string) : "Final orientation" : "0 0 0"
 ]

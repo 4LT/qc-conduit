@@ -158,11 +158,18 @@ void(entity ent, vector destangle, float tspeed, void() func) SUB_CalcAngleMoveE
 
 void(vector destangle, float tspeed, void() func) SUB_CalcAngleMove =
 {
+    float my_time;
     vector destdelta;
     float len, traveltime;
 
     if (!tspeed)
         objerror("No speed is defined!");
+
+    if (self.movetype == MOVETYPE_PUSH) {
+        my_time = self.ltime;
+    } else {
+        my_time = time;
+    }
 
 // set destdelta to the vector needed to move
     destdelta = destangle - self.angles;
@@ -174,7 +181,7 @@ void(vector destangle, float tspeed, void() func) SUB_CalcAngleMove =
     traveltime = len / tspeed;
 
 // set nextthink to trigger a think when dest is reached
-    self.nextthink = self.ltime + traveltime;
+    self.nextthink = my_time + traveltime;
 
 // scale the destdelta vector by the time spent traveling to get velocity
     self.avelocity = destdelta * (1 / traveltime);

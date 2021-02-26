@@ -41,4 +41,3 @@ float(float a, float b) safe_mod = {
         return mod(a, b);
     }
 };
-
