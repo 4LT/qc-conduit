@@ -495,10 +495,40 @@ trigger_setskill
 
 void() trigger_skill_touch =
 {
-    if (other.classname != "player")
-        return;
+    string tmp_msg;
 
-    cvar_set("skill", self.message);
+    if (self.message == "0") {
+        self.io_send = 0;
+    } else if (self.message == "1") {
+        self.io_send = 1;
+    } else if (self.message == "2") {
+        self.io_send = 2;
+    } else if (self.message == "3") {
+        self.io_send = 3;
+    } else {
+        self.io_send = min(max(floor(self.io_received), 0), 3);
+    }
+
+    if (self.targetname && self.targetname != "") {
+        // on use
+        cvar_set("skill", ftos(self.io_send));
+        tmp_msg = self.message;
+        self.message = "";
+
+        SUB_UseTargets();
+
+        self.message = tmp_msg;
+    } else if (other.classname == "player") {
+        // on touch
+        cvar_set("skill", ftos(self.io_send));
+        tmp_msg = self.message;
+        self.message = "";
+        activator = other;
+
+        SUB_UseTargets();
+
+        self.message = tmp_msg;
+    }
 };
 
 /*QUAKED trigger_setskill (.5 .5 .5) ?
@@ -508,7 +538,13 @@ Only used on start map.
 void() trigger_setskill =
 {
     InitTrigger();
-    self.touch = trigger_skill_touch;
+
+    if (self.targetname && self.targetname != "") {
+        self.use = trigger_skill_touch;
+        self.touch = SUB_Null;
+    } else {
+        self.touch = trigger_skill_touch;
+    }
 };
 
 
@@ -717,8 +753,14 @@ void() TriggerInitFire = {
     }
     
     self.delay = 0;
+
+    // trigger_init *has* to be the start of a Use chain
+    activator = self;
     SUB_UseTargets();
-    remove(self);
+
+    // We can't actually remove, b/c targets may rely on us as activator
+    // after delay
+    //  remove(self);
 };
 
 void() trigger_init = {

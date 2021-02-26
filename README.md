@@ -25,6 +25,12 @@ target entity.
 
 For default `trigger_relay` behavior, see `math_var` below.
 
+### trigger_setskill
+
+`trigger_setskill` has been updated to allow being targeted if given a
+`targetname`.  It can also be set to use its **received** value as the skill
+level, and it will **send** the skill value to its targets.
+
 ### trigger_repeat
 
 This entity repeats firing its targeted entity `count` times; that is, it is

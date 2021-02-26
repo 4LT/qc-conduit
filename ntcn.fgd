@@ -557,10 +557,11 @@
 	]
 ]
 
-@SolidClass base(Appearflags) = trigger_setskill : "Trigger: Set skill"
+@SolidClass base(Appearflags, Target, Targetname) = trigger_setskill : "Trigger: Set skill"
 [
 	message(choices) : "Skill to change to" : 1 =
 	[
+        -1 : "Use received"
         0 : "Easy"
         1 : "Medium"
         2 : "Hard"
@@ -655,7 +656,7 @@
 	delay(string) : "Delay before trigger" : "0"
 ]
 
-@PointClass base(Appearflags, TargetVar, Targetname) = math_compare : "Fire given condition"
+@PointClass base(Appearflags, Trigger, IoVar) = math_compare : "Fire given condition"
 [
     style(choices) : "Comparison" : 0 =
     [
@@ -667,7 +668,6 @@
         5 : "Not equal"
     ]
     io_arg2(float) : "2nd Operand" : "0"
-	delay(string) : "Delay before trigger" : "0"
 ]
 
 @PointClass base(Appearflags, Controller) = control_vis : "Controls visibility of its target"
