@@ -15,7 +15,7 @@ void() GrenadeHandlePhysics = {
 
     traceline(
             self.origin,
-            self.velocity,
+            self.origin + self.velocity,
             1,
             self);
 
@@ -33,6 +33,7 @@ void() GrenadeHandlePhysics = {
         return;
     } else {
         horiz_dir = horiz_vel/horiz_mag;
+
         dot = horiz_dir * trace_plane_normal;
 
         if (dot > 0) {
