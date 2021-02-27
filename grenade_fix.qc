@@ -56,29 +56,19 @@ void() GrenadeForceBounceThink = {
         self.velocity = self.pos1;
         self.avelocity = '300 300 300';
         self.flags = self.flags & (-1 - FL_ONGROUND);
-
-        if (self.count == 1) {
-            self.count+= 1;
-        }
+        self.count = time;
     }
 };
 
 void(vector normal) GrenadeForceBounce = {
-    // bounce grenade off surface
-    self.velocity = reflect(-self.velocity, normal, 2-GRENADE_BACKOFF);
-
-    // stupid stupid stupid parity check hack
-    if (self.count == 0) {
-        self.count+= 1;
-    } else if (self.count == 2) {
-        // We're in that weird touch/think cycle, break out
+    // if same frame that think was called
+    if (self.count == time) {
+        // end our shenanigans
         self.velocity = '0 0 0';
     } else {
-        // We're NOT in a cycle, reset
-        self.count = 0;
-    }
+        // bounce grenade off surface
+        self.velocity = reflect(-self.velocity, normal, 2-GRENADE_BACKOFF);
 
-    if (self.velocity != '0 0 0') {
         // kick grenade away from surface
         //setorigin(self, self.origin + normal * GRENADE_BACKOFF);
         // cache velocity
