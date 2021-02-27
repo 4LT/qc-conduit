@@ -108,3 +108,8 @@ Non-solid indicator that rotates about its origin (use an origin-textured
 brush).  This entity can be configured to move between a start (`angles`) and
 end (`mangle`) position.  It moves to a position relative to its **received**
 value.
+
+## Misc. Improvements
+
+Grenades getting "stuck" on slopes leading downwards have been fixed.  (Thanks,
+Spike!)
