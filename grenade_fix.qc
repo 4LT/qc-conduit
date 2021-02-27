@@ -19,10 +19,6 @@ void() GrenadeHandlePhysics = {
             1,
             self);
 
-    bprint("Surface Normal: ");
-    bprint(vtos(trace_plane_normal));
-    bprint("\n");
-
     if (trace_ent != other || trace_plane_normal_z <= 0) {
         return;
     }
