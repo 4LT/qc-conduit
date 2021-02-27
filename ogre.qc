@@ -67,6 +67,7 @@ $frame pull1 pull2 pull3 pull4 pull5 pull6 pull7 pull8 pull9 pull10 pull11
 
 //=============================================================================
 
+void() GrenadeHandlePhysics;
 
 void() OgreGrenadeExplode =
 {
@@ -95,6 +96,9 @@ void() OgreGrenadeTouch =
         OgreGrenadeExplode();
         return;
     }
+
+    GrenadeHandlePhysics();
+
     sound(self, CHAN_VOICE, "weapons/bounce.wav", 1, ATTN_NORM); // bounce sound
     if (self.velocity == '0 0 0')
         self.avelocity = '0 0 0';

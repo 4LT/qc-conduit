@@ -41,3 +41,12 @@ float(float a, float b) safe_mod = {
         return mod(a, b);
     }
 };
+
+vector(vector incident, vector normal) reflect = {
+    // project incident along normal
+    float d = incident * normal;
+    vector p = d * normal;
+
+    vector i2p = p - incident;
+    return incident + 2 * i2p;
+};

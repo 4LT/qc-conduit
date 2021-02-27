@@ -39,3 +39,4 @@ io_math.qc
 control.qc
 actuator.qc
 meter.qc
+grenade_fix.qc

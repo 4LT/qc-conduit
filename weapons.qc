@@ -24,6 +24,8 @@ void(entity bomb, entity attacker, float rad, entity ignore) T_RadiusDamage;
 void(vector org, vector vel, float damage) SpawnBlood;
 void() SuperDamageSound;
 
+// Grenade slope fix utils
+void() GrenadeHandlePhysics;
 
 // called by worldspawn
 void() W_Precache =
@@ -550,6 +552,9 @@ void() GrenadeTouch =
         return;
     }
     sound(self, CHAN_WEAPON, "weapons/bounce.wav", 1, ATTN_NORM); // bounce sound
+
+    GrenadeHandlePhysics();
+
     if (self.velocity == '0 0 0')
         self.avelocity = '0 0 0';
 };
