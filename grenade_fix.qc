@@ -3,7 +3,6 @@ vector(vector incident, vector normal, float dampening) reflect;
 
 // From engine
 float GRENADE_BACKOFF = 1.5;
-float GRENADE_STOP_EPSILON = 0.1;
 
 void() GrenadeHandlePhysics = {
     float dot, horiz_mag;
@@ -69,8 +68,6 @@ void(vector normal) GrenadeForceBounce = {
         // bounce grenade off surface
         self.velocity = reflect(-self.velocity, normal, 2-GRENADE_BACKOFF);
 
-        // kick grenade away from surface
-        //setorigin(self, self.origin + normal * GRENADE_BACKOFF);
         // cache velocity
         self.pos1 = self.velocity;
 
