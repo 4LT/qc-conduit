@@ -8,6 +8,13 @@ void() GrenadeHandlePhysics = {
     float dot, horiz_mag;
     vector horiz_vel, horiz_dir;
 
+    // if same frame that think was called
+    if (self.count == time) {
+        // end our shenanigans
+        self.velocity = '0 0 0';
+        return;
+    }
+
     if (self.velocity_z > 0) {
         return;
     } 
@@ -60,24 +67,18 @@ void() GrenadeForceBounceThink = {
 };
 
 void(vector normal) GrenadeForceBounce = {
-    // if same frame that think was called
-    if (self.count == time) {
-        // end our shenanigans
-        self.velocity = '0 0 0';
-    } else {
-        // bounce grenade off surface
-        self.velocity = reflect(-self.velocity, normal, 2-GRENADE_BACKOFF);
+    // bounce grenade off surface
+    self.velocity = reflect(-self.velocity, normal, 2-GRENADE_BACKOFF);
 
-        // cache velocity
-        self.pos1 = self.velocity;
+    // cache velocity
+    self.pos1 = self.velocity;
 
-        // cache existing think
-        self.think1 = self.think;
+    // cache existing think
+    self.think1 = self.think;
 
-        self.pausetime = self.nextthink;
+    self.pausetime = self.nextthink;
 
-        // FL_ONGROUND will get set, so clear it next frame
-        self.think = GrenadeForceBounceThink;
-        self.nextthink = time;
-    } 
+    // FL_ONGROUND will get set, so clear it next frame
+    self.think = GrenadeForceBounceThink;
+    self.nextthink = time;
 };
