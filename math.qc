@@ -42,11 +42,14 @@ float(float a, float b) safe_mod = {
     }
 };
 
-vector(vector incident, vector normal) reflect = {
+// reflect incident over normal, dampening it against the normal
+vector(vector incident, vector normal, float dampening) reflect = {
     // project incident along normal
     float d = incident * normal;
     vector p = d * normal;
 
     vector i2p = p - incident;
-    return incident + 2 * i2p;
+    vector reflected = incident + 2 * i2p;
+
+    return reflected - d * dampening * normal;
 };
