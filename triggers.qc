@@ -768,3 +768,13 @@ void() trigger_init = {
     self.think = TriggerInitFire;
     self.nextthink = self.delay;
 };
+
+void() TriggerToggleUse = {
+    self.io_send = !self.io_send;
+    SUB_UseTargets();
+};
+
+void() trigger_toggle = {
+    self.use = TriggerToggleUse;
+};
+

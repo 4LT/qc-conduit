@@ -569,7 +569,10 @@
 	]
 ]
 @PointClass base(Trigger) = trigger_relay : "Trigger: Relay"
+[]
+@PointClass base(Trigger) = trigger_toggle : "Trigger: Toggle between 0 and 1"
 [
+    io_send(integer) : "Initial state" : 0
 ]
 @PointClass base(Trigger) = trigger_repeat : "Trigger: Repeat"
 [

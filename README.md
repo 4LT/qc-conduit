@@ -44,6 +44,11 @@ firings is `wait` seconds.
 Fires on map load.  Can be set to **send** its provided `io_send` field or the
 current skill level.
 
+### trigger_toggle
+
+Holds a value of 0 or 1, and assigns itself the *opposite* and **send**s that
+value to its target.  Can be initializd with `io_send`.
+
 ### dbg_io
 
 This entity center-prints its **received** value.  A prefix can be provided
