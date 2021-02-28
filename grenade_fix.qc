@@ -9,7 +9,7 @@ void() GrenadeHandlePhysics = {
     vector horiz_vel, horiz_dir;
 
     // if same frame that think was called
-    if (self.count == time) {
+    if (self.count == framecount) {
         // end our shenanigans
         self.velocity = '0 0 0';
         return;
@@ -62,7 +62,7 @@ void() GrenadeForceBounceThink = {
         self.velocity = self.pos1;
         self.avelocity = '300 300 300';
         self.flags = self.flags & (-1 - FL_ONGROUND);
-        self.count = time;
+        self.count = framecount;
     }
 };
 
