@@ -681,6 +681,9 @@
 @PointClass base(Appearflags, Controller) = control_var : "Controls send value of its target"
 []
 
+@PointClass base(Appearflags, Controller) = control_frame : "Controls frame number of its target"
+[]
+
 @baseclass = MoverSounds
 [
     sounds(choices) : "Sounds" : 0 =

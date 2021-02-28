@@ -95,13 +95,17 @@ void() AddToAdder = {
     self.io_send+= self.io_received;
 
     if (self.spawnflags & IOM_SPAWNFLAG_BOUND_U) {
-        self.io_send = min(self.io_send, self.waitmax);
-        hit_bound = 1;
+        if (self.io_send >= self.waitmax) {
+            hit_bound = 1;
+            self.io_send = self.waitmax;
+        }
     } 
 
     if (self.spawnflags & IOM_SPAWNFLAG_BOUND_L) {
-        self.io_send = max(self.io_send, self.waitmin);
-        hit_bound = 1;
+        if (self.io_send <= self.waitmin) {
+            hit_bound = 1;
+            self.io_send = self.waitmin;
+        }
     }
 
     if (self.spawnflags & IOM_SPAWNFLAG_FIRE_BOUNDS_ONLY) {

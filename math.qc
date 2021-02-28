@@ -53,3 +53,7 @@ vector(vector incident, vector normal, float dampening) reflect = {
 
     return reflected - d * dampening * normal;
 };
+
+float(float in, float min, float max) wrap = {
+    return mod(in - min, max - min) + min;
+};

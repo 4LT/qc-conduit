@@ -55,10 +55,22 @@ void(entity ent, float send) ControlVarProc = {
     }
 };
 
+void(entity ent, float framenum) ControlFrameProc = {
+    ent.frame = framenum;
+};
+
 void() ControlVarUse = {
     BaseControl(ControlVarProc);
 };
 
 void() control_var = {
     self.use = ControlVarUse;
+};
+
+void() ControlFrameUse = {
+    BaseControl(ControlFrameProc);
+};
+
+void() control_frame = {
+    self.use = ControlFrameUse;
 };
