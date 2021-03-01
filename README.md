@@ -118,6 +118,14 @@ brush).  This entity can be configured to move between a start (`angles`) and
 end (`mangle`) position.  It moves to a position relative to its **received**
 value.
 
+### fx_model_toggle
+
+A toggleable model/sprite.  Specify a primary model with `model` and/or a
+secondary model with `wad`.  If targeted and the **received** value is 0,
+the models will be swapped.  If the **received** value is negative, the model
+will be set to its primary model.  If the **received** value is positive, the
+model will be set to its secondary model.
+
 ## Misc. Improvements
 
 Grenades getting "stuck" on slopes leading downwards have been fixed.  (Thanks,

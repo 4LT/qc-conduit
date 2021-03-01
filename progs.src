@@ -35,6 +35,7 @@ shalrath.qc		// registered
 enforcer.qc		// registered
 oldone.qc		// registered
 
+fx.qc
 io_math.qc
 control.qc
 actuator.qc

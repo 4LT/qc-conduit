@@ -730,3 +730,17 @@
     angles(string) : "Initial orientation" : "0 0 0"
     mangle(string) : "Final orientation" : "0 0 0"
 ]
+
+@baseclass = FxModel
+[
+    model(string) : "Model filename"
+]
+
+@PointClass base(Appearflags, Targetname, FxModel) = fx_model_toggle : "Toggleable model"
+[
+    wad(string) : "Secondary model filename"
+    spawnflags(flags) =
+    [
+        1 : "Static"
+    ]
+]
