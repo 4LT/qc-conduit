@@ -734,11 +734,13 @@
 @baseclass = FxModel
 [
     model(string) : "Model filename"
+    angle(string) : "Facing"
 ]
 
 @PointClass base(Appearflags, Targetname, FxModel) = fx_model_toggle : "Toggleable model"
 [
     map(string) : "Secondary model filename"
+    avelocity(string) : "Angular velocity"
     spawnflags(flags) =
     [
         1 : "Static"

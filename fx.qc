@@ -4,7 +4,12 @@ string FXMA_EMPTY_MODEL = "progs/s_light.mdl";
 
 void() FxModelInit = {
     self.solid = SOLID_NOT;
-    self.movetype = MOVETYPE_NONE;
+
+    if (self.avelocity != '0 0 0') {
+        self.movetype = MOVETYPE_NOCLIP;
+    } else {
+        self.movetype = MOVETYPE_NONE;
+    }
 
     if (self.model && self.model != "") {
         precache_model(self.model);
@@ -37,6 +42,7 @@ void() fx_model_toggle = {
         makestatic(self);
         return;
     }
+
 
     // primary model
     self.wad = self.model;
