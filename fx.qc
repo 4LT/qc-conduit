@@ -20,13 +20,13 @@ void() FxModelToggleUse = {
     } else if (self.io_received > 0) {
         state = 1;
     } else {
-        state = (self.model == self.map);
+        state = (self.model == self.wad);
     }
 
     if (state) {
-        setmodel(self, self.wad);
-    } else {
         setmodel(self, self.map);
+    } else {
+        setmodel(self, self.wad);
     }
 };
 
@@ -39,20 +39,20 @@ void() fx_model_toggle = {
     }
 
     // primary model
-    self.map = self.model;
+    self.wad = self.model;
 
-    if ((!self.map) || self.map == "") {
-        self.map = FXMA_EMPTY_MODEL;
-        precache_model(self.map);
-        setmodel(self, self.map);
-    }
-
-    if (self.wad && self.wad != "") {
-        // secondary model
-        precache_model(self.wad);
-    } else {
+    if ((!self.wad) || self.wad == "") {
         self.wad = FXMA_EMPTY_MODEL;
         precache_model(self.wad);
+        setmodel(self, self.wad);
+    }
+
+    if (self.map && self.wad != "") {
+        // secondary model
+        precache_model(self.map);
+    } else {
+        self.map = FXMA_EMPTY_MODEL;
+        precache_model(self.map);
     }
 
     self.use = FxModelToggleUse;

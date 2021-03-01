@@ -121,7 +121,7 @@ value.
 ### fx_model_toggle
 
 A toggleable model/sprite.  Specify a primary model with `model` and/or a
-secondary model with `wad`.  If targeted and the **received** value is 0,
+secondary model with `map`.  If targeted and the **received** value is 0,
 the models will be swapped.  If the **received** value is negative, the model
 will be set to its primary model.  If the **received** value is positive, the
 model will be set to its secondary model.

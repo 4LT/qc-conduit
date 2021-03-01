@@ -738,7 +738,7 @@
 
 @PointClass base(Appearflags, Targetname, FxModel) = fx_model_toggle : "Toggleable model"
 [
-    wad(string) : "Secondary model filename"
+    map(string) : "Secondary model filename"
     spawnflags(flags) =
     [
         1 : "Static"
