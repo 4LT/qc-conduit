@@ -734,7 +734,7 @@
 @baseclass = FxModel
 [
     model(string) : "Model filename"
-    angle(string) : "Facing"
+    angles(string) : "Facing"
 ]
 
 @PointClass base(Appearflags, Targetname, FxModel) = fx_model_toggle : "Toggleable model"
@@ -744,5 +744,16 @@
     spawnflags(flags) =
     [
         1 : "Static"
+    ]
+]
+
+@PointClass base(Appearflags, Targetname, FxModel, MoverSounds) = fx_model_train : "Moving model"
+[
+    speed(float) : "Speed" : "100"
+    noise3(string) : "Rotate sound"
+    target(target_destination) : "Destination"
+    spawnflags(flags) =
+    [
+        1 : "Teleport to start"
     ]
 ]

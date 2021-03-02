@@ -1,6 +1,15 @@
 float FXMA_SPAWNFLAG_STATIC = 1;
 
+float FXMTR_SPAWNFLAG_TELEPORT = 1;
+
+float FXMTR_STATE_SLIDING = 0;
+float FXMTR_STATE_TURNING = 1;
+
 string FXMA_EMPTY_MODEL = "progs/s_light.mdl";
+
+void() MoverInitSounds;
+vector(vector in) normalize_angles;
+vector(vector in) normalize_delta_angles;
 
 void() FxModelInit = {
     self.solid = SOLID_NOT;
@@ -43,7 +52,6 @@ void() fx_model_toggle = {
         return;
     }
 
-
     // primary model
     self.wad = self.model;
 
@@ -62,4 +70,149 @@ void() fx_model_toggle = {
     }
 
     self.use = FxModelToggleUse;
+};
+
+void() FxModelTrainTranslate;
+vector(entity corner) FxModelTrainGetDeltaAngles;
+
+void() FxModelTrainStop = {
+    self.use = FxModelTrainTranslate;
+    sound(self, CHAN_VOICE, self.noise1, 1, ATTN_NORM);
+};
+
+void() FxModelTrainTurn = {
+    entity t;
+    vector delta_angles;
+    float turn_time;
+    void() next_action;
+
+    // Keep angles within reasonable limits, for precision's sake
+    self.angles = normalize_angles(self.angles);
+
+    // We just finished moving to target, so we know it *should* exist
+    // (unless killtargeted, ofc)
+    t = find(world, targetname, self.target);
+    turn_time = fabs(t.wait);
+    delta_angles = FxModelTrainGetDeltaAngles(t);
+
+    if (delta_angles == '0 0 0') {
+        if (t.wait == 0) {
+            FxModelTrainTranslate();
+        } else {
+            FxModelTrainStop();
+
+            if (t.wait > 0) {
+                self.nextthink = time + turn_time;
+                self.think = FxModelTrainTranslate;
+            }
+        }
+    } else {
+        if (turn_time == 0) {
+            self.angles+= delta_angles;
+            FxModelTrainStop();
+        } else {
+            if (t.wait > 0) {
+                next_action = FxModelTrainTranslate;
+            } else {
+                next_action = FxModelTrainStop;
+            }
+
+            SUB_CalcAngleMove(
+                    self.angles + delta_angles,
+                    vlen(delta_angles) / turn_time,
+                    next_action);
+            sound(self, CHAN_VOICE, self.noise3, 1, ATTN_NORM);
+        }
+    }
+
+    self.target = t.target;
+};
+
+void() FxModelTrainTranslate = {
+    entity t;
+
+    // There may not be a next corner, so check that it exists
+    if (self.target) {
+        t = find(world, targetname, self.target);
+
+        if (t) {
+            // "Lock" train until it stops
+            self.use = SUB_Null;
+
+            SUB_CalcMove(t.origin, self.speed, FxModelTrainTurn);
+            sound(self, CHAN_VOICE, self.noise2, 1, ATTN_NORM);
+            return;
+        }
+    }
+
+    FxModelTrainStop();
+};
+
+vector(entity corner) FxModelTrainGetDeltaAngles = {
+    entity next;
+    vector turn_to;
+
+    if (corner.target) {
+        next = find(world, targetname, corner.target);
+
+        if (next) {
+            turn_to = vectoangles(next.origin - corner.origin);
+            turn_to = normalize_angles(turn_to);
+            
+            // minimize wobble going into vertical
+            if (turn_to_x == 90 || turn_to_x == -90) {
+                turn_to_y = self.angles_y;
+            }
+
+            turn_to_z = self.angles_z;
+
+            // rotate MINIMUM distance
+            return normalize_delta_angles(turn_to - self.angles);
+        }
+    }
+
+    return '0 0 0';
+};
+
+void() FxModelTrainInit = {
+    entity t;
+
+    if (self.spawnflags & FXMTR_SPAWNFLAG_TELEPORT) {
+        if (self.target) {
+            t = find(world, targetname, self.target);
+
+            if (t) {
+                self.target = t.target;
+                setorigin(self, t.origin);
+                self.angles+= FxModelTrainGetDeltaAngles(t);
+            }
+        }
+    }
+
+    if (self.targetname == "" || !self.targetname) {
+        FxModelTrainTranslate();
+    }
+};
+
+void() fx_model_train = {
+    FxModelInit();
+    MoverInitSounds();
+    
+    if (self.noise3 && self.noise3 != "") {
+        precache_sound(self.noise3);
+    } else {
+        self.noise3 = self.noise2;
+    }
+
+    self.movetype = MOVETYPE_NOCLIP;
+
+    if (!self.speed) {
+        self.speed = 100;
+    } else {
+        self.speed = fabs(self.speed);
+    }
+
+    self.nextthink = time + 0.01;
+    self.think = FxModelTrainInit;
+    self.use = FxModelTrainTranslate;
 };

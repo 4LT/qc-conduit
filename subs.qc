@@ -82,11 +82,18 @@ void(entity ent, vector tdest, float tspeed, void() func) SUB_CalcMoveEnt =
 
 void(vector tdest, float tspeed, void() func) SUB_CalcMove =
 {
+    float my_time;
     vector vdestdelta;
     float len, traveltime;
 
     if (!tspeed)
         objerror("No speed is defined!");
+
+    if (self.movetype == MOVETYPE_PUSH) {
+        my_time = self.ltime;
+    } else {
+        my_time = time;
+    }
 
     self.think1 = func;
     self.finaldest = tdest;
@@ -95,7 +102,7 @@ void(vector tdest, float tspeed, void() func) SUB_CalcMove =
     if (tdest == self.origin)
     {
         self.velocity = '0 0 0';
-        self.nextthink = self.ltime + 0.1;
+        self.nextthink = my_time + 0.1;
         return;
     }
 
@@ -111,12 +118,12 @@ void(vector tdest, float tspeed, void() func) SUB_CalcMove =
     if (traveltime < 0.1)
     {
         self.velocity = '0 0 0';
-        self.nextthink = self.ltime + 0.1;
+        self.nextthink = my_time + 0.1;
         return;
     }
 
 // set nextthink to trigger a think when dest is reached
-    self.nextthink = self.ltime + traveltime;
+    self.nextthink = my_time + traveltime;
 
 // scale the destdelta vector by the time spent traveling to get velocity
     self.velocity = vdestdelta * (1/traveltime); // qcc won't take vec/float
@@ -171,6 +178,16 @@ void(vector destangle, float tspeed, void() func) SUB_CalcAngleMove =
         my_time = time;
     }
 
+    self.think = SUB_CalcAngleMoveDone;
+    self.finalangle = destangle;
+    self.think1 = func;
+
+    if (destangle == self.angles) {
+        self.avelocity = '0 0 0';
+        self.nextthink = my_time + 0.1;
+        return;
+    }
+
 // set destdelta to the vector needed to move
     destdelta = destangle - self.angles;
 
@@ -180,15 +197,17 @@ void(vector destangle, float tspeed, void() func) SUB_CalcAngleMove =
 // divide by speed to get time to reach dest
     traveltime = len / tspeed;
 
+    if (traveltime < 0.1) {
+        self.velocity = '0 0 0';
+        self.nextthink = my_time + 0.1;
+        return;
+    }
+
 // set nextthink to trigger a think when dest is reached
     self.nextthink = my_time + traveltime;
 
 // scale the destdelta vector by the time spent traveling to get velocity
     self.avelocity = destdelta * (1 / traveltime);
-
-    self.think1 = func;
-    self.finalangle = destangle;
-    self.think = SUB_CalcAngleMoveDone;
 };
 
 /*
@@ -273,13 +292,13 @@ void() SUB_UseTargets =
     if (self.killtarget)
     {
         t = world;
-        do
-        {
+
+        while (t) {
             t = find(t, targetname, self.killtarget);
-            if (!t)
-                return;
-            remove(t);
-        } while (1);
+            if (t) {
+                remove(t);
+            }
+        } 
     }
 
 //
