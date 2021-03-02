@@ -91,7 +91,7 @@ WARNING: Will cause unstable behavior if targeting `trigger_repeater` or
 If the targeting `trigger_relay`, `math_op`, or `func_actuator` it has no
 effect.
 
-### control_var
+### control_frame
 
 Sets the target's `frame` value to the **received** value.
 
