@@ -743,7 +743,10 @@
     mangle(string) : "Final orientation" : "0 0 0"
 ]
 
-@baseclass = FxModel
+@baseclass color(255 128 0) model({{
+    model[-4..-1] == ".mdl" -> ":" + model,
+    null
+}}) = FxModel
 [
     model(string) : "Model filename"
     angles(string) : "Facing"
