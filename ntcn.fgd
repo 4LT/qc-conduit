@@ -687,6 +687,18 @@
 @PointClass base(Appearflags, Controller) = control_frame : "Controls frame number of its target"
 []
 
+@PointClass base(Appearflags, Controller) = control_animate : "Animates frame number of its target"
+[
+    wait(float) : "Frame delay" : "0.1"
+    waitmin(integer) : "Starting frame"
+    waitmax(integer) : "Ending frame"
+    spawnflags(flags) =
+    [
+        1 : "Start on"
+    ]
+]
+
+
 @baseclass = MoverSounds
 [
     sounds(choices) : "Sounds" : 0 =

@@ -95,6 +95,14 @@ effect.
 
 Sets the target's `frame` value to the **received** value.
 
+### control_animate
+
+Controls target's animation.  Animates between frames `waitmin` and `waitmax`,
+pausing on each frame for `wait` seconds.  If the starting frame is greater
+than the end frame, the animation plays in reverse.  When triggered, a
+**received** value of 0 toggles the animation on/off, a positive value starts
+the animation playing, and a negative value stops the animation.
+
 ### func_actuator
 
 This entity moves to arbitrary positions along a linear path.  You can set a

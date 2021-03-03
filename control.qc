@@ -1,6 +1,7 @@
 float MIN_ALPHA = 0.0001;
 
 float CTRL_SPAWNFLAG_SOLIDITY = 1;
+float CTRL_SPAWNFLAG_START_ON = 1;
 
 void(void(entity ent, float arg) proc) BaseControl = {
     entity t = world;
@@ -73,4 +74,43 @@ void() ControlFrameUse = {
 
 void() control_frame = {
     self.use = ControlFrameUse;
+};
+
+void() ControlAnimateUse = {
+    if (self.io_received > 0) {
+        self.nextthink = time + 0.1;
+    } else if (self.io_received < 0) {
+        self.nextthink = 0; 
+    } else {
+        self.nextthink = (!self.nextthink) * (time + 0.1);
+    }
+};
+
+void() ControlAnimateThink = {
+    float direction = (self.waitmax >= self.waitmin)*2 - 1;
+
+    self.nextthink = self.wait + time;
+    self.io_received = self.count;
+    BaseControl(ControlFrameProc);
+
+    self.count+= direction;
+
+    if ((direction > 0 && self.count > self.waitmax) ||
+            (direction < 0 && self.count < self.waitmax))
+    {
+        self.count = self.waitmin;
+    }
+};
+
+void() control_animate = {
+    self.count = self.waitmin;
+
+    if (self.wait <= 0) {
+        self.wait = 0.1;
+    }
+
+    if (self.spawnflags & CTRL_SPAWNFLAG_START_ON) {
+        self.think = ControlAnimateThink;
+        self.nextthink = 0.01;
+    }
 };
