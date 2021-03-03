@@ -156,7 +156,7 @@ vector(entity corner) FxModelTrainGetDeltaAngles = {
         next = find(world, targetname, corner.target);
 
         if (next) {
-            turn_to = vectoangles(next.origin - corner.origin);
+            turn_to = vectoangles(next.origin - corner.origin) + self.mangle;
             turn_to = normalize_angles(turn_to);
             
             // minimize wobble going into vertical
@@ -197,6 +197,9 @@ void() FxModelTrainInit = {
 void() fx_model_train = {
     FxModelInit();
     MoverInitSounds();
+
+    // angular offset
+    self.mangle = self.angles;
     
     if (self.noise3 && self.noise3 != "") {
         precache_sound(self.noise3);
