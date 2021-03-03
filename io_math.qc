@@ -76,7 +76,7 @@ void() ApplyOp = {
     }
 
     if (math_err) {
-        bprint("math_op: illegal math operation\n");
+        dprint("math_op: illegal math operation\n");
     } else {
         SUB_UseTargets();
     }
