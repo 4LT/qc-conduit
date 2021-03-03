@@ -177,14 +177,16 @@ vector(entity corner) FxModelTrainGetDeltaAngles = {
 void() FxModelTrainInit = {
     entity t;
 
-    if (self.spawnflags & FXMTR_SPAWNFLAG_TELEPORT) {
-        if (self.target) {
-            t = find(world, targetname, self.target);
+    if (self.target) {
+        t = find(world, targetname, self.target);
 
-            if (t) {
+        if (t) {
+            if (self.spawnflags & FXMTR_SPAWNFLAG_TELEPORT) {
                 self.target = t.target;
                 setorigin(self, t.origin);
                 self.angles+= FxModelTrainGetDeltaAngles(t);
+            } else {
+                self.angles+= FxModelTrainGetDeltaAngles(self);
             }
         }
     }
