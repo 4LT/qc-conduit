@@ -91,6 +91,11 @@ WARNING: Will cause unstable behavior if targeting `trigger_repeater` or
 If the targeting `trigger_relay`, `math_op`, or `func_actuator` it has no
 effect.
 
+### control_operand
+
+Sets the 2nd operand of a `math_op` or `math_compare` to its **received**
+value.
+
 ### control_frame
 
 Sets the target's `frame` value to the **received** value.

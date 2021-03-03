@@ -52,12 +52,24 @@ void(entity ent, float framenum) ControlFrameProc = {
     ent.frame = framenum;
 };
 
+void(entity ent, float arg2) ControlOperandProc = {
+    ent.io_arg2 = arg2;
+};
+
 void() ControlVarUse = {
     BaseControl(ControlVarProc);
 };
 
 void() control_var = {
     self.use = ControlVarUse;
+};
+
+void() ControlOperandUse = {
+    BaseControl(ControlOperandProc);
+};
+
+void() control_operand = {
+    self.use = ControlOperandUse;
 };
 
 void() ControlFrameUse = {

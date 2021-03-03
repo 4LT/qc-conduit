@@ -698,6 +698,8 @@
     ]
 ]
 
+@PointClass base(Appearflags, Controller) = control_operand : "Control second argument of math_op or math_compare"
+[]
 
 @baseclass = MoverSounds
 [
