@@ -746,7 +746,7 @@
 ]
 
 @baseclass color(255 128 0) model({{
-    (model != null) && (model[-4..-1] == ".mdl") -> ":" + model,
+    (model != null) && (model[-4..-1] != ".spr") -> ":" + model,
     null
 }}) = FxModel
 [
