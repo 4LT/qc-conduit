@@ -5,11 +5,18 @@ float FXMTR_SPAWNFLAG_TELEPORT = 1;
 float FXMTR_STATE_SLIDING = 0;
 float FXMTR_STATE_TURNING = 1;
 
-string FXMA_EMPTY_MODEL = "progs/s_light.mdl";
-
 void() MoverInitSounds;
 vector(vector in) normalize_angles;
 vector(vector in) normalize_delta_angles;
+
+void(string path) SetOrClearModel = {
+    if (path) {
+        setmodel(self, path);
+    } else {
+        self.model = string_null;
+        self.modelindex = 0;
+    }
+};
 
 void() FxModelInit = {
     self.solid = SOLID_NOT;
@@ -23,6 +30,8 @@ void() FxModelInit = {
     if (self.model && self.model != "") {
         precache_model(self.model);
         setmodel(self, self.model);
+    } else {
+        self.model = string_null;
     }
 };
 
@@ -38,9 +47,9 @@ void() FxModelToggleUse = {
     }
 
     if (state) {
-        setmodel(self, self.map);
+        SetOrClearModel(self.map);
     } else {
-        setmodel(self, self.wad);
+        SetOrClearModel(self.wad);
     }
 };
 
@@ -55,18 +64,11 @@ void() fx_model_toggle = {
     // primary model
     self.wad = self.model;
 
-    if ((!self.wad) || self.wad == "") {
-        self.wad = FXMA_EMPTY_MODEL;
-        precache_model(self.wad);
-        setmodel(self, self.wad);
-    }
-
-    if (self.map && self.wad != "") {
+    if (self.map && self.map != "") {
         // secondary model
         precache_model(self.map);
     } else {
-        self.map = FXMA_EMPTY_MODEL;
-        precache_model(self.map);
+        self.map = string_null;
     }
 
     self.use = FxModelToggleUse;
