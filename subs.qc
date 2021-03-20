@@ -291,7 +291,7 @@ void() SUB_UseTargets =
 //
     if (self.killtarget)
     {
-        t = world;
+        t = nextent(world);
 
         while (t) {
             t = find(t, targetname, self.killtarget);
