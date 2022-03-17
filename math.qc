@@ -63,6 +63,7 @@ float(float in, float min, float max) wrap = {
 
 vector(vector in) normalize_angles = {
     vector out;
+    float flip = 0;
     out_x = wrap(in_x, MIN_ANG, MAX_ANG);
     
     if (out_x < -90 || out_x > 90) {
@@ -71,12 +72,12 @@ vector(vector in) normalize_angles = {
         } else {
             out_x = 180 - out_x;
         }
-        out_y+= 180;
-        out_z+= 180;
+        
+        flip = 180;
     }
 
-    out_y = wrap(in_y, MIN_ANG, MAX_ANG);
-    out_z = wrap(in_z, MIN_ANG, MAX_ANG);
+    out_y = wrap(in_y + flip, MIN_ANG, MAX_ANG);
+    out_z = wrap(in_z + flip, MIN_ANG, MAX_ANG);
 
     return out;
 };
