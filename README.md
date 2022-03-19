@@ -88,7 +88,7 @@ solidity when the targeted entity's opacity is effectively 0 (only works on
 This entity sets its target's `io_send` value to the **received** value.
 WARNING: Will cause unstable behavior if targeting `trigger_repeater` or
 `math_adder` since both rely on maintaining the state of their `io_send` fields.
-If the targeting `trigger_relay`, `math_op`, or `func_actuator` it has no
+If the targeting `trigger_relay`, `math_op`, or `func_slider` it has no
 effect.
 
 ### control_operand
@@ -108,7 +108,7 @@ than the end frame, the animation plays in reverse.  When triggered, a
 **received** value of 0 toggles the animation on/off, a positive value starts
 the animation playing, and a negative value stops the animation.
 
-### func_actuator
+### func_slider
 
 This entity moves to arbitrary positions along a linear path.  You can set a
 reference point to move to via the `target` field.  BE SURE one of the brushes
@@ -121,7 +121,7 @@ move to a point half-way between, etc.  Negative values and values greater than
 quadratically), "Constant" (damage remains the same) or "Crush" (damage is
 applied every frame to kill its blocker quickly).  The entity can also be set
 to be non-solid (useful for indicators that aren't meant to obstruct the player
-or monsters).  When a `func_actuator` stops at a destination, it will **send**
+or monsters).  When a `func_slider` stops at a destination, it will **send**
 its current **received** value.
 
 ### func_meter

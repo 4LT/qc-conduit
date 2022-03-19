@@ -1,4 +1,4 @@
-void() MoverInitSounds; // borrow from actuator.qc
+void() MoverInitSounds; // borrow from slider.qc
 
 void() MeterStop = {
     self.io_send = self.io_received;

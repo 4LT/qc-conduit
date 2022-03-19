@@ -721,7 +721,7 @@
     noise2(string) : "Move noise"
 ]
 
-@SolidClass base(Appearflags, Targetname, Target, MoverSounds) = func_actuator : "Linear moving brush"
+@SolidClass base(Appearflags, Targetname, Target, MoverSounds) = func_slider : "Linear moving brush"
 [
     speed(float) : "Speed" : "40"
     dmg(float) : "Damage on block" : "2"

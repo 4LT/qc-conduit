@@ -38,6 +38,6 @@ oldone.qc		// registered
 fx.qc
 io_math.qc
 control.qc
-actuator.qc
+slider.qc
 meter.qc
 grenade_fix.qc

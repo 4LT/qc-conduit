@@ -78,7 +78,7 @@ void() ActuatorUse = {
 void() ActuatorInit = {
     entity dest_ent = find(world, targetname, self.target);
     if (!dest_ent) {
-        error("func_actuator requires a target!");
+        error("func_slider requires a target!");
     }
     
     // displacement from start to target dest
@@ -91,7 +91,7 @@ void() ActuatorInit = {
 };
 
 void() ActuatorObserverThink = {
-    // if actuator is still blocked
+    // if slider is still blocked
     if (self.owner.ltime == self.pausetime) {
         self.nextthink = time + ACT_BLOCKCHECK_DTIME;
         self.think = ActuatorObserverThink;
@@ -118,7 +118,7 @@ void() ActuatorBlocked = {
             observer.nextthink = time + ACT_BLOCKCHECK_DTIME;
             observer.think = ActuatorObserverThink;
 
-            // actuator's ltime when first blocked
+            // slider's ltime when first blocked
             observer.pausetime = self.ltime;
             observer.owner = self;
         }
@@ -209,7 +209,7 @@ void() MoverInitSounds = {
     precache_sound(self.noise2);
 };
 
-void() func_actuator = {
+void() func_slider = {
     self.movetype = MOVETYPE_PUSH;
     self.state = ACT_STATE_STOPPED;
 
