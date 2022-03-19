@@ -38,6 +38,8 @@ float modelindex_eyes, modelindex_player;
 float intermission_running;
 float intermission_exittime;
 
+float SPAWN2_MASK = 31;
+
 /*QUAKED info_intermission (1 0.5 0.5) (-16 -16 -16) (16 16 16)
 This is the camera point for the intermission.
 Use mangle instead of angle, so you can set pitch or roll as well as yaw.  'pitch roll yaw'
@@ -87,7 +89,7 @@ void() SetNewParms =
 
 void() DecodeLevelParms =
 {
-    if (serverflags)
+    if (serverflags & SPAWN2_MASK)
     {
         if (world.model == "maps/start.bsp")
             SetNewParms(); // take away all stuff on starting new episode
@@ -403,6 +405,24 @@ float(vector v) CheckSpawnPoint =
     return FALSE;
 };
 
+static entity(float use_spawn2) SelectCoopSpawn =
+{
+    string coop_spawn = use_spawn2
+        ? "info_player_coop2"
+        : "info_player_coop";
+    string player_spawn = use_spawn2
+        ? "info_player_start2"
+        : "info_player_start";
+
+    lastspawn = find(lastspawn, classname, coop_spawn);
+
+    if (lastspawn == world) {
+        lastspawn = find(lastspawn, classname, player_spawn);
+    } 
+
+    return lastspawn;
+};
+
 /*
 ============
 SelectSpawnPoint
@@ -413,23 +433,29 @@ Returns the entity to spawn at
 entity() SelectSpawnPoint =
 {
     entity spot;
+    float use_spawn2 = serverflags & SPAWN2_MASK;
 
 // testinfo_player_start is only found in regioned levels
     spot = find(world, classname, "testplayerstart");
     if (spot)
         return spot;
 
-// choose a info_player_deathmatch point
     if (coop)
     {
-        lastspawn = find(lastspawn, classname, "info_player_coop");
-        if (lastspawn == world)
-            lastspawn = find(lastspawn, classname, "info_player_start");
-        if (lastspawn != world)
-            return lastspawn;
+        // choose optimal co-op spawn
+        spot = SelectCoopSpawn(use_spawn2);
+
+        if (spot == world) {
+            spot = SelectCoopSpawn(FALSE);
+        }
+
+        if (spot != world) {
+            return spot;
+        }
     }
     else if (deathmatch)
     {
+        // choose a info_player_deathmatch point
         lastspawn = find(lastspawn, classname, "info_player_deathmatch");
         if (lastspawn == world)
             lastspawn = find(lastspawn, classname, "info_player_deathmatch");
@@ -437,7 +463,7 @@ entity() SelectSpawnPoint =
             return lastspawn;
     }
 
-    if (serverflags)
+    if (use_spawn2)
     { // return with a rune to start
         spot = find(world, classname, "info_player_start2");
         if (spot)
@@ -568,6 +594,10 @@ potential spawning position for coop games
 */
 void() info_player_coop =
 {
+};
+
+void() info_player_coop2 = {
+    info_player_coop();
 };
 
 /*
