@@ -39,6 +39,8 @@ float intermission_running;
 float intermission_exittime;
 
 float SPAWN2_MASK = 31;
+float SPAWN2_FLAG = 16;
+float CHANGELEVEL_FLAG_USE_SPAWN2 = 2;
 
 /*QUAKED info_intermission (1 0.5 0.5) (-16 -16 -16) (16 16 16)
 This is the camera point for the intermission.
@@ -317,6 +319,10 @@ void() changelevel_touch =
     nextmap = self.map;
 
     SUB_UseTargets();
+    
+    if (self.spawnflags & CHANGELEVEL_FLAG_USE_SPAWN2) {
+        serverflags = serverflags | SPAWN2_FLAG;
+    }
 
     if ((self.spawnflags & 1) && (deathmatch == 0))
     { // NO_INTERMISSION
@@ -338,7 +344,7 @@ When the player touches this, he gets sent to the map listed in the "map" variab
 void() trigger_changelevel =
 {
     if (!self.map)
-        objerror("chagnelevel trigger doesn't have map");
+        objerror("changelevel trigger doesn't have map");
 
     InitTrigger();
     self.touch = changelevel_touch;

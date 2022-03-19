@@ -17,6 +17,18 @@ targets.
 
 ## Entities
 
+### info_player_coop2
+
+Analagous to `info_player_start2` but for co-op spawns.  If a map has both
+an `info_player_start2` and at least 1 `info_player_coop` entity, it should
+have as many `info_player_coop2` entities.
+
+### trigger_changelevel
+
+Has an additional flag (2) which causes the player to spawn at a secondary spawn
+(`info_player_start2` or `info_player_coop2`) if available in the level.  Acts
+as if giving the player a "fake" rune.
+
 ### trigger_relay
 
 `trigger_relay` has been modified to transfer its **received** value to its
