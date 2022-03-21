@@ -99,7 +99,7 @@
 	message(string) : "Message"
 	target(string) : "Target"
 	killtarget(string) : "Killtarget"
-	delay(integer) : "Delay"
+	delay(float) : "Delay" : "0"
 ]
 @baseclass size(0 0 0, 32 32 56) color(80 0 200) base(Item) = Ammo
 [
@@ -390,7 +390,8 @@
 		3: "Stone Chain"
 		4: "Screechy Metal"
 	]
-	wait(string) : "Wait before close" : "3"
+	wait(float) : "Wait before close" : "3"
+    delay(float) : "Delay before trigger" : "0"
 	lip(integer) : "Lip" : 8
 	dmg(integer) : "Damage inflicted when blocked" : 2
 	message(string) : "Message if touched"
@@ -445,7 +446,7 @@
 		3 : "In-out"
 	]
 	wait(string) : "Wait before reset" : "1"
-	delay(string) : "Delay before trigger"
+	delay(float) : "Delay before trigger" : "0"
 	message(string) : "Message"
 ]
 
@@ -614,7 +615,7 @@
 [
 	spawnflags(flags) = [ 1: "No Message" : 0 ]
 	count(integer) : "Count before trigger" : 2
-	delay (integer) : "Delay"
+	delay(float) : "Delay before trigger" : "0"
 	message(string) : "Message"
 ]
 @SolidClass base(Angle, Appearflags, Targetname) = trigger_push : "Trigger: Push"
@@ -648,7 +649,7 @@
         8 : "Max (Highest)"
     ]
     io_arg2(float) : "2nd Operand" : "0"
-	delay(string) : "Delay before trigger" : "0"
+	delay(float) : "Delay before trigger" : "0"
 ]
 
 @PointClass base(Appearflags, Target, Targetname) = math_adder : "Add to stored value"
@@ -663,7 +664,7 @@
     waitmax(float) : "Upper Bound"
     waitmin(float) : "Lower Bound"
     io_send(float) : "Initial value" : "0"
-	delay(string) : "Delay before trigger" : "0"
+	delay(float) : "Delay before trigger" : "0"
 ]
 
 @PointClass base(Appearflags, Trigger, IoVar) = math_compare : "Fire given condition"
