@@ -83,6 +83,7 @@ void() StartItem =
 {
     self.nextthink = time + 0.2; // items start after other solids
     self.think = PlaceItem;
+    self.state = FALSE;
 };
 
 /*
