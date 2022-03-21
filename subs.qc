@@ -51,6 +51,18 @@ InitTrigger
 */
 void() InitTrigger =
 {
+    if (self.sounds == 1) {
+        self.noise = "misc/secret.wav";
+    } else if (self.sounds == 2) {
+        self.noise = "misc/talk.wav";
+    } else if (self.sounds == 3) {
+        self.noise = "misc/trigger1.wav";
+    }
+
+    if ((!self.noise) && self.noise != "") {
+        precache_sound(self.noise);
+    }
+
 // trigger angles are used for one-way touches.  An angle of 0 is assumed
 // to mean no restrictions, so use a yaw of 360 instead.
     if (self.angles != '0 0 0')

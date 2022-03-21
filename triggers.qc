@@ -134,22 +134,6 @@ set "message" to text string
 */
 void() trigger_multiple =
 {
-    if (self.sounds == 1)
-    {
-        precache_sound("misc/secret.wav");
-        self.noise = "misc/secret.wav";
-    }
-    else if (self.sounds == 2)
-    {
-        precache_sound("misc/talk.wav");
-        self.noise = "misc/talk.wav";
-    }
-    else if (self.sounds == 3)
-    {
-        precache_sound("misc/trigger1.wav");
-        self.noise = "misc/trigger1.wav";
-    }
-
     if (!self.wait)
         self.wait = 0.2;
     self.use = multi_use;
