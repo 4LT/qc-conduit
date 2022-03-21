@@ -22,7 +22,7 @@ entity s;
 void() IoRelay =
 {
     self.io_send = self.io_received;
-    SUB_UseTargets();
+    SUB_UseTrigger();
 };
 
 void() trigger_reactivate =
@@ -65,6 +65,9 @@ void() multi_trigger =
         found_secrets = found_secrets + 1;
         WriteByte(MSG_ALL, SVC_FOUNDSECRET);
     }
+
+    if (self.noise)
+        sound(self, CHAN_VOICE, self.noise, 1, ATTN_NORM);
 
 // don't trigger again until reset
     self.takedamage = DAMAGE_NO;

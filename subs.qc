@@ -253,6 +253,12 @@ void() DelayThink =
     remove(self);
 };
 
+void() SUB_UseTrigger = {
+    if (self.noise && self.noise != "")
+        sound(self, CHAN_VOICE, self.noise, 1, ATTN_NORM);
+    SUB_UseTargets();
+}
+
 /*
 ==============================
 SUB_UseTargets
@@ -275,9 +281,6 @@ match(string)self.target and call their .use function
 void() SUB_UseTargets =
 {
     entity t, stemp, otemp, act;
-
-    if (self.noise)
-        sound(self, CHAN_VOICE, self.noise, 1, ATTN_NORM);
 //
 // check for a delay
 //
