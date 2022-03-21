@@ -160,3 +160,6 @@ model will be set to its secondary model.
 
 Grenades getting "stuck" on slopes leading downwards have been fixed.  (Thanks,
 Spike!)
+
+Grenades now deal a minimum of 100 damage to targets they hit, which guarantees
+that two direct hits will down an ogre.

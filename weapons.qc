@@ -334,6 +334,17 @@ void() s_explode4 = [ 3, s_explode5 ] {};
 void() s_explode5 = [ 4, s_explode6 ] {};
 void() s_explode6 = [ 5, SUB_Remove ] {};
 
+void() DirectExplosionDamage = {
+    float damg = 100 + random()*20;
+
+    if (other.health)
+    {
+        if (other.classname == "monster_shambler")
+            damg = damg * 0.5; // mostly immune
+        T_Damage(other, self, self.owner, damg );
+    }
+}
+
 void() BecomeExplosion =
 {
     self.movetype = MOVETYPE_NONE;
@@ -346,8 +357,6 @@ void() BecomeExplosion =
 
 void() T_MissileTouch =
 {
-    float damg;
-
     if (other == self.owner)
         return; // don't explode on owner
 
@@ -357,14 +366,7 @@ void() T_MissileTouch =
         return;
     }
 
-    damg = 100 + random()*20;
-
-    if (other.health)
-    {
-        if (other.classname == "monster_shambler")
-            damg = damg * 0.5; // mostly immune
-        T_Damage(other, self, self.owner, damg );
-    }
+    DirectExplosionDamage();
 
     // don't do radius damage to the other, because all the damage
     // was done in the impact
@@ -531,7 +533,9 @@ void() W_FireLightning =
 
 void() GrenadeExplode =
 {
-    T_RadiusDamage(self, self.owner, 120, world);
+    DirectExplosionDamage();
+
+    T_RadiusDamage(self, self.owner, 120, other);
 
     WriteByte(MSG_BROADCAST, SVC_TEMPENTITY);
     WriteByte(MSG_BROADCAST, TE_EXPLOSION);
@@ -548,6 +552,8 @@ void() GrenadeTouch =
         return; // don't explode on owner
     if (other.takedamage == DAMAGE_AIM)
     {
+
+
         GrenadeExplode();
         return;
     }
