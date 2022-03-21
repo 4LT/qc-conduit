@@ -156,6 +156,10 @@ the models will be swapped.  If the **received** value is negative, the model
 will be set to its primary model.  If the **received** value is positive, the
 model will be set to its secondary model.
 
+### weapons
+
+Weapons picked up for the first time in co-op will now fire their targets.
+
 ## Misc. Improvements
 
 Grenades getting "stuck" on slopes leading downwards have been fixed.  (Thanks,
@@ -163,5 +167,3 @@ Spike!)
 
 Grenades now deal a minimum of 100 damage to targets they hit, which guarantees
 that two direct hits will down an ogre.
-
-Weapons picked up for the first time in co-op will now fire their targets.
