@@ -45,12 +45,9 @@ void() SetMovedir =
 };
 
 /*
-================
-InitTrigger
-================
-*/
-void() InitTrigger =
-{
+ * Initialize sounds for triggers
+ */
+void() InitTriggerSound = {
     if (self.sounds == 1) {
         self.noise = "misc/secret.wav";
     } else if (self.sounds == 2) {
@@ -59,9 +56,19 @@ void() InitTrigger =
         self.noise = "misc/trigger1.wav";
     }
 
-    if ((!self.noise) && self.noise != "") {
+    if (self.noise && self.noise != "") {
         precache_sound(self.noise);
     }
+}
+
+/*
+================
+InitTrigger
+================
+*/
+void() InitTrigger =
+{
+    InitTriggerSound();
 
 // trigger angles are used for one-way touches.  An angle of 0 is assumed
 // to mean no restrictions, so use a yaw of 360 instead.
@@ -269,6 +276,8 @@ void() SUB_UseTargets =
 {
     entity t, stemp, otemp, act;
 
+    if (self.noise)
+        sound(self, CHAN_VOICE, self.noise, 1, ATTN_NORM);
 //
 // check for a delay
 //

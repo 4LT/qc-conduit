@@ -66,9 +66,6 @@ void() multi_trigger =
         WriteByte(MSG_ALL, SVC_FOUNDSECRET);
     }
 
-    if (self.noise)
-        sound(self, CHAN_VOICE, self.noise, 1, ATTN_NORM);
-
 // don't trigger again until reset
     self.takedamage = DAMAGE_NO;
 
@@ -186,6 +183,7 @@ This fixed size trigger cannot be touched, it can only be fired by other events.
 */
 void() trigger_relay =
 {
+    InitTriggerSound();
     self.use = IoRelay;
 };
 
