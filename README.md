@@ -163,3 +163,5 @@ Spike!)
 
 Grenades now deal a minimum of 100 damage to targets they hit, which guarantees
 that two direct hits will down an ogre.
+
+Weapons picked up for the first time in co-op will now fire their targets.

@@ -406,6 +406,11 @@ weapon_touch
 */
 float() W_BestWeapon;
 
+static void() WeaponRegen = {
+    self.state = FALSE;
+    SUB_regen();
+}
+
 void() weapon_touch =
 {
     float hadammo, best, new, old;
@@ -502,18 +507,20 @@ void() weapon_touch =
 
     self = stemp;
 
-    if (leave)
-        return;
+    if (!leave) {
+        // remove it in single player, or setup for respawning in deathmatch
+        self.model = string_null;
+        self.solid = SOLID_NOT;
+        if (deathmatch == 1)
+            self.nextthink = time + 30;
+        self.think = WeaponRegen;
+    }
 
-// remove it in single player, or setup for respawning in deathmatch
-    self.model = string_null;
-    self.solid = SOLID_NOT;
-    if (deathmatch == 1)
-        self.nextthink = time + 30;
-    self.think = SUB_regen;
-
-    activator = other;
-    SUB_UseTargets(); // fire all targets / killtargets
+    if (!self.state) {
+        self.state = TRUE;
+        activator = other;
+        SUB_UseTargets(); 
+    }
 };
 
 
