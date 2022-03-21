@@ -702,7 +702,7 @@ void() StepIncrement = {
 };
 
 void() StepRepeat = {
-    SUB_UseTargets();
+    SUB_UseTrigger();
 
     if (self.spawnflags & SPAWNFLAG_COUNTDOWN) {
         StepDecrement();
@@ -756,7 +756,7 @@ void() trigger_init = {
 
 void() TriggerToggleUse = {
     self.io_send = !self.io_send;
-    SUB_UseTargets();
+    SUB_UseTrigger();
 };
 
 void() trigger_toggle = {

@@ -509,12 +509,13 @@
 [
 	sounds(choices) : "Sound style" : 0 =
 	[
-		0 : "None"
+		0 : "None/Use noise"
 		1 : "Secret sound"
 		2 : "Beep beep"
 		3 : "Large switch"
 	]
-	delay(string) : "Delay before trigger" : "0"
+    noise(string) : "Path to sound"
+	delay(float) : "Delay before trigger" : "0"
 	message(string) : "Message"
 ]
 

@@ -130,7 +130,7 @@ void() math_adder = {
 };
 
 void() math_var = {
-    self.use = SUB_UseTargets;
+    self.use = SUB_UseTrigger;
 };
 
 void() CompareAndFire = {
