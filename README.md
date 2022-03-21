@@ -88,6 +88,11 @@ operation on its **received** value and its `io_arg2` field.  Then the entity
 will **send** the result of the evaluation.  If an error occurs during
 evaluation it will not fire, instead broadcasting a message to players.
 
+### path_corner
+
+Added spawnflag "Run to" (1) which causes monsters to run to the waypoint
+instead of walking.
+
 ### control_vis
 
 Instead of firing its target, this entity sets its target's opacity to the

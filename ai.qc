@@ -96,6 +96,8 @@ void() movetarget_f =
 
 };
 
+float CORNER_SPAWNFLAG_RUN_TO = 1;
+
 /*QUAKED path_corner (0.5 0.3 0) (-8 -8 -8) (8 8 8)
 Monsters will continue walking towards the next target corner.
 */
@@ -116,6 +118,7 @@ moving towards it, change the next destination and continue.
 void() t_movetarget =
 {
     entity temp;
+    float old_corner_run, new_corner_run;
 
     if (other.movetarget != self)
         return;
@@ -133,8 +136,34 @@ void() t_movetarget =
 //dprint("t_movetarget\n");
     self.goalentity = self.movetarget = find(world, targetname, other.target);
     self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
-    if (!self.movetarget)
-    {
+    if (self.movetarget) {
+        old_corner_run =
+            ((other.classname == "path_corner")
+            && (other.spawnflags & CORNER_SPAWNFLAG_RUN_TO))
+            ? TRUE : FALSE;
+        new_corner_run =
+            ((self.movetarget.classname == "path_corner")
+            && (self.movetarget.spawnflags & CORNER_SPAWNFLAG_RUN_TO))
+            ? TRUE : FALSE;
+
+        dprint("run was: ");
+        dprint(ftos(old_corner_run));
+        dprint("\n");
+
+        dprint("run is: ");
+        dprint(ftos(new_corner_run));
+        dprint("\n");
+
+        if (old_corner_run != new_corner_run) {
+            if (new_corner_run) {
+                dprint("Start running\n");
+                self.th_run();
+            } else {
+                dprint("Stop running\n");
+                self.th_walk();
+            }
+        }
+    } else {
         self.pausetime = time + 999999;
         self.th_stand();
         return;
@@ -686,8 +715,13 @@ The monster has an enemy it is trying to kill
 */
 void(float dist) ai_run =
 {
+    if (!self.enemy) {
+        ai_walk(dist);
+        return;
+    }
 
     movedist = dist;
+
 // see if the enemy is dead
     if (self.enemy.health <= 0)
     {

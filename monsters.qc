@@ -79,6 +79,21 @@ void() monster_death_use =
     SUB_UseTargets();
 };
 
+static void TryGoToCorner() {
+    entity corner = self.movetarget;
+
+    if (corner.classname == "path_corner") {
+        if ((corner.spawnflags & CORNER_SPAWNFLAG_RUN_TO) && self.th_run) {
+            self.th_run();
+        } else {
+            self.th_walk();
+        }
+    } else {
+        self.pausetime = 99999999;
+        self.th_stand();
+    }
+}
+
 
 //============================================================================
 
@@ -114,12 +129,8 @@ void() walkmonster_start_go =
             dprint(vtos(self.origin));
             dprint("\n");
         }
-// this used to be an objerror
-        if (self.movetarget.classname == "path_corner")
-            self.th_walk();
-        else
-            self.pausetime = 99999999;
-            self.th_stand();
+
+        TryGoToCorner();
     }
     else
     {
@@ -172,12 +183,8 @@ void() flymonster_start_go =
             dprint(vtos(self.origin));
             dprint("\n");
         }
-// this used to be an objerror
-        if (self.movetarget.classname == "path_corner")
-            self.th_walk();
-        else
-            self.pausetime = 99999999;
-            self.th_stand();
+
+        TryGoToCorner();
     }
     else
     {
