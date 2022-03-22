@@ -17,6 +17,8 @@
     See file, 'COPYING', for details.
 */
 
+void(string) bcenterprint;
+void(float, string, float, float) bsound;
 
 void() SUB_Null = {};
 
@@ -303,8 +305,12 @@ void() SUB_UseTargets =
 //
 // print the message
 //
-    if (activator.classname == "player" && self.message != "")
-    {
+    if (self.gflags & GFL_BROADCAST) {
+        bcenterprint(self.message);
+        if (!self.noise) {
+            bsound(CHAN_VOICE, "misc/talk.wav", 1, ATTN_NORM);
+        }
+    } else if (activator.classname == "player" && self.message != "") {
         centerprint(activator, self.message);
         if (!self.noise)
             sound(activator, CHAN_VOICE, "misc/talk.wav", 1, ATTN_NORM);
@@ -385,3 +391,4 @@ void(void() thinkst) SUB_CheckRefire =
     self.cnt = 1;
     self.think = thinkst;
 };
+

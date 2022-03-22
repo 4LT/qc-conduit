@@ -259,6 +259,9 @@ float FL_PARTIALGROUND = 1024; // not all corners are valid
 float FL_WATERJUMP = 2048; // player jumping out of water
 float FL_JUMPRELEASED = 4096; // for jump debouncing
 
+// generic spawnflags .gflags
+float GFL_BROADCAST = 1;
+
 // edict.movetype values
 float MOVETYPE_NONE = 0; // never moves
 //float MOVETYPE_ANGLENOCLIP = 1;
@@ -581,9 +584,10 @@ float AS_MISSILE = 4;
 float SQNOTIFY_ENEMY = 0;
 float SQNOTIFY_HELP = 1;
 
-.string     squad;
-.float      sq_notification;
+.string squad;
 
+// Generic
+.float gflags;
 
 //===========================================================================
 

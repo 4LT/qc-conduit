@@ -17,6 +17,10 @@
     See file, 'COPYING', for details.
 */
 
+void(string) bcenterprint;
+void(string, string) bcenterprint2;
+void(string, string, string) bcenterprint3;
+
 /*QUAKED info_null (0 0.5 0) (-4 -4 -4) (4 4 4)
 Used as a positional target for spotlights, etc.
 */
@@ -699,7 +703,13 @@ void() DbgIoUse =
         prefix = "Received:";
     }
 
-    if (activator.classname == "player") {
+    if (self.gflags & GFL_BROADCAST) {
+        bcenterprint3(
+                prefix,
+                " ",
+                ftos(self.io_received)
+        );
+    } else if (activator.classname == "player") {
         centerprint3(
                 activator,
                 prefix,
