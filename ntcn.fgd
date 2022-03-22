@@ -562,6 +562,8 @@
 	[
 		1 : "Player only" : 0
 		2 : "Silent" : 0
+        4 : "Monster only" : 0
+        8 : "Don't play effect" : 0
 	]
 ]
 

@@ -284,6 +284,8 @@ TELEPORT TRIGGERS
 
 float PLAYER_ONLY = 1;
 float SILENT = 2;
+float TELE_SPAWNFLAG_MONSTER_ONLY = 4;
+float TELE_SPAWNFLAG_NO_TFOG = 8;
 
 void() play_teleport =
 {
@@ -384,24 +386,32 @@ void() teleport_touch =
             return;
     }
 
+    if (self.spawnflags & TELE_SPAWNFLAG_MONSTER_ONLY) {
+        if (other.classname == "player")
+            return;
+    }
+
 // only teleport living creatures
     if (other.health <= 0 || other.solid != SOLID_SLIDEBOX)
         return;
 
     SUB_UseTargets();
 
-// put a tfog where the player was
-    spawn_tfog(other.origin);
 
     t = find(world, targetname, self.target);
     if (!t)
         objerror("couldn't find target");
 
-// spawn a tfog flash in front of the destination
-    makevectors(t.mangle);
-    org = t.origin + 32 * v_forward;
+    if (!(self.spawnflags & TELE_SPAWNFLAG_NO_TFOG)) {
+        // put a tfog where the player was
+        spawn_tfog(other.origin);
+        // spawn a tfog flash in front of the destination
+        makevectors(t.mangle);
+        org = t.origin + 32 * v_forward;
 
-    spawn_tfog(org);
+        spawn_tfog(org);
+    }
+
     spawn_tdeath(t.origin, other);
 
 // move the player and lock him down for a little while
