@@ -577,7 +577,12 @@ float AS_MISSILE = 4;
 .float distance;
 .float volume;
 
+// Squads
+float SQNOTIFY_ENEMY = 0;
+float SQNOTIFY_HELP = 1;
 
+.string     squad;
+.float      sq_notification;
 
 
 //===========================================================================

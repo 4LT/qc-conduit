@@ -22,6 +22,7 @@ void() knight_walk1;
 void() knight_bow6;
 void() knight_bow1;
 void(entity etemp, entity stemp, entity stemp, float dmg) T_Damage;
+void(float notify_type) SquadNotify;
 /*
 
 .enemy
@@ -365,6 +366,8 @@ void() FoundTarget =
     { // let other monsters see this monster for a while
         sight_entity = self;
         sight_entity_time = time;
+
+        SquadNotify(SQNOTIFY_ENEMY);
     }
 
     self.show_hostile = time + 1; // wake up other monsters
