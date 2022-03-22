@@ -1,41 +1,42 @@
-float ACT_SPAWNFLAG_SOLID = 1;
+float SLIDER_SPAWNFLAG_SOLID = 1;
 
-float ACT_STATE_STOPPED = 0;
-float ACT_STATE_FORWARD = 1;
-float ACT_STATE_REVERSE = 2;
+float SLIDER_STATE_STOPPED = 0;
+float SLIDER_STATE_FORWARD = 1;
+float SLIDER_STATE_REVERSE = 2;
 
-float ACT_BLOCKCHECK_DTIME = 0.02;
-float ACT_DMG_DTIME = 0.3;
+float SLIDER_BLOCKCHECK_DTIME = 0.02;
+float SLIDER_DMG_DTIME = 0.3;
 
-// float ACT_DMGSTYLE_GROW = 0; (DEFAULT)
-float ACT_DMGSTYLE_CONST = 1;
-float ACT_DMGSTYLE_CRUSH = 2;
+// float SLIDER_DMGSTYLE_GROW = 0; (DEFAULT)
+float SLIDER_DMGSTYLE_CONST = 1;
+float SLIDER_DMGSTYLE_CRUSH = 2;
 
-void() ActuatorStop = {
-    self.state = ACT_STATE_STOPPED;
+void() SliderStop = {
+    self.state = SLIDER_STATE_STOPPED;
     self.velocity = '0 0 0';
     self.cnt = self.ltime;
 
     sound(self, CHAN_VOICE, self.noise1, 1, ATTN_NORM);
 };
 
-void() ActuatorStopAtLanding = {
+void() SliderStopAtLanding = {
     self.io_send = self.io_received;
+    activator = self;
     SUB_UseTargets();
-    ActuatorStop();
+    SliderStop();
 };
 
-void() ActuatorMove = {
+void() SliderMove = {
     if (self.height < self.io_received) {
-        self.state = ACT_STATE_FORWARD;
+        self.state = SLIDER_STATE_FORWARD;
     } else {
-        self.state = ACT_STATE_REVERSE;
+        self.state = SLIDER_STATE_REVERSE;
     }
 
     vector next_dest = self.pos2 * self.io_received + self.pos1;
 
     if (next_dest != self.origin) {
-        SUB_CalcMove(next_dest, self.speed, ActuatorStopAtLanding);
+        SUB_CalcMove(next_dest, self.speed, SliderStopAtLanding);
         sound(self, CHAN_VOICE, self.noise2, 1, ATTN_NORM);
     }
 };
@@ -44,38 +45,38 @@ void() CalcScalarPos = {
     self.height = vlen(self.origin - self.pos1) / self.t_length;
 };
 
-void() ActuatorRecalcAndMove = {
+void() SliderRecalcAndMove = {
     CalcScalarPos();
-    ActuatorMove();
+    SliderMove();
 };
 
-void() ActuatorUse = {
+void() SliderUse = {
     CalcScalarPos();
     float behind = self.height < self.io_received;
     float nextmove = self.cnt + self.wait;
 
-    if (self.state == ACT_STATE_STOPPED) {
+    if (self.state == SLIDER_STATE_STOPPED) {
         // Start moving eventually
         if (nextmove <= self.ltime) {
-            ActuatorMove();
+            SliderMove();
         } else {
-            self.think = ActuatorRecalcAndMove;
+            self.think = SliderRecalcAndMove;
             self.nextthink = nextmove;
         }
-    } else if ((self.state == ACT_STATE_FORWARD && behind)
-            || (self.state == ACT_STATE_REVERSE && (!behind))) {
+    } else if ((self.state == SLIDER_STATE_FORWARD && behind)
+            || (self.state == SLIDER_STATE_REVERSE && (!behind))) {
         // Keep moving
         // Call again to update destination
-        ActuatorMove();
+        SliderMove();
     } else {
         // Stop & reverse direction
-        ActuatorStop();
-        self.think = ActuatorRecalcAndMove;
+        SliderStop();
+        self.think = SliderRecalcAndMove;
         self.nextthink = self.cnt + self.wait;
     }
 };
 
-void() ActuatorInit = {
+void() SliderInit = {
     entity dest_ent = find(world, targetname, self.target);
     if (!dest_ent) {
         error("func_slider requires a target!");
@@ -87,36 +88,36 @@ void() ActuatorInit = {
     // distance from position start to target dest
     self.t_length = vlen(self.pos2);
 
-    self.use = ActuatorUse;
+    self.use = SliderUse;
 };
 
-void() ActuatorObserverThink = {
+void() SliderObserverThink = {
     // if slider is still blocked
     if (self.owner.ltime == self.pausetime) {
-        self.nextthink = time + ACT_BLOCKCHECK_DTIME;
-        self.think = ActuatorObserverThink;
+        self.nextthink = time + SLIDER_BLOCKCHECK_DTIME;
+        self.think = SliderObserverThink;
     } else {
         self.owner.count = 0;
         remove(self);
     }
 };
 
-void() ActuatorBlocked = {
-    if (self.style == ACT_DMGSTYLE_CRUSH) {
+void() SliderBlocked = {
+    if (self.style == SLIDER_DMGSTYLE_CRUSH) {
         T_Damage(other, self, self, self.dmg);
-    } else if (self.style == ACT_DMGSTYLE_CONST) {
+    } else if (self.style == SLIDER_DMGSTYLE_CONST) {
         if (time > self.pausetime) {
             T_Damage(other, self, self, self.dmg);
             other.velocity = '0 0 0';
             
             // next time to inflict damage
-            self.pausetime = time + ACT_DMG_DTIME;
+            self.pausetime = time + SLIDER_DMG_DTIME;
         }
     } else {
         if (self.count == 0) {
             entity observer = spawn();
-            observer.nextthink = time + ACT_BLOCKCHECK_DTIME;
-            observer.think = ActuatorObserverThink;
+            observer.nextthink = time + SLIDER_BLOCKCHECK_DTIME;
+            observer.think = SliderObserverThink;
 
             // slider's ltime when first blocked
             observer.pausetime = self.ltime;
@@ -130,7 +131,7 @@ void() ActuatorBlocked = {
             other.velocity = '0 0 0';
 
             // next time to inflict damage
-            self.pausetime = time + ACT_DMG_DTIME;
+            self.pausetime = time + SLIDER_DMG_DTIME;
 
             self.count+= 1;
         }
@@ -211,7 +212,7 @@ void() MoverInitSounds = {
 
 void() func_slider = {
     self.movetype = MOVETYPE_PUSH;
-    self.state = ACT_STATE_STOPPED;
+    self.state = SLIDER_STATE_STOPPED;
 
     // time since stopping
     self.cnt = -self.wait;
@@ -227,7 +228,7 @@ void() func_slider = {
         self.dmg = 2;
     }
 
-    if (self.spawnflags & ACT_SPAWNFLAG_SOLID) {
+    if (self.spawnflags & SLIDER_SPAWNFLAG_SOLID) {
         self.solid = SOLID_BSP;
     } else {
         self.solid = SOLID_NOT;
@@ -242,9 +243,9 @@ void() func_slider = {
     setorigin(self, self.origin);
     setmodel(self, self.model);
 
-    self.blocked = ActuatorBlocked;
+    self.blocked = SliderBlocked;
 
-    self.think = ActuatorInit;
+    self.think = SliderInit;
     self.nextthink = 0.01;
 
     MoverInitSounds();
