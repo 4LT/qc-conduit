@@ -21,7 +21,15 @@ void() SliderStop = {
 
 void() SliderStopAtLanding = {
     self.io_send = self.io_received;
-    activator = self;
+
+    // Restore cached activator if possible; otherwise self
+    if (self.enemy) {
+        activator = self.enemy;
+        self.enemy = world;
+    } else {
+        activator = self;
+    }
+
     SUB_UseTargets();
     SliderStop();
 };
@@ -51,6 +59,9 @@ void() SliderRecalcAndMove = {
 };
 
 void() SliderUse = {
+    // Cache activator for later use
+    self.enemy = activator;
+
     CalcScalarPos();
     float behind = self.height < self.io_received;
     float nextmove = self.cnt + self.wait;
