@@ -532,7 +532,6 @@
 	spawnflags(flags) =
 	[
 		1: "No intermission" : 0
-        2: "Use secondary spawn (as if player has rune)" : 0
 	]
 ]
 
