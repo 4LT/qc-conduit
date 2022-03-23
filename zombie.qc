@@ -193,13 +193,12 @@ void(vector st) ZombieFireGrenade =
     missile.owner = self;
     missile.movetype = MOVETYPE_BOUNCE;
     missile.solid = SOLID_BBOX;
+    
+// set missile speed
+    makevectors(self.angles);
 
 // calc org
     org = self.origin + st_x * v_forward + st_y * v_right + (st_z - 24) * v_up;
-
-// set missile speed
-
-    makevectors(self.angles);
 
     missile.velocity = normalize(self.enemy.origin - org);
     missile.velocity = missile.velocity * 600;
