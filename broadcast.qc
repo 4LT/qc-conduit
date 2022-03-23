@@ -10,17 +10,12 @@ static string s_arg6;
 static string s_arg7;
 
 void(void(entity) fn) broadcast {
-    entity client = checkclient();
-    entity first = client;
+    entity client = find(world, classname, "player");
 
-    if (first == world) {
-        return;
-    }
-
-    do {
+    while (client) {
         fn(client);
-        client = checkclient();
-    } while (client != first);
+        client = find(client, classname, "player");
+    }
 }
 
 static void clear_args() {
