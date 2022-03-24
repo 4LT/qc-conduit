@@ -169,6 +169,7 @@ void() t_movetarget =
     } else {
         if (other.angles_y) {
             self.ideal_yaw = other.angles_y;
+            ChangeYaw();
         }
 
         pause_length = other.wait >= 0 ? other.wait : 999999;
