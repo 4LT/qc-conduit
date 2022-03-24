@@ -167,8 +167,8 @@ void() t_movetarget =
             }
         }
     } else {
-        if (other.angles_y) {
-            self.ideal_yaw = other.angles_y;
+        if (other.ideal_yaw) {
+            self.ideal_yaw = other.ideal_yaw;
             ChangeYaw();
         }
 

@@ -467,7 +467,8 @@
 	path_corner : "Waypoint for platforms and monsters"
 [
 	target(target_source) : "Next target"
-	wait(integer) : "Wait" : 0
+	wait(float) : "How long to pause at corner, -1 = forever" : "0"
+    ideal_yaw(float) : "<>0 to set facing of paused monster" : "0"
     spawnflags(Flags) =
     [
         1 : "Run to" : 0
