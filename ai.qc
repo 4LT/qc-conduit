@@ -136,8 +136,9 @@ void() t_movetarget =
 
 //dprint("t_movetarget\n");
     self.goalentity = self.movetarget = find(world, targetname, other.target);
-    self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
     if (self.movetarget) {
+        self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
+
         old_corner_run =
             ((other.classname == "path_corner")
             && (other.spawnflags & CORNER_SPAWNFLAG_RUN_TO))
@@ -165,6 +166,10 @@ void() t_movetarget =
             }
         }
     } else {
+        if (other.angles_y) {
+            self.ideal_yaw = other.angles_y;
+        }
+
         self.pausetime = time + 999999;
         self.th_stand();
         return;
