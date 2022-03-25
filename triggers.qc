@@ -35,6 +35,8 @@ void() trigger_reactivate =
 float SPAWNFLAG_NOMESSAGE = 1;
 float SPAWNFLAG_NOTOUCH = 1;
 float SPAWNFLAG_COUNTDOWN = 1;
+float MOSEY_SPAWNFLAG_TOGGLE = 1;
+float MOSEY_SPAWNFLAG_START_ON = 2;
 
 // the wait time has passed, so set back up for another activation
 void() multi_wait =
@@ -773,3 +775,54 @@ void() trigger_toggle = {
     self.use = TriggerToggleUse;
 };
 
+void() MoseyTouch = {
+    if (!(other.flags & FL_MONSTER)) {
+        return;
+    }
+
+    other.pausetime = time + 0.01;
+};
+
+void() MoseyClear = {
+    self.touch = SUB_Null;
+};
+
+void() MoseySet = {
+    self.touch = MoseyTouch;
+    force_retouch = 2;
+
+    if (!(self.spawnflags & MOSEY_SPAWNFLAG_TOGGLE)) {
+        self.think = MoseyClear;
+        self.nextthink = time + self.wait;
+    }
+};
+
+void() MoseyUse = {
+    if (self.spawnflags & MOSEY_SPAWNFLAG_TOGGLE) {
+        if (self.touch == SUB_Null) {
+            self.touch = MoseyTouch;
+            force_retouch = 2;
+        } else {
+            self.touch = SUB_Null;
+        }
+    } else {
+        MoseySet();
+    }
+};
+
+// Get a monster to mosey-on-over to the next path_corner
+void() trigger_mosey = {
+    if (!self.wait) {
+        self.wait = 0.2;
+    }
+
+    self.use = MoseyUse;
+
+    if (self.spawnflags & MOSEY_SPAWNFLAG_START_ON) {
+        MoseySet();
+    } else {
+        MoseyClear();
+    }
+
+    InitTrigger();
+};

@@ -149,20 +149,10 @@ void() t_movetarget =
             && (self.movetarget.spawnflags & CORNER_SPAWNFLAG_RUN_TO))
             ? TRUE : FALSE;
 
-        dprint("run was: ");
-        dprint(ftos(old_corner_run));
-        dprint("\n");
-
-        dprint("run is: ");
-        dprint(ftos(new_corner_run));
-        dprint("\n");
-
         if (old_corner_run != new_corner_run) {
             if (new_corner_run) {
-                dprint("Start running\n");
                 self.th_run();
             } else {
-                dprint("Stop running\n");
                 self.th_walk();
             }
         }
@@ -555,12 +545,19 @@ void() ai_stand =
 
     if (time > self.pausetime)
     {
-        self.th_walk();
-        return;
+        if (self.movetarget.classname == "path_corner") {
+            self.ideal_yaw = vectoyaw(self.movetarget.origin - self.origin);
+            ChangeYaw();
+
+            if (self.movetarget.spawnflags & CORNER_SPAWNFLAG_RUN_TO) {
+                self.th_run();
+            } else {
+                self.th_walk();
+            }
+        } else {
+            self.th_walk();
+        }
     }
-
-// change angle slightly
-
 };
 
 /*

@@ -1,13 +1,4 @@
-//
-// Quake game definition file (.fgd)
-// for Worldcraft 1.6 and above
-//
-// written by autolycus / autolycus@planetquake.com
-// email me with improvements and suggestions
-//
-
-// Modified by CZG : grawert@online.no : http://www.planetquake.com/greyvoid/
-// further modified by various authors
+// Necrotelecomnicon FGD
 
 //
 // worldspawn
@@ -792,4 +783,14 @@
     [
         1 : "Teleport to start"
     ]
+]
+
+@SolidClass base(Appearflags, Targetname) = trigger_mosey : "Cause waiting monster to move"
+[
+    spawnflags(flags) =
+    [
+        1 : "Toggle"
+        2 : "Start On"
+    ]
+    wait(float) : "Keep trigger active after targetting for this long" : "0.2"
 ]
