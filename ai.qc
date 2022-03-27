@@ -157,11 +157,6 @@ void() t_movetarget =
             }
         }
     } else {
-        if (other.ideal_yaw) {
-            self.ideal_yaw = other.ideal_yaw;
-            ChangeYaw();
-        }
-
         pause_length = other.wait >= 0 ? other.wait : 999999;
 
         self.pausetime = time + pause_length;

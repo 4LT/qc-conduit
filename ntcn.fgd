@@ -459,7 +459,6 @@
 [
 	target(target_source) : "Next target"
 	wait(float) : "How long to pause at corner, -1 = forever" : "0"
-    ideal_yaw(float) : "<>0 to set facing of paused monster" : "0"
     spawnflags(Flags) =
     [
         1 : "Run to" : 0
