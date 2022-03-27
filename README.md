@@ -50,6 +50,10 @@ firings is `wait` seconds.
 Fires on map load.  Can be set to **send** its provided `io_send` field or the
 current skill level.
 
+### trigger_mosey
+
+Cause monsters in its volume to continue to the next `path_corner` if waiting.
+
 ### trigger_toggle
 
 Holds a value of 0 or 1, and assigns itself the *opposite* and **send**s that
@@ -85,7 +89,9 @@ evaluation it will not fire, instead broadcasting a message to players.
 ### path_corner
 
 Added spawnflag "Run to" (1) which causes monsters to run to the waypoint
-instead of walking.
+instead of walking.  Set a wait >0 to cause the monster to wait at the corner
+for that number of seconds, or <0 to wait until awoken or forced from its paused
+state.
 
 ### control_vis
 
