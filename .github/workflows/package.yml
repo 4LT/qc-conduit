@@ -3,6 +3,7 @@ name: Release Package
 on:
   release:
     branches: [ "master" ]
+    types: [ published ]
 
 jobs:
   package:
@@ -11,9 +12,16 @@ jobs:
 
     steps:    
     - uses: actions/checkout@v3
+
+    - name: setup fteqcc
+      run: |
+        wget https://www.fteqcc.org/dl/fteqcc_linux64.zip
+        unzip fteqcc_linux64.zip
+        mkdir -p bin
+        mv fteqcc64 bin/fteqcc
     
     - name: build package
-      run: make package
+      run: PATH=./bin:$PATH make package
       
     - name: upload
       uses: actions/upload-artifact@v3
