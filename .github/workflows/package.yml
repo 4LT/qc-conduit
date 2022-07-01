@@ -3,6 +3,7 @@ name: Release Package
 on:
   release:
     branches: [ "master" ]
+    types: [ published ]
 
 jobs:
   package:
