@@ -12,10 +12,8 @@ jobs:
     steps:    
     - uses: actions/checkout@v3
     
-    - name: build package & remove zip
-      run: |
-        make package
-        rm build/ntcn.zip
+    - name: build package
+      run: make package
       
     - name: upload
       uses: actions/upload-artifact@v3
