@@ -1,0 +1,22 @@
+name: Release Package
+
+on:
+  release:
+    branches: [ "master" ]
+
+jobs:
+  package:
+
+    runs-on: ubuntu-latest
+
+    steps:    
+    - uses: actions/checkout@v3
+    
+    - name: build package
+      run: make package
+      
+    - name: upload
+      uses: actions/upload-artifact@v3
+      with:
+        name: ntcn-${{ github.event.release.tag_name }}
+        path: build/ntcn/
