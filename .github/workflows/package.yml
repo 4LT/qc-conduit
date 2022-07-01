@@ -12,11 +12,13 @@ jobs:
     steps:    
     - uses: actions/checkout@v3
     
-    - name: build & zip
-      run: make package
+    - name: build package & remove zip
+      run: |
+        make package
+        rm build/ntcn.zip
       
     - name: upload
       uses: actions/upload-artifact@v3
       with:
         name: ntcn-${{ github.event.release.tag_name }}
-        path: build/ntcn.zip
+        path: build/ntcn/
