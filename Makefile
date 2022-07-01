@@ -23,8 +23,7 @@ package: all $(PROGS) $(FGD)
 	cp $(PROGS) build/ntcn/
 	cp $(FGD) build/ntcn/
 	cp README.md build/ntcn/
-	rm -f build/ntcn.zip
-	zip -r build/ntcn.zip build/ntcn
+	cd build && rm -f ntcn.zip && zip -r ntcn.zip ntcn/
 
 clean:
 	rm -f progs.dat
