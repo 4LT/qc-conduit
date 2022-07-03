@@ -21,11 +21,12 @@ jobs:
         mv fteqcc64 bin/fteqcc
     
     - name: build package
-      run: PATH=./bin:$PATH make package
+      run: |
+        PATH=./bin:$PATH make package
+        rm -f build/ntcn.zip
       
     - name: upload
       uses: actions/upload-artifact@v3
       with:
         name: ntcn-${{ github.event.release.tag_name }}
-        path: |
-          build/ntcn/
+        path: build/
