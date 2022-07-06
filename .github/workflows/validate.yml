@@ -1,0 +1,26 @@
+name: Validate Source
+
+on:
+  push:
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  validate:
+
+    runs-on: ubuntu-latest
+
+    steps:    
+    - uses: actions/checkout@v3
+
+    - name: setup fteqcc
+      run: |
+        wget https://www.fteqcc.org/dl/fteqcc_linux64.zip
+        unzip fteqcc_linux64.zip
+        mkdir -p bin
+        mv fteqcc64 bin/fteqcc
+    
+    - name: build package
+      run: |
+        PATH=./bin:$PATH make package
+        rm -f build/ntcn.zip
