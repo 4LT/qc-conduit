@@ -1,9 +1,8 @@
 name: Validate Source
 
 on:
-  push:
   pull_request:
-    branches: [ "master" ]
+    branches: [ "master", "main" ]
 
 jobs:
   validate:

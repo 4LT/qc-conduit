@@ -2,7 +2,7 @@ name: Release Package
 
 on:
   release:
-    branches: [ "master" ]
+    branches: [ "master", "main" ]
     types: [ published ]
 
 jobs:
