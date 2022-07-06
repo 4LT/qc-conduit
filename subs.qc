@@ -393,3 +393,14 @@ void(void() thinkst) SUB_CheckRefire =
     self.think = thinkst;
 };
 
+// after touch event, check if entity is on top of other
+float() OnTopOf = {
+    float delta = self.absmin_z - other.absmax_z;
+    
+    if (delta <= 0 && delta > -5) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
+}
+

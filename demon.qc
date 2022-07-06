@@ -340,36 +340,37 @@ void(float side) Demon_Melee =
     SpawnMeatSpray(self.origin + v_forward*16, side * v_right);
 };
 
-
 void() Demon_JumpTouch =
 {
     float ldmg;
+    float isHat;
 
     if (self.health <= 0)
         return;
 
     if (other.takedamage)
     {
-        if (vlen(self.velocity) > 400)
+        isHat = OnTopOf();
+
+        if (vlen(self.velocity) > 400 || isHat)
         {
             ldmg = 40 + 10*random();
             T_Damage(other, self, self, ldmg);
-        }
-    }
 
-    if (!checkbottom(self))
-    {
+            if (isHat) {
+                demon1_jump1();
+                self.touch = SUB_Null;
+            }
+        } 
+    } 
+
+    if (!checkbottom(self)) {
         if (self.flags & FL_ONGROUND)
-        { // jump randomly to not get hung up
-//dprint("popjump\n");
-    self.touch = SUB_Null;
-    self.think = demon1_jump1;
-    self.nextthink = time + 0.1;
-
-//          self.velocity_x = (random() - 0.5) * 600;
-//          self.velocity_y = (random() - 0.5) * 600;
-//          self.velocity_z = 200;
-//          self.flags = self.flags - FL_ONGROUND;
+        { 
+            // jump randomly to not get hung up
+            self.touch = SUB_Null;
+            self.think = demon1_jump1;
+            self.nextthink = time + 0.1;
         }
         return; // not on ground yet
     }
