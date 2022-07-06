@@ -83,16 +83,24 @@ void() dog_bite =
 void() Dog_JumpTouch =
 {
     float ldmg;
+    float isHat;
 
     if (self.health <= 0)
         return;
 
     if (other.takedamage)
     {
-        if (vlen(self.velocity) > 300)
+        isHat = OnTopOf();
+
+        if (vlen(self.velocity) > 300 || isHat)
         {
             ldmg = 10 + 10*random();
             T_Damage(other, self, self, ldmg);
+
+            if (isHat) {
+                dog_leap1();
+                self.touch = SUB_Null;
+            }
         }
     }
 
