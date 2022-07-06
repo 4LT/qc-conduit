@@ -404,4 +404,3 @@ float() OnTopOf = {
     }
 }
 
-{
