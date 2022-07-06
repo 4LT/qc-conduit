@@ -1,12 +1,11 @@
-name: Release Package
+name: Validate Source
 
 on:
-  release:
+  pull_request:
     branches: [ "master", "main" ]
-    types: [ published ]
 
 jobs:
-  package:
+  validate:
 
     runs-on: ubuntu-latest
 
@@ -24,9 +23,3 @@ jobs:
       run: |
         PATH=./bin:$PATH make package
         rm -f build/ntcn.zip
-      
-    - name: upload
-      uses: actions/upload-artifact@v3
-      with:
-        name: ntcn-${{ github.event.release.tag_name }}
-        path: build/
