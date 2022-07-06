@@ -20,6 +20,4 @@ jobs:
         mv fteqcc64 bin/fteqcc
     
     - name: build package
-      run: |
-        PATH=./bin:$PATH make package
-        rm -f build/ntcn.zip
+      run: PATH=./bin:$PATH make
