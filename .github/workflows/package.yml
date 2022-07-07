@@ -5,9 +5,6 @@ on:
     branches: [ "master", "main" ]
     types: [ published ]
 
-env:
-  PATH: ./bin:$PATH
-
 jobs:
   package:
 
@@ -25,7 +22,7 @@ jobs:
     
     - name: build package
       run: |
-        make package
+        PATH=./bin:$PATH make package
         rm -f build/ntcn.zip
       
     - name: upload

@@ -4,9 +4,6 @@ on:
   pull_request:
     branches: [ "master", "main" ]
 
-env:
-  PATH: ./bin:$PATH
-
 jobs:
   validate:
 
@@ -23,4 +20,4 @@ jobs:
         mv fteqcc64 bin/fteqcc
     
     - name: build package
-      run: make
+      run: PATH=./bin:$PATH make
