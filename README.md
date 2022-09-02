@@ -17,6 +17,14 @@ targets.
 
 ## Entities
 
+### monsters
+
+Monsters wake up together if they share the same `squad` name.
+
+### ai_monitor
+
+Fires its target when a monster that shares the same `squad` name wakes up.
+
 ### info_player_coop2
 
 Analagous to `info_player_start2` but for co-op spawns.  If a map has both
