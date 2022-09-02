@@ -9,8 +9,8 @@ void(float notify_type) SquadNotify = {
 
         squaddie = find(self, squad, self.squad);
 
-        do {
-            if (squaddie != world && squaddie != self) {
+        while (squaddie != self) {
+            if (squaddie != world) {
                 if (notify_type == SQNOTIFY_ENEMY) {
                     squaddie.enemy = self.enemy;
 
@@ -22,7 +22,7 @@ void(float notify_type) SquadNotify = {
             }
 
             squaddie = find(squaddie, squad, self.squad);
-        } while(squaddie != self);
+        }
 
         notify_running = FALSE;
     }
