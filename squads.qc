@@ -21,7 +21,7 @@ void(float notify_type) SquadNotify = {
                         SUB_UseTargets();
                         self = self_temp;
                         activator = act_temp;
-                    } else {
+                    } else if (squaddie.health > 0) {
                         squaddie.enemy = self.enemy;
 
                         self_temp = self;
