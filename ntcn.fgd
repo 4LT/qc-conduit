@@ -202,16 +202,24 @@
 @PointClass base(Weapon) model({ "path": ":progs/g_light.mdl" }) = weapon_lightning : "Thunderbolt" []
 
 //
+// Squads
+//
+
+@baseclass base(TargetVar) = SquadMate
+[
+    squad(string) : "Squad name"
+]
+
+//
 // monsters
 //
 
-@baseclass base(Angle, Appearflags, TargetVar, Targetname) color(220 0 0) = Monster
+@baseclass base(Angle, Appearflags, TargetVar, Targetname, SquadMate) color(220 0 0) = Monster
 [
 	spawnflags(Flags) =
 	[
 		1 : "Ambush" : 0
 	]
-    squad(string) : "Squad name"
 ]
 
 @PointClass base(Monster) size(-16 -16 -24, 16 16 40) model({ "path": ":progs/soldier.mdl" }) = monster_army : "Grunt" []
@@ -755,7 +763,7 @@
 ]
 
 @baseclass color(255 128 0) model({{
-    (model != null) && (model[-4..-1] != ".spr") -> ":" + model,
+    (model != null) -> ":" + model,
     null
 }}) = FxModel
 [
@@ -792,4 +800,8 @@
         2 : "Start On"
     ]
     wait(float) : "Keep trigger active after targetting for this long" : "0.2"
+]
+
+@PointClass base(SquadMate) = ai_monitor : "Fires when squadmates wake up"
+[
 ]
