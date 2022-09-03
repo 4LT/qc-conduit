@@ -802,6 +802,11 @@
     wait(float) : "Keep trigger active after targetting for this long" : "0.2"
 ]
 
-@PointClass base(SquadMate) = ai_monitor : "Fires when squadmates wake up"
+@PointClass base(Targetname, SquadMate) = ai_monitor : "Fires when squadmates wake up"
 [
+]
+
+@PointClass base(Targetname) = ai_bullseye : "Targetted monsters will attack this entity"
+[
+    target(target_destination) : "Cause this monster to attack us"
 ]

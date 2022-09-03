@@ -21,6 +21,10 @@ targets.
 
 Monsters wake up together if they share the same `squad` name.
 
+### ai_bullseye
+
+Causes targetted monsters to fire at it.
+
 ### ai_monitor
 
 Fires its target when a monster that shares the same `squad` name wakes up.
