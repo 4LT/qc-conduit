@@ -97,7 +97,7 @@ void() door_go_down =
 
 void() door_go_up =
 {
-    if (self.state == STATE_UP)
+    if (self.state == STATE_UP || self.state == STATE_TOP)
         return; // allready going up
 
     if (self.state == STATE_TOP)
