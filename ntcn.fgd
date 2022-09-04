@@ -763,8 +763,8 @@
 ]
 
 @baseclass color(255 128 0) model({{
-    (model != null) -> ":" + model,
-    null
+    (model != undefined) -> ":" + model,
+    undefined
 }}) = FxModel
 [
     model(string) : "Model filename"
