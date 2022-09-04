@@ -119,6 +119,14 @@ ACTIVATION FUNCTIONS
 =============================================================================
 */
 
+static float() received_opening = {
+    return self.io_received > 0 || ((self.spawnflags & DOOR_START_OPEN) && self.io_received < 0);
+}
+
+static float() received_closing = {
+    return self.io_received != 0 && !received_opening();
+}
+
 void() door_fire =
 {
     entity oself;
@@ -134,7 +142,7 @@ void() door_fire =
     self.message = string_null; // no more message
     oself = self;
 
-    if (self.spawnflags & DOOR_TOGGLE)
+    if (((self.spawnflags & DOOR_TOGGLE) && self.io_received == 0) || received_closing())
     {
         if (self.state == STATE_UP || self.state == STATE_TOP)
         {
@@ -150,12 +158,16 @@ void() door_fire =
     }
 
 // trigger all paired doors
-    starte = self;
-    do
-    {
-        door_go_up();
-        self = self.enemy;
-    } while ((self != starte) && (self != world));
+
+    if (self.io_received == 0 || received_opening()) {
+        starte = self;
+        do
+        {
+            door_go_up();
+            self = self.enemy;
+        } while ((self != starte) && (self != world));
+    }
+
     self = oself;
 };
 
