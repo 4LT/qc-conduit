@@ -76,6 +76,13 @@ value to its target.  Can be initializd with `io_send`.
 This entity center-prints its **received** value.  A prefix can be provided
 using the `message` field; it defaults to "Received:".
 
+### func_door
+
+Augmented to only open if receiving a positive input, only close if receiving
+a negative input, and behaving as it would in vanilla with an input of 0.  E.g.
+a toggleable door in the open position will only close if receiving a value
+of 0 or lower.
+
 ### math_adder
 
 This entity stores a value which other entities can add to via **received**
