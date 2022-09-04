@@ -81,6 +81,9 @@ void() door_hit_bottom =
 
 void() door_go_down =
 {
+    if (self.state == STATE_DOWN || self.state == STATE_BOTTOM)
+        return; // already going down/closed, don't play noise
+
     sound(self, CHAN_VOICE, self.noise2, 1, ATTN_NORM);
     if (self.max_health)
     {
@@ -198,6 +201,7 @@ void() door_trigger_touch =
     activator = other;
 
     self = self.owner;
+    self.io_received = 0;
     door_use();
 };
 
@@ -210,6 +214,7 @@ void() door_killed =
     self = self.owner;
     self.health = self.max_health;
     self.takedamage = DAMAGE_NO; // wil be reset upon return
+    self.io_received = 0;
     door_use();
     self = oself;
 };
@@ -287,6 +292,7 @@ void() door_touch =
     self.touch = SUB_Null;
     if (self.enemy)
         self.enemy.touch = SUB_Null; // get paired door
+    self.io_received = 0;
     door_use();
 };
 
