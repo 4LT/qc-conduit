@@ -123,11 +123,19 @@ ACTIVATION FUNCTIONS
 */
 
 static float() received_opening = {
-    return self.io_received > 0 || ((self.spawnflags & DOOR_START_OPEN) && self.io_received < 0);
+    if (self.spawnflags & DOOR_START_OPEN) {
+        return self.io_received < 0;
+    } else {
+        return self.io_received > 0;
+    }
 }
 
 static float() received_closing = {
-    return self.io_received != 0 && !received_opening();
+    if (self.spawnflags & DOOR_START_OPEN) {
+        return self.io_received > 0;
+    } else {
+        return self.io_received < 0;
+    }
 }
 
 void() door_fire =
