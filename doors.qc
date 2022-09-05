@@ -97,12 +97,15 @@ void() door_go_down =
 
 void() door_go_up =
 {
-    if (self.state == STATE_UP || self.state == STATE_TOP)
+    if (self.state == STATE_UP) {
         return; // allready going up
+    }
 
     if (self.state == STATE_TOP)
     { // reset top wait time
-        self.nextthink = self.ltime + self.wait;
+        if (!(self.spawnflags & DOOR_TOGGLE)) { // prevent close sound on toggleable door
+            self.nextthink = self.ltime + self.wait;
+        }
         return;
     }
 
