@@ -148,7 +148,7 @@ void() door_fire =
 
     // play use key sound
     if (self.items)
-        sound(self, CHAN_VOICE, self.noise4, 1, ATTN_NORM);
+        sound(self, CHAN_ITEM, self.noise4, 1, ATTN_NORM);
 
     self.message = string_null; // no more message
     oself = self;
@@ -462,68 +462,58 @@ Key doors are allways wait -1.
 void() func_door =
 
 {
-
-    if (world.worldtype == 0)
-    {
-        precache_sound("doors/medtry.wav");
-        precache_sound("doors/meduse.wav");
-        self.noise3 = "doors/medtry.wav";
-        self.noise4 = "doors/meduse.wav";
-    }
-    else if (world.worldtype == 1)
-    {
-        precache_sound("doors/runetry.wav");
-        precache_sound("doors/runeuse.wav");
-        self.noise3 = "doors/runetry.wav";
-        self.noise4 = "doors/runeuse.wav";
-    }
-    else if (world.worldtype == 2)
-    {
-        precache_sound("doors/basetry.wav");
-        precache_sound("doors/baseuse.wav");
-        self.noise3 = "doors/basetry.wav";
-        self.noise4 = "doors/baseuse.wav";
-    }
-    else
-    {
-        dprint("no worldtype set!\n");
-    }
-    if (self.sounds == 0)
-    {
-        precache_sound("misc/null.wav");
-        precache_sound("misc/null.wav");
-        self.noise1 = "misc/null.wav";
-        self.noise2 = "misc/null.wav";
-    }
-    if (self.sounds == 1)
-    {
-        precache_sound("doors/drclos4.wav");
-        precache_sound("doors/doormv1.wav");
-        self.noise1 = "doors/drclos4.wav";
-        self.noise2 = "doors/doormv1.wav";
-    }
-    if (self.sounds == 2)
-    {
-        precache_sound("doors/hydro1.wav");
-        precache_sound("doors/hydro2.wav");
-        self.noise2 = "doors/hydro1.wav";
-        self.noise1 = "doors/hydro2.wav";
-    }
-    if (self.sounds == 3)
-    {
-        precache_sound("doors/stndr1.wav");
-        precache_sound("doors/stndr2.wav");
-        self.noise2 = "doors/stndr1.wav";
-        self.noise1 = "doors/stndr2.wav";
-    }
-    if (self.sounds == 4)
-    {
-        precache_sound("doors/ddoor1.wav");
-        precache_sound("doors/ddoor2.wav");
-        self.noise1 = "doors/ddoor2.wav";
-        self.noise2 = "doors/ddoor1.wav";
+    if (self.noise3 == "") {
+        if (world.worldtype == 0) {
+            self.noise3 = "doors/medtry.wav";
+        } else if (world.worldtype == 1) {
+            self.noise3 = "doors/runetry.wav";
+        } else {
+            self.noise3 = "doors/basetry.wav";
+        }
     }
 
+    if (self.noise4 == "") {
+        if (world.worldtype == 0) {
+            self.noise4 = "doors/meduse.wav";
+        } else if (world.worldtype == 1) {
+            self.noise4 = "doors/runeuse.wav";
+        } else if (world.worldtype == 2) {
+            self.noise4 = "doors/baseuse.wav";
+        }
+    }
+
+    if (self.noise1 == "") {
+        if (self.sounds == 0) {
+            self.noise1 = "misc/null.wav";
+        } if (self.sounds == 1) {
+            self.noise1 = "doors/drclos4.wav";
+        } if (self.sounds == 2) {
+            self.noise1 = "doors/hydro2.wav";
+        } if (self.sounds == 3) {
+            self.noise1 = "doors/stndr2.wav";
+        } if (self.sounds == 4) {
+            self.noise1 = "doors/ddoor2.wav";
+        }
+    }
+
+    if (self.noise2 == "") {
+        if (self.sounds == 0) {
+            self.noise2 = "misc/null.wav";
+        } if (self.sounds == 1) {
+            self.noise2 = "doors/doormv1.wav";
+        } if (self.sounds == 2) {
+            self.noise2 = "doors/hydro1.wav";
+        } if (self.sounds == 3) {
+            self.noise2 = "doors/stndr1.wav";
+        } if (self.sounds == 4) {
+            self.noise2 = "doors/ddoor1.wav";
+        }
+    }
+
+    precache_sound(self.noise1);
+    precache_sound(self.noise2);
+    precache_sound(self.noise3);
+    precache_sound(self.noise4);
 
     SetMovedir();
 

@@ -390,6 +390,10 @@
 		3: "Stone Chain"
 		4: "Screechy Metal"
 	]
+    noise1(string) : "Stop sound override"
+    noise2(string) : "Move sound override"
+    noise3(string) : "Locked sound override"
+    noise4(string) : "Key-use sound override"
 	wait(float) : "Wait before close" : "3"
     delay(float) : "Delay before trigger" : "0"
 	lip(integer) : "Lip" : 8
