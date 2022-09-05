@@ -463,26 +463,35 @@ Key doors are allways wait -1.
 */
 
 void() func_door =
-
 {
-    if (self.noise3 == "") {
-        if (world.worldtype == 0) {
-            self.noise3 = "doors/medtry.wav";
-        } else if (world.worldtype == 1) {
-            self.noise3 = "doors/runetry.wav";
-        } else {
-            self.noise3 = "doors/basetry.wav";
-        }
-    }
+    if (self.spawnflags & DOOR_SILVER_KEY)
+        self.items = IT_KEY1;
+    if (self.spawnflags & DOOR_GOLD_KEY)
+        self.items = IT_KEY2;
 
-    if (self.noise4 == "") {
-        if (world.worldtype == 0) {
-            self.noise4 = "doors/meduse.wav";
-        } else if (world.worldtype == 1) {
-            self.noise4 = "doors/runeuse.wav";
-        } else if (world.worldtype == 2) {
-            self.noise4 = "doors/baseuse.wav";
+    if (self.items) {
+        if (self.noise3 == "") {
+            if (world.worldtype == 0) {
+                self.noise3 = "doors/medtry.wav";
+            } else if (world.worldtype == 1) {
+                self.noise3 = "doors/runetry.wav";
+            } else {
+                self.noise3 = "doors/basetry.wav";
+            }
         }
+
+        if (self.noise4 == "") {
+            if (world.worldtype == 0) {
+                self.noise4 = "doors/meduse.wav";
+            } else if (world.worldtype == 1) {
+                self.noise4 = "doors/runeuse.wav";
+            } else if (world.worldtype == 2) {
+                self.noise4 = "doors/baseuse.wav";
+            }
+        }
+
+        precache_sound(self.noise3);
+        precache_sound(self.noise4);
     }
 
     if (self.noise1 == "") {
@@ -515,8 +524,6 @@ void() func_door =
 
     precache_sound(self.noise1);
     precache_sound(self.noise2);
-    precache_sound(self.noise3);
-    precache_sound(self.noise4);
 
     SetMovedir();
 
@@ -530,10 +537,6 @@ void() func_door =
     self.blocked = door_blocked;
     self.use = door_use;
 
-    if (self.spawnflags & DOOR_SILVER_KEY)
-        self.items = IT_KEY1;
-    if (self.spawnflags & DOOR_GOLD_KEY)
-        self.items = IT_KEY2;
 
     if (!self.speed)
         self.speed = 100;
