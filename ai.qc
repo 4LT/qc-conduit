@@ -62,8 +62,8 @@ float sight_entity_time;
 //
 
 // TRUE if swimming monster at surface, FALSE otherwise
-float() at_surface = {
-    vector above = self.origin + (self.maxs_z + 1) * '0 0 1';
+float(float dist) at_surface = {
+    vector above = self.origin + (self.maxs_z - dist + 1) * '0 0 1';
     traceline(
             above,
             above,
@@ -76,7 +76,9 @@ float() at_surface = {
 
 // override movetogoal
 void(float dist) movetogoal_fix = {
-    if ((self.flags & FL_SWIM) && at_surface()) {
+    float shift_back = FALSE;
+
+    if ((self.flags & FL_SWIM) && at_surface(0)) {
         traceline(
                 self.origin,
                 self.origin + (self.mins_z - 8) * '0 0 1',
@@ -86,10 +88,18 @@ void(float dist) movetogoal_fix = {
 
         if (trace_fraction == 1) {
             self.origin_z-= 8;
+
+            if (!at_surface(8)) {
+                shift_back = TRUE;
+            }
         }
     }
 
     movetogoal(dist);
+
+    if (shift_back) {
+        self.origin_z+= 8;
+    }
 }
 
 float(float v) anglemod =
