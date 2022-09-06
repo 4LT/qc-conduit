@@ -806,11 +806,27 @@
     wait(float) : "Keep trigger active after targetting for this long" : "0.2"
 ]
 
-@PointClass base(Targetname, SquadMate) = ai_monitor : "Fires when squadmates wake up"
+@PointClass base(Appearflags, Targetname, SquadMate) = ai_monitor : "Fires when squadmates wake up"
 [
 ]
 
-@PointClass base(Targetname) = ai_bullseye : "Targetted monsters will attack this entity"
+@PointClass base(Appearflags, Targetname) = ai_bullseye : "Targetted monsters will attack this entity"
 [
     target(target_destination) : "Cause this monster to attack us"
+]
+
+@PointClass base(Appearflags, Targetname) color(220 0 0) = info_monster_spawn
+[
+    think(string) : "Monster classname"
+    spawnflags(Flags) =
+    [
+        1 : "Spawn crucified/ambush" : 0
+        2 : "Spawn w/ ambush (Zombie)" : 0
+        8 : "No tele-flash" : 0
+        16 : "Spawn angry" : 0
+    ]
+    target(string) : "Spawned monster's target"
+    io_send(float) : "Spawned monster's send value"
+    squad(string) : "Spawned monster's squad name"
+    angle(float) : "Spawned monster's direction"
 ]
