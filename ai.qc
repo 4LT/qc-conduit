@@ -61,6 +61,9 @@ float sight_entity_time;
 // Swimming monster hack
 //
 
+// distance on Z axis flying/swimming monsters move in frame (from engine)
+const float FLY_Z_DIST = 8;
+
 // TRUE if swimming monster at surface, FALSE otherwise
 float(float dist) at_surface = {
     vector above = self.origin + (self.maxs_z - dist + 1) * '0 0 1';
@@ -81,15 +84,15 @@ void(float dist) movetogoal_fix = {
     if ((self.flags & FL_SWIM) && at_surface(0)) {
         traceline(
                 self.origin,
-                self.origin + (self.mins_z - 8) * '0 0 1',
+                self.origin + (self.mins_z - FLY_Z_DIST) * '0 0 1',
                 FALSE,
                 self
         );
 
         if (trace_fraction == 1) {
-            self.origin_z-= 8;
+            self.origin_z-= FLY_Z_DIST;
 
-            if (!at_surface(8)) {
+            if (!at_surface(FLY_Z_DIST)) {
                 shift_back = TRUE;
             }
         }
@@ -98,7 +101,7 @@ void(float dist) movetogoal_fix = {
     movetogoal(dist);
 
     if (shift_back) {
-        self.origin_z+= 8;
+        self.origin_z+= FLY_Z_DIST;
     }
 }
 
