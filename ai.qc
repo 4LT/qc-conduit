@@ -57,6 +57,41 @@ walkmove(angle, speed) primitive is all or nothing
 entity sight_entity;
 float sight_entity_time;
 
+//
+// Swimming monster hack
+//
+
+// TRUE if swimming monster at surface, FALSE otherwise
+float() at_surface = {
+    vector above = self.origin + (self.maxs_z + 1) * '0 0 1';
+    traceline(
+            above,
+            above,
+            TRUE,
+            self
+    );
+
+    return !trace_inwater;
+}
+
+// override movetogoal
+void(float dist) movetogoal_fix = {
+    if ((self.flags & FL_SWIM) && at_surface()) {
+        traceline(
+                self.origin,
+                self.origin + (self.mins_z - 8) * '0 0 1',
+                FALSE,
+                self
+        );
+
+        if (trace_fraction == 1) {
+            self.origin_z-= 8;
+        }
+    }
+
+    movetogoal(dist);
+}
+
 float(float v) anglemod =
 {
     while (v >= 360)
@@ -184,6 +219,7 @@ float(entity targ) range =
 {
     vector spot1, spot2;
     float r;
+
     spot1 = self.origin + self.view_ofs;
     spot2 = targ.origin + targ.view_ofs;
 
@@ -208,8 +244,18 @@ float(entity targ) visible =
 {
     vector spot1, spot2;
 
-    spot1 = self.origin + self.view_ofs;
-    spot2 = targ.origin + targ.view_ofs;
+    if (
+            (self.flags & FL_SWIM)
+            && targ.waterlevel > 0
+            && targ.waterlevel < 3
+    ) {
+        spot1 = self.origin;
+        spot2 = targ.origin + targ.mins_z * '0 0 1';
+    } else {
+        spot1 = self.origin + self.view_ofs;
+        spot2 = targ.origin + targ.view_ofs;
+    }
+
     traceline(spot1, spot2, TRUE, self); // see through other monsters
 
     if (trace_inopen && trace_inwater)
@@ -515,14 +561,14 @@ void(float dist) ai_walk =
 
     if (self.classname == "monster_dragon")
     {
-        movetogoal(dist);
+        movetogoal_fix(dist);
         return;
     }
     // check for noticing a player
     if (FindTarget())
         return;
 
-    movetogoal(dist);
+    movetogoal_fix(dist);
 };
 
 
@@ -786,7 +832,10 @@ void(float dist) ai_run =
         return;
     }
 
+    if ((self.flags & FL_SWIM)) {
+    }
+
 // head straight in
-    movetogoal(dist); // done in C code...
+    movetogoal_fix(dist); // done in C code...
 };
 

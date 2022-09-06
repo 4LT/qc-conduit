@@ -44,6 +44,8 @@ void(vector dest) ChooseTurn;
 
 void() ai_face;
 
+void(float) movetogoal_fix;
+
 
 float enemy_vis, enemy_infront, enemy_range;
 float enemy_yaw;
@@ -79,6 +81,10 @@ float() CheckAttack =
     float chance;
 
     targ = self.enemy;
+
+    if ((self.flags & FL_SWIM) && targ.waterlevel == 0) {
+        return FALSE;
+    }
 
 // see if any entities are in the way of the shot
     spot1 = self.origin + self.view_ofs;
@@ -174,7 +180,7 @@ float(entity targ) range;
 void(float d) ai_charge =
 {
     ai_face();
-    movetogoal(d); // done in C code...
+    movetogoal_fix(d); // done in C code...
 };
 
 void() ai_charge_side =
