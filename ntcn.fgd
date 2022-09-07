@@ -820,7 +820,7 @@
     think(string) : "Monster classname"
     spawnflags(Flags) =
     [
-        1 : "Spawn crucified/ambush" : 0
+        1 : "Spawn w/ ambush or crucified (Zombie)" : 0
         2 : "Spawn w/ ambush (Zombie)" : 0
         8 : "No tele-flash" : 0
         16 : "Spawn angry" : 0
