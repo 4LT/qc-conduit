@@ -815,7 +815,24 @@
     target(target_destination) : "Cause this monster to attack us"
 ]
 
-@PointClass base(Appearflags, Targetname) color(220 0 0) = info_monster_spawn
+@PointClass base(Appearflags, Targetname) color(220 0 0) model({{
+    (think == "monster_army") -> ":progs/soldier.mdl",
+    (think == "monster_boss") -> ":progs/boss.mdl",
+    (think == "monster_demon1") -> ":progs/demon.mdl",
+    (think == "monster_dog") -> ":progs/dog.mdl",
+    (think == "monster_enforcer") -> ":progs/enforcer.mdl",
+    (think == "monster_fish") -> ":progs/fish.mdl",
+    (think == "monster_hell_knight") -> ":progs/hknight.mdl",
+    (think == "monster_knight") -> ":progs/knight.mdl",
+    (think == "monster_ogre" || think == "monster_ogre_marksman") -> ":progs/ogre.mdl",
+    (think == "monster_oldone") -> ":progs/oldone.mdl",
+    (think == "monster_shalrath") -> ":progs/shalrath.mdl",
+    (think == "monster_shambler") -> ":progs/shambler.mdl",
+    (think == "monster_tarbaby") -> ":progs/tarbaby.mdl",
+    (think == "monster_wizard") -> ":progs/wizard.mdl",
+    (think == "monster_zombie") -> ":progs/zombie.mdl",
+    undefined
+}}) size(-32 -32 -24, 32 32 64) = info_monster_spawn
 [
     think(string) : "Monster classname"
     spawnflags(Flags) =
