@@ -627,7 +627,17 @@ void(entity client, string s)stuffcmd = #21;
 entity(vector org, float rad) findradius = #22;
 void(string s) bprint = #23;
 void(entity client, string s) sprint = #24;
+
 void(string s) dprint = #25;
+
+void(string s1, string s2) dprint2 = #25;
+void(string s1, string s2, string s3) dprint3 = #25;
+void(string s1, string s2, string s3, string s4) dprint4 = #25;
+void(string s1, string s2, string s3, string s4, string s5) dprint5 = #25;
+void(string s1, string s2, string s3, string s4, string s5, string s6) dprint6 = #25;
+void(string s1, string s2, string s3, string s4, string s5, string s6, string s7) dprint7 = #25;
+void(string s1, string s2, string s3, string s4, string s5, string s6, string s7, string s8) dprint8 = #25;
+
 string(float f) ftos = #26;
 string(vector v) vtos = #27;
 void() coredump = #28; // prints all edicts

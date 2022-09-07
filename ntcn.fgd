@@ -806,11 +806,67 @@
     wait(float) : "Keep trigger active after targetting for this long" : "0.2"
 ]
 
-@PointClass base(Targetname, SquadMate) = ai_monitor : "Fires when squadmates wake up"
+@PointClass base(Appearflags, Targetname, SquadMate) = ai_monitor : "Fires when squadmates wake up"
 [
 ]
 
-@PointClass base(Targetname) = ai_bullseye : "Targetted monsters will attack this entity"
+@PointClass base(Appearflags, Targetname) = ai_bullseye : "Targetted monsters will attack this entity"
 [
     target(target_destination) : "Cause this monster to attack us"
+]
+
+@PointClass base(Appearflags, Targetname) color(220 0 0) model({{
+    (think == "monster_army") -> ":progs/soldier.mdl",
+    (think == "monster_boss") -> ":progs/boss.mdl",
+    (think == "monster_demon1") -> ":progs/demon.mdl",
+    (think == "monster_dog") -> ":progs/dog.mdl",
+    (think == "monster_enforcer") -> ":progs/enforcer.mdl",
+    (think == "monster_fish") -> ":progs/fish.mdl",
+    (think == "monster_hell_knight") -> ":progs/hknight.mdl",
+    (think == "monster_knight") -> ":progs/knight.mdl",
+    (think == "monster_ogre" || think == "monster_ogre_marksman") -> ":progs/ogre.mdl",
+    (think == "monster_oldone") -> ":progs/oldone.mdl",
+    (think == "monster_shalrath") -> ":progs/shalrath.mdl",
+    (think == "monster_shambler") -> ":progs/shambler.mdl",
+    (think == "monster_tarbaby") -> ":progs/tarbaby.mdl",
+    (think == "monster_wizard") -> ":progs/wizard.mdl",
+    (think == "monster_zombie") -> ":progs/zombie.mdl",
+    undefined
+}}) size(-32 -32 -24, 32 32 64) = info_monster_spawn
+[
+    think(choices) : "Monster classname" =
+    [
+        "monster_army" : "Grunt"
+        "monster_boss" : "Chthon"
+        "monster_demon1" : "Fiend"
+        "monster_dog" : "Dog"
+        "monster_enforcer" : "Enforcer"
+        "monster_fish" : "Rotfish"
+        "monster_hell_knight" : "Death Knight"
+        "monster_knight" : "Knight"
+        "monster_ogre" : "Ogre"
+        "monster_ogre_marksman" : "Ogre Marksman"
+        "monster_oldone" : "Shub-Niggurath"
+        "monster_shalrath" : "Vore"
+        "monster_shambler" : "Shambler"
+        "monster_tarbaby" : "Spawn"
+        "monster_wizard" : "Scrag"
+        "monster_zombie" : "Zombie"
+    ]
+    spawnflags(Flags) =
+    [
+        1 : "Spawn w/ ambush or crucified (Zombie)" : 0
+        2 : "Spawn w/ ambush (Zombie)" : 0
+        8 : "No tele-flash" : 0
+        16 : "Spawn angry" : 0
+    ]
+    netname(string) : "Spawned monster's targetname"
+    target(string) : "Spawned monster's target"
+    io_send(float) : "Spawned monster's send value" : 0
+    squad(string) : "Spawned monster's squad name"
+    angle(float) : "Spawned monster's direction" : 0
+    count(integer) : "Number of monsters that can spawn" : 1
+    delay(float) : "Spawned monster's use target delay" : 0
+    speed(float) : "Horizontal velocity on spawn" : 0
+    height(float) : "Vertical velocity on spawn" : 0
 ]
