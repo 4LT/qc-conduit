@@ -865,4 +865,6 @@
     io_send(float) : "Spawned monster's send value"
     squad(string) : "Spawned monster's squad name"
     angle(float) : "Spawned monster's direction"
+    count(integer) : "Number of monsters that can spawn" : 1
+    delay(float) : "Spawned monster's use target delay"
 ]

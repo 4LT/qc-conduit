@@ -21,9 +21,10 @@ const float SPAWNER_FLAG_ANGRY = 16;
 void() SpawnerUse = {
     vector l_mins, l_maxs;
     entity spawner;
-    entity monster = self.enemy;
 
-    self.use = SUB_Null;
+    entity monster = self.enemy;
+    self.enemy = monster.owner;
+    monster.owner = world;
 
     if (monster.think != monster_boss) {
         monster.movetype = MOVETYPE_STEP;
@@ -82,6 +83,10 @@ void() SpawnerUse = {
             }
         }
     }
+
+    if (!self.enemy) {
+        self.use = SUB_Null;
+    }
 };
 
 static void(entity monster, void() spawn_fn) SpawnerSetMonsterClassname = {
@@ -103,53 +108,61 @@ static void(entity monster, void() spawn_fn) SpawnerSetMonsterClassname = {
     TRY_SET_CLASSNAME(monster, spawn_fn, monster_zombie);
 
     if (monster.classname == "") {
-        dprint("Could not find classname for spawnee\n");
+        dprint("Could not find classname for spawned monster\n");
     }
 };
 
 void() info_monster_spawn = {
     entity spawner;
 
+    if (self.count < 1) {
+        self.count = 1;
+    }
+
     // setup monster
     spawner = self;
-    self = spawn();
 
-    self.origin = spawner.origin;
-    self.angles = spawner.angles;
-    self.target = spawner.target;
-    self.squad = spawner.squad;
-    self.io_send = spawner.io_send;
-    self.spawnflags = spawner.spawnflags;
+    for (; spawner.count > 0; spawner.count--) {
+        self = spawn();
 
-    if (self.spawnflags & SPAWNER_FLAG_NO_TELEFLASH) {
-        self.spawnflags-= SPAWNER_FLAG_NO_TELEFLASH;
+        self.origin = spawner.origin;
+        self.angles = spawner.angles;
+        self.target = spawner.target;
+        self.squad = spawner.squad;
+        self.io_send = spawner.io_send;
+        self.delay = spawner.delay;
+        self.spawnflags = spawner.spawnflags;
+
+        if (self.spawnflags & SPAWNER_FLAG_NO_TELEFLASH) {
+            self.spawnflags-= SPAWNER_FLAG_NO_TELEFLASH;
+        }
+
+        if (self.spawnflags & SPAWNER_FLAG_ANGRY) {
+            self.spawnflags-= SPAWNER_FLAG_ANGRY;
+        }
+
+        SpawnerSetMonsterClassname(self, spawner.think);
+
+        // spawn function
+        spawner.think();
+
+        if (!self) {
+            return;
+        }
+
+        self.nextthink = 0;
+
+        // cache model (don't use setmodel)
+        spawner.model = self.model;
+        self.modelindex = 0;
+        self.solid = SOLID_NOT;
+        self.movetype = MOVETYPE_NONE;
+        spawner.max_health = self.health;
+        self.health = 0;
+        self.owner = spawner.enemy;
+        spawner.enemy = self;
     }
-
-    if (self.spawnflags & SPAWNER_FLAG_ANGRY) {
-        self.spawnflags-= SPAWNER_FLAG_ANGRY;
-    }
-
-    SpawnerSetMonsterClassname(self, spawner.think);
-
-    // spawn function
-    spawner.think();
-
-    if (!self) {
-        return;
-    }
-
-    spawner.use = SpawnerUse;
-    self.nextthink = 0;
-
-    // cache model (don't use setmodel)
-    spawner.model = self.model;
-    self.modelindex = 0;
-    self.solid = SOLID_NOT;
-    self.movetype = MOVETYPE_NONE;
-    spawner.max_health = self.health;
-    self.health = 0;
-
-    spawner.enemy = self;
 
     self = spawner;
+    self.use = SpawnerUse;
 };
