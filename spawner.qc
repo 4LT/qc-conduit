@@ -18,6 +18,14 @@ float() droptofloor;
 const float SPAWNER_FLAG_NO_TELEFLASH = 8;
 const float SPAWNER_FLAG_ANGRY = 16;
 
+void(entity monster) SpawnerSetVelocity = {
+    // mimic behavior of monsterjump
+    makevectors(self.angles);
+    v_forward_z = 0;
+    monster.velocity = v_forward * self.speed;
+    monster.velocity_z = self.height;
+};
+
 void() SpawnerUse = {
     vector l_mins, l_maxs;
     entity spawner;
@@ -56,6 +64,8 @@ void() SpawnerUse = {
     if (monster.flags & FL_ONGROUND) {
         monster.flags-= FL_ONGROUND;
     }
+
+    SpawnerSetVelocity(monster);
 
     if (!(self.spawnflags & SPAWNER_FLAG_NO_TELEFLASH)) {
         spawn_tfog(monster.origin);
