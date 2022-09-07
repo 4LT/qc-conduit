@@ -36,6 +36,7 @@ void() SpawnerUse = {
     setsize(monster, l_mins, l_maxs);
 
     monster.health = self.max_health;
+    monster.targetname = self.netname;
 
     spawner = self;
     self = monster;

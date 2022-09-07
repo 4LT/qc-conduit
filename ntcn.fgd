@@ -825,6 +825,7 @@
         8 : "No tele-flash" : 0
         16 : "Spawn angry" : 0
     ]
+    netname(string) : "Spawned monster's targetname"
     target(string) : "Spawned monster's target"
     io_send(float) : "Spawned monster's send value"
     squad(string) : "Spawned monster's squad name"
