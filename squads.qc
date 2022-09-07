@@ -4,7 +4,7 @@ void(float notify_type) SquadNotify = {
     entity squaddie, self_temp, act_temp;
 
     // Don't recurse
-    if ((!notify_running) && self.squad && self.squad != "") {
+    if ((!notify_running) && self.squad != "") {
         notify_running = TRUE;
 
         squaddie = find(self, squad, self.squad);

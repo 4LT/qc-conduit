@@ -1,5 +1,16 @@
+#define TRY_SET_CLASSNAME(ent, think, spawn_fn_sym)\
+    do {\
+        if (think == spawn_fn_sym) {\
+            ent.classname = #spawn_fn_sym;\
+        }\
+    } while (FALSE)
+    
+void() monster_army, monster_boss, monster_demon1, monster_dog,
+    monster_enforcer, monster_fish, monster_hell_knight, monster_knight,
+    monster_ogre, monster_ogre_marksman, monster_oldone, monster_shalrath,
+    monster_shambler, monster_tarbaby, monster_wizard,  monster_zombie;
+
 void(vector, entity) spawn_tdeath;
-void() monster_boss;
 void() FoundTarget;
 float() droptofloor;
 
@@ -60,6 +71,29 @@ void() SpawnerUse = {
     }
 };
 
+static void(entity monster, void() spawn_fn) SpawnerSetMonsterClassname = {
+    TRY_SET_CLASSNAME(monster, spawn_fn, monster_army);
+    TRY_SET_CLASSNAME(monster, spawn_fn, monster_boss);
+    TRY_SET_CLASSNAME(monster, spawn_fn, monster_demon1);
+    TRY_SET_CLASSNAME(monster, spawn_fn, monster_dog);
+    TRY_SET_CLASSNAME(monster, spawn_fn, monster_enforcer);
+    TRY_SET_CLASSNAME(monster, spawn_fn, monster_fish);
+    TRY_SET_CLASSNAME(monster, spawn_fn, monster_hell_knight);
+    TRY_SET_CLASSNAME(monster, spawn_fn, monster_knight);
+    TRY_SET_CLASSNAME(monster, spawn_fn, monster_ogre);
+    TRY_SET_CLASSNAME(monster, spawn_fn, monster_ogre_marksman);
+    TRY_SET_CLASSNAME(monster, spawn_fn, monster_oldone);
+    TRY_SET_CLASSNAME(monster, spawn_fn, monster_shalrath);
+    TRY_SET_CLASSNAME(monster, spawn_fn, monster_shambler);
+    TRY_SET_CLASSNAME(monster, spawn_fn, monster_tarbaby);
+    TRY_SET_CLASSNAME(monster, spawn_fn, monster_wizard);
+    TRY_SET_CLASSNAME(monster, spawn_fn, monster_zombie);
+
+    if (monster.classname == "") {
+        dprint("Could not find classname for spawnee\n");
+    }
+};
+
 void() info_monster_spawn = {
     entity spawner;
 
@@ -81,6 +115,8 @@ void() info_monster_spawn = {
     if (self.spawnflags & SPAWNER_FLAG_ANGRY) {
         self.spawnflags-= SPAWNER_FLAG_ANGRY;
     }
+
+    SpawnerSetMonsterClassname(self, spawner.think);
 
     // spawn function
     spawner.think();
