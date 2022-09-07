@@ -49,6 +49,13 @@ void() SpawnerUse = {
 
     self = spawner;
 
+    // un-droptofloor
+    monster.origin = self.origin + '0 0 1';
+    
+    if (monster.flags & FL_ONGROUND) {
+        monster.flags-= FL_ONGROUND;
+    }
+
     if (!(self.spawnflags & SPAWNER_FLAG_NO_TELEFLASH)) {
         spawn_tfog(monster.origin);
     }
