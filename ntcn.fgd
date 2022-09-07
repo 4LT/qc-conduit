@@ -834,7 +834,25 @@
     undefined
 }}) size(-32 -32 -24, 32 32 64) = info_monster_spawn
 [
-    think(string) : "Monster classname"
+    think(choices) : "Monster classname" =
+    [
+        "monster_army" : "Grunt"
+        "monster_boss" : "Chthon"
+        "monster_demon1" : "Fiend"
+        "monster_dog" : "Dog"
+        "monster_enforcer" : "Enforcer"
+        "monster_fish" : "Rotfish"
+        "monster_hell_knight" : "Death Knight"
+        "monster_knight" : "Knight"
+        "monster_ogre" : "Ogre"
+        "monster_ogre_marksman" : "Ogre Marksman"
+        "monster_oldone" : "Shub-Niggurath"
+        "monster_shalrath" : "Vore"
+        "monster_shambler" : "Shambler"
+        "monster_tarbaby" : "Spawn"
+        "monster_wizard" : "Scrag"
+        "monster_zombie" : "Zombie"
+    ]
     spawnflags(Flags) =
     [
         1 : "Spawn w/ ambush or crucified (Zombie)" : 0
