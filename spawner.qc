@@ -1,6 +1,6 @@
-#define TRY_SET_CLASSNAME(ent, think, spawn_fn_sym)\
+#define TRY_SET_CLASSNAME(ent, spawn_fn, spawn_fn_sym)\
     do {\
-        if (think == spawn_fn_sym) {\
+        if (spawn_fn == spawn_fn_sym) {\
             ent.classname = #spawn_fn_sym;\
         }\
     } while (FALSE)
