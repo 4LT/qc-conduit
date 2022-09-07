@@ -11,6 +11,7 @@ void() monster_army, monster_boss, monster_demon1, monster_dog,
     monster_shambler, monster_tarbaby, monster_wizard,  monster_zombie;
 
 void(vector, entity) spawn_tdeath;
+void(vector) spawn_tfog;
 void() FoundTarget;
 float() droptofloor;
 
@@ -39,13 +40,17 @@ void() SpawnerUse = {
     spawner = self;
     self = monster;
 
-    if (!self.think) {
-        dprint("Spawned monster has no think!\n");
-    } else {
+    if (self.think) {
         self.think();
+    } else {
+        dprint("Spawned monster has no think!\n");
     }
 
     self = spawner;
+
+    if (!(self.spawnflags & SPAWNER_FLAG_NO_TELEFLASH)) {
+        spawn_tfog(monster.origin);
+    }
 
     spawn_tdeath(monster.origin, monster);
 
