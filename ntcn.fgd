@@ -832,7 +832,7 @@
     (think == "monster_wizard") -> ":progs/wizard.mdl",
     (think == "monster_zombie") -> ":progs/zombie.mdl",
     undefined
-}}) size(-32 -32 -24, 32 32 64) = info_monster_spawn
+}}) size(-32 -32 -24, 32 32 64) = monster_spawner
 [
     think(choices) : "Monster classname" =
     [

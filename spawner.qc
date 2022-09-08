@@ -122,7 +122,7 @@ static void(entity monster, void() spawn_fn) SpawnerSetMonsterClassname = {
     }
 };
 
-void() info_monster_spawn = {
+void() monster_spawner = {
     entity spawner;
 
     if (self.count < 1) {
