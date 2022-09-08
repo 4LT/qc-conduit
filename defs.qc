@@ -559,6 +559,7 @@ float AS_MISSILE = 4;
 .float io_send;
 .float io_received;
 .float io_arg2;
+.string target2;
 
 //
 // FX

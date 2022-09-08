@@ -259,7 +259,38 @@ void() SUB_UseTrigger = {
     if (self.noise && self.noise != "")
         sound(self, CHAN_VOICE, self.noise, 1, ATTN_NORM);
     SUB_UseTargets();
-}
+};
+
+static void(string target) FireTargetImmediate = {
+    entity t, stemp, otemp, act;
+
+    if (target != "") {
+        act = activator;
+        t = world;
+
+        do {
+            t = find(t, targetname, target);
+
+            if (!t) {
+                return;
+            }
+
+            stemp = self;
+            otemp = other;
+            self = t;
+            other = stemp;
+
+            if (self.use != SUB_Null && self.use) {
+                self.io_received = other.io_send;
+                self.use();
+            }
+
+            self = stemp;
+            other = otemp;
+            activator = act;
+        } while (1);
+    }
+};
 
 /*
 ==============================
@@ -282,7 +313,7 @@ match(string)self.target and call their .use function
 */
 void() SUB_UseTargets =
 {
-    entity t, stemp, otemp, act;
+    entity t;
 //
 // check for a delay
 //
@@ -298,6 +329,7 @@ void() SUB_UseTargets =
         t.message = self.message;
         t.killtarget = self.killtarget;
         t.target = self.target;
+        t.target2 = self.target2;
         t.gflags = self.gflags;
         return;
     }
@@ -320,7 +352,7 @@ void() SUB_UseTargets =
 //
 // kill the killtagets
 //
-    if (self.killtarget)
+    if (self.killtarget != "")
     {
         t = nextent(world);
 
@@ -335,33 +367,8 @@ void() SUB_UseTargets =
 //
 // fire targets
 //
-    if (self.target)
-    {
-        act = activator;
-        t = world;
-        do
-        {
-            t = find(t, targetname, self.target);
-            if (!t)
-            {
-                return;
-            }
-            stemp = self;
-            otemp = other;
-            self = t;
-            other = stemp;
-            if (self.use != SUB_Null && self.use)
-            {
-                self.io_received = other.io_send;
-                self.use();
-            }
-            self = stemp;
-            other = otemp;
-            activator = act;
-        } while (1);
-    }
-
-
+    FireTargetImmediate(self.target);
+    FireTargetImmediate(self.target2);
 };
 
 

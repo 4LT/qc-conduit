@@ -46,7 +46,9 @@
 @baseclass base(Target) = IoVar [
     io_send(integer) : "Value to send on fire" : 0
 ]
-@baseclass base(Target, IoVar) = TargetVar []
+@baseclass base(Target, IoVar) = TargetVar [
+    target2(target_destination) : "Secondary target"
+]
 
 
 
@@ -512,6 +514,7 @@
 
 @baseclass base(Appearflags, Target, Targetname) = Trigger
 [
+    target2(target_destination) : "Secondary target"
 	sounds(choices) : "Sound style" : 0 =
 	[
 		0 : "None/Use noise"
@@ -586,7 +589,8 @@
 	]
 ]
 @PointClass base(Trigger) = trigger_relay : "Trigger: Relay"
-[]
+[
+]
 @PointClass base(Trigger) = trigger_toggle : "Trigger: Toggle between 0 and 1"
 [
     io_send(integer) : "Initial state" : 0
