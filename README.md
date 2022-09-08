@@ -105,6 +105,13 @@ operation on its **received** value and its `io_arg2` field.  Then the entity
 will **send** the result of the evaluation.  If an error occurs during
 evaluation it will not fire, instead broadcasting a message to players.
 
+### monster_spawner
+
+Spawns monsters at its location.  Set `think` to the classname of the monster
+to spawn and trigger up to `count` times to spawn monsters.  Can be given an 
+initial velocity with `speed` and `height` (matching behavior of
+`trigger_monsterjump`).
+
 ### path_corner
 
 Added spawnflag "Run to" (1) which causes monsters to run to the waypoint
