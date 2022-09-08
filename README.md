@@ -198,4 +198,6 @@ Changelevel sets a server flag causing secondary spawns (`info_player_start2`
 and `info_player_coop2`) to be used, as if a player had picked up a rune.
 
 Fiends and dogs now bounce off players' heads, dealing damage only on a single
-frame
+frame.
+
+Fish no longer get stuck at the surface.
