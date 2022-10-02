@@ -125,6 +125,10 @@ static void(entity monster, void() spawn_fn) SpawnerSetMonsterClassname = {
 void() monster_spawner = {
     entity spawner;
 
+    if (deathmatch) {
+        remove(self);
+    }
+
     if (self.count < 1) {
         self.count = 1;
     }
@@ -155,10 +159,6 @@ void() monster_spawner = {
 
         // spawn function
         spawner.think();
-
-        if (!self) {
-            return;
-        }
 
         self.nextthink = 0;
 
