@@ -841,7 +841,6 @@
     think(choices) : "Monster classname" =
     [
         "monster_army" : "Grunt"
-        "monster_boss" : "Chthon"
         "monster_demon1" : "Fiend"
         "monster_dog" : "Dog"
         "monster_enforcer" : "Enforcer"
@@ -850,7 +849,6 @@
         "monster_knight" : "Knight"
         "monster_ogre" : "Ogre"
         "monster_ogre_marksman" : "Ogre Marksman"
-        "monster_oldone" : "Shub-Niggurath"
         "monster_shalrath" : "Vore"
         "monster_shambler" : "Shambler"
         "monster_tarbaby" : "Spawn"
