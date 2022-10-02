@@ -127,6 +127,7 @@ void() monster_spawner = {
 
     if (deathmatch) {
         remove(self);
+        return;
     }
 
     if (self.count < 1) {
