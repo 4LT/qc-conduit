@@ -195,7 +195,7 @@ Monsters no longer become turrets.
 Ogres fire in bursts of 2 shots.
 
 Vore balls move at same speed as they do in easier difficulties when near
-their enemy, but are harder to lose.
+their enemy, but are harder to lose while the vore is alive.
 
 ## Misc. Improvements
 
