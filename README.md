@@ -83,6 +83,8 @@ a negative input, and behaving as it would in vanilla with an input of 0.  E.g.
 a toggleable door in the open position will only close if receiving a value
 of 0 or lower.
 
+Set `squad` name to explicitly specify what group a linked door belongs to.
+
 ### math_adder
 
 This entity stores a value which other entities can add to via **received**

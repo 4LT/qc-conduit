@@ -351,7 +351,6 @@ float(entity e1, entity e2) EntitiesTouching =
     return TRUE;
 };
 
-
 /*
 =============
 LinkDoors
@@ -389,9 +388,13 @@ void() LinkDoors =
         if (self.message != "")
             starte.message = self.message;
 
-        t = find(t, classname, self.classname);
-        if (!t)
-        {
+        if (self.squad == "") {
+            t = find(t, classname, self.classname);
+        } else {
+            t = find(t, squad, self.squad);
+        }
+
+        if (!t) {
             self.enemy = starte; // make the chain a loop
 
         // shootable, fired, or key doors just needed the owner/enemy links,
@@ -411,8 +414,10 @@ void() LinkDoors =
             return;
         }
 
-        if (EntitiesTouching(self,t))
-        {
+        if (
+            (self.squad != "" && self.squad == t.squad)
+            || (self.squad == "" && EntitiesTouching(self,t))
+        ) {
             if (t.enemy)
                 objerror("cross connected doors");
 
@@ -432,10 +437,9 @@ void() LinkDoors =
             if (t.maxs_z > cmaxs_z)
                 cmaxs_z = t.maxs_z;
         }
-    } while (1 );
+    } while (TRUE);
 
 };
-
 
 /*QUAKED func_door (0 .5 .8) ? START_OPEN x DOOR_DONT_LINK GOLD_KEY SILVER_KEY TOGGLE
 if two doors touch, they are assumed to be connected and operate as a unit.

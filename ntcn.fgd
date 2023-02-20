@@ -402,6 +402,7 @@
 	dmg(integer) : "Damage inflicted when blocked" : 2
 	message(string) : "Message if touched"
 	health(integer) : "Health (shootable)" : 0
+    squad(string) : "Explicitly link doors" : ""
 	spawnflags(flags) =
 	[
 		1 : "Starts Open" : 0

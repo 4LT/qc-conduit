@@ -10,25 +10,29 @@ void(float notify_type) SquadNotify = {
         squaddie = find(self, squad, self.squad);
 
         while (squaddie != self) {
-            if (squaddie != world) {
-                if (notify_type == SQNOTIFY_ENEMY) {
-                    if (squaddie.classname == "ai_monitor") {
-                        self_temp = self;
-                        act_temp = activator;
+            if (
+                squaddie != world
+                && notify_type == SQNOTIFY_ENEMY
+            ) {
+                if (squaddie.classname == "ai_monitor") {
+                    self_temp = self;
+                    act_temp = activator;
 
-                        activator = self.enemy;
-                        self = squaddie;
-                        SUB_UseTargets();
-                        self = self_temp;
-                        activator = act_temp;
-                    } else if (squaddie.health > 0) {
-                        squaddie.enemy = self.enemy;
+                    activator = self.enemy;
+                    self = squaddie;
+                    SUB_UseTargets();
+                    self = self_temp;
+                    activator = act_temp;
+                } else if (
+                    squaddie.health > 0
+                    && (squaddie.flags & FL_MONSTER)
+                ) {
+                    squaddie.enemy = self.enemy;
 
-                        self_temp = self;
-                        self = squaddie;
-                        FoundTarget();
-                        self = self_temp;
-                    }
+                    self_temp = self;
+                    self = squaddie;
+                    FoundTarget();
+                    self = self_temp;
                 }
             }
 
