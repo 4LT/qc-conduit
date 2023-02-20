@@ -188,6 +188,12 @@ model will be set to its secondary model.
 
 Weapons picked up for the first time in co-op will now fire their targets.
 
+## Nightmare Skill Changes
+
+Monsters no longer become turrets.
+
+Ogres fire in bursts of 2 shots.
+
 ## Misc. Improvements
 
 Grenades getting "stuck" on slopes leading downwards have been fixed.  (Thanks,

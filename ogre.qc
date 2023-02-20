@@ -109,7 +109,7 @@ void() OgreGrenadeTouch =
 OgreFireGrenade
 ================
 */
-void() OgreFireGrenade =
+void(float hopup) OgreFireGrenade =
 {
     entity missile;
 
@@ -128,7 +128,7 @@ void() OgreFireGrenade =
 
     missile.velocity = normalize(self.enemy.origin - self.origin);
     missile.velocity = missile.velocity * 600;
-    missile.velocity_z = 200;
+    missile.velocity_z = 200 + hopup;
 
     missile.avelocity = '300 300 300';
 
@@ -315,13 +315,30 @@ void() ogre_smash12 = [ $smash12, ogre_smash13 ] { ai_charge(0); };
 void() ogre_smash13 = [ $smash13, ogre_smash14 ] { ai_charge(4); };
 void() ogre_smash14 = [ $smash14, ogre_run1 ] { ai_charge(12); };
 
+void() ogre_nail5;
+void() ogre_burst1;
+
 void() ogre_nail1 = [ $shoot1, ogre_nail2 ] { ai_face(); };
 void() ogre_nail2 = [ $shoot2, ogre_nail3 ] { ai_face(); };
 void() ogre_nail3 = [ $shoot2, ogre_nail4 ] { ai_face(); };
-void() ogre_nail4 = [ $shoot3, ogre_nail5 ] { ai_face(); OgreFireGrenade(); };
+//void() ogre_nail4 = [ $shoot3, ogre_nail5 ] { ai_face(); OgreFireGrenade(); };
+void() ogre_nail4 = {
+    self.frame = $shoot3;
+    ai_face(); OgreFireGrenade(0);
+    self.nextthink = time + 0.1;
+    if (skill > 2) {
+        self.think = ogre_burst1;
+    } else {
+        self.think = ogre_nail5;
+    }
+};
 void() ogre_nail5 = [ $shoot4, ogre_nail6 ] { ai_face(); };
 void() ogre_nail6 = [ $shoot5, ogre_nail7 ] { ai_face(); };
 void() ogre_nail7 = [ $shoot6, ogre_run1 ] { ai_face(); };
+
+void() ogre_burst1 = [ $shoot2, ogre_burst2 ] { ai_face(); };
+void() ogre_burst2 = [ $shoot2, ogre_burst3 ] { ai_face(); };
+void() ogre_burst3 = [ $shoot3, ogre_nail5 ] { ai_face(); OgreFireGrenade(80); };
 
 void() ogre_pain1 = [ $pain1, ogre_pain2 ] {};
 void() ogre_pain2 = [ $pain2, ogre_pain3 ] {};
