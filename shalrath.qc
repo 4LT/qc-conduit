@@ -23,6 +23,10 @@ SHAL-RATH
 
 ==============================================================================
 */
+
+static float VOREBALL_NEAR = 150;
+static vector VOREBALL_NO_PROXY = '9999 9999 9999';
+
 $cd /raid/quake/id1/models/shalrath
 $origin 0 0 24
 $base base
@@ -177,22 +181,52 @@ void() ShalMissile =
     missile.think = ShalHome;
     missile.enemy = self.enemy;
     missile.touch = ShalMissileTouch;
+    // initialize proxy as 'no proxy' signal value
+    missile.movedir = VOREBALL_NO_PROXY;
 };
 
 void() ShalHome =
 {
-    vector dir, vtemp;
+    vector dir, vtemp, delta;
+    float use_proxy = FALSE;
+
     vtemp = self.enemy.origin + '0 0 10';
     if (self.enemy.health < 1)
     {
-        remove(self);
+        //remove(self);
         return;
     }
-    dir = normalize(vtemp - self.origin);
-    if (skill == 3)
-        self.velocity = dir * 350;
-    else
+
+    if (skill == 3) {
+        traceline(self.origin, vtemp, TRUE, self);
+        if (
+            trace_fraction != 1
+            && self.movedir != VOREBALL_NO_PROXY
+            && self.owner.health > 0
+        ) {
+            vtemp = self.movedir;
+            use_proxy = TRUE;
+        } else {
+            use_proxy = FALSE;
+        }
+    }
+
+    delta = vtemp - self.origin;
+    dir = normalize(delta);
+
+    if (!use_proxy || self.velocity * dir > 0) {
         self.velocity = dir * 250;
+
+        if ((skill == 3 && vlen(delta) >= VOREBALL_NEAR) || use_proxy) {
+            self.velocity = dir * 350;
+        }
+    } else {
+        self.movedir = VOREBALL_NO_PROXY;
+    }
+
+    // cache old player position as a "proxy"
+    self.movedir = vtemp;
+
     self.nextthink = time + 0.2;
     self.think = ShalHome;
 };
