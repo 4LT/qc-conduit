@@ -197,6 +197,8 @@ Ogres fire in bursts of 2 shots.
 Vore balls move at same speed as they do in easier difficulties when near
 their enemy, but are harder to lose while the vore is alive.
 
+Enforcers fire in bursts of 3 instead of 2.
+
 ## Misc. Improvements
 
 Grenades getting "stuck" on slopes leading downwards have been fixed.  (Thanks,

@@ -161,6 +161,8 @@ void() enf_walk14 = [ $walk14, enf_walk15 ] { ai_walk(3); };
 void() enf_walk15 = [ $walk15, enf_walk16 ] { ai_walk(4); };
 void() enf_walk16 = [ $walk16, enf_walk1 ] { ai_walk(2); };
 
+void() enf_atk13;
+
 void() enf_run1 = [ $run1  , enf_run2 ]
 {
     if (random() < 0.2)
@@ -175,18 +177,38 @@ void() enf_run6 = [ $run6  , enf_run7 ] { ai_run(14); };
 void() enf_run7 = [ $run7  , enf_run8 ] { ai_run(7); };
 void() enf_run8 = [ $run8  , enf_run1 ] { ai_run(11); };
 
-void() enf_atk1 = [ $attack1, enf_atk2 ] { ai_face(); };
+void() enf_atk1 = [ $attack1, enf_atk2 ] {
+    if (skill <= 2) {
+        self.count = 2;
+    } else {
+        self.count = 3;
+    }
+
+    ai_face();
+};
 void() enf_atk2 = [ $attack2, enf_atk3 ] { ai_face(); };
 void() enf_atk3 = [ $attack3, enf_atk4 ] { ai_face(); };
 void() enf_atk4 = [ $attack4, enf_atk5 ] { ai_face(); };
 void() enf_atk5 = [ $attack5, enf_atk6 ] { ai_face(); };
 void() enf_atk6 = [ $attack6, enf_atk7 ] { enforcer_fire(); };
 void() enf_atk7 = [ $attack7, enf_atk8 ] { ai_face(); };
-void() enf_atk8 = [ $attack8, enf_atk9 ] { ai_face(); };
-void() enf_atk9 = [ $attack5, enf_atk10 ] { ai_face(); };
-void() enf_atk10 = [ $attack6, enf_atk11 ] { enforcer_fire(); };
-void() enf_atk11 = [ $attack7, enf_atk12 ] { ai_face(); };
-void() enf_atk12 = [ $attack8, enf_atk13 ] { ai_face(); };
+//void() enf_atk8 = [ $attack8, enf_atk9 ] { ai_face(); };
+void() enf_atk8 = {
+    self.frame = $attack8;
+    self.count-= 1;
+
+    if (self.count > 0) {
+        self.think = enf_atk5;
+    } else {
+        self.think = enf_atk13;
+    }
+
+    self.nextthink = time + 0.1;
+};
+//void() enf_atk9 = [ $attack5, enf_atk10 ] { ai_face(); };
+//void() enf_atk10 = [ $attack6, enf_atk11 ] { enforcer_fire(); };
+//void() enf_atk11 = [ $attack7, enf_atk12 ] { ai_face(); };
+//void() enf_atk12 = [ $attack8, enf_atk13 ] { ai_face(); };
 void() enf_atk13 = [ $attack9, enf_atk14 ] { ai_face(); };
 void() enf_atk14 = [ $attack10, enf_run1 ]
 {
