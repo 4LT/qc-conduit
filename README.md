@@ -214,3 +214,6 @@ Fiends and dogs now bounce off players' heads, dealing damage only on a single
 frame.
 
 Fish no longer get stuck at the surface.
+
+Shamblers can attempt to target a second point on their enemy (e.g. the player's
+head) if they can't hit the default position with lightning.
