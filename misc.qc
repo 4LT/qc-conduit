@@ -256,6 +256,8 @@ void() barrel_explode0 = {
 
 void() barrel_explode =
 {
+    self.origin = (self.absmin + self.absmax) / 2.0 - '0 0 32';
+
     // did say self.owner
     T_RadiusDamage(self, self, 160, world);
     sound(self, CHAN_VOICE, "weapons/r_exp3.wav", 1, ATTN_NORM);
