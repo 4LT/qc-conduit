@@ -233,10 +233,17 @@ void() CastLightning =
 
     org = self.origin + '0 0 40';
 
-    dir = self.enemy.origin + '0 0 16' - org;
+    dir = self.enemy.origin + '0 0 8' - org;
     dir = normalize(dir);
 
-    traceline(org, self.origin + dir*600, TRUE, self);
+    traceline(org, org + dir*600, FALSE, self);
+
+    if (trace_ent != self.enemy) {
+        dir = self.enemy.origin + '0 0 32' - org;
+        dir = normalize(dir);
+    }
+
+    traceline(org, org + dir*600, TRUE, self);
 
     WriteByte(MSG_BROADCAST, SVC_TEMPENTITY);
     WriteByte(MSG_BROADCAST, TE_LIGHTNING1);
