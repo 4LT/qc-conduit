@@ -233,18 +233,33 @@ void() fire_touch =
 
 //============================================================================
 
+void() barrel_use_targets = {
+    self.delay = self.delay + 0.1;
+    activator = self.enemy;
+    SUB_UseTargets();
+};
+
+void() barrel_explode;
+
+void() barrel_explode0 = {
+    self.takedamage = DAMAGE_NO;
+    self.classname = "explo_box";
+    self.think = barrel_explode;
+
+    // so we don't have to think about it again
+    if (self.movetype == MOVETYPE_PUSH) {
+        self.nextthink = self.ltime + 0.1;
+    } else {
+        self.nextthink = time + 0.1;
+    }
+};
 
 void() barrel_explode =
 {
-    self.takedamage = DAMAGE_NO;
-    self.classname = "explo_box";
     // did say self.owner
     T_RadiusDamage(self, self, 160, world);
     sound(self, CHAN_VOICE, "weapons/r_exp3.wav", 1, ATTN_NORM);
     particle(self.origin, '0 0 0', 75, 255);
-
-    activator = self;
-    SUB_UseTargets();
 
     self.origin_z = self.origin_z + 32;
     BecomeExplosion();
@@ -266,7 +281,7 @@ void() misc_explobox =
     setmodel(self, "maps/b_explob.bsp");
     precache_sound("weapons/r_exp3.wav");
     self.health = 20;
-    self.th_die = barrel_explode;
+    self.th_die = barrel_explode0;
     self.takedamage = DAMAGE_AIM;
 
     self.origin_z = self.origin_z + 2;
@@ -280,7 +295,7 @@ void() misc_explobox =
         remove(self);
     }
 
-    self.th_run = InanimateDefaultDeath;
+    self.th_run = barrel_use_targets;
 };
 
 
@@ -300,7 +315,7 @@ void() misc_explobox2 =
     setmodel(self, "maps/b_exbox2.bsp");
     precache_sound("weapons/r_exp3.wav");
     self.health = 20;
-    self.th_die = barrel_explode;
+    self.th_die = barrel_explode0;
     self.takedamage = DAMAGE_AIM;
 
     self.origin_z = self.origin_z + 2;
@@ -314,7 +329,7 @@ void() misc_explobox2 =
         remove(self);
     }
 
-    self.th_run = InanimateDefaultDeath;
+    self.th_run = barrel_use_targets;
 };
 
 //============================================================================
