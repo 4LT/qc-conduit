@@ -198,7 +198,11 @@ void() enf_atk8 = {
     self.count-= 1;
 
     if (self.count > 0) {
-        self.think = enf_atk5;
+        if (skill <= 2) {
+            self.think = enf_atk5;
+        } else {
+            self.think = enf_atk6;
+        }
     } else {
         self.think = enf_atk13;
     }
