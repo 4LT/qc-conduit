@@ -780,7 +780,7 @@ void() MoseyTouch = {
         return;
     }
 
-    other.pausetime = time + 0.01;
+    other.pausetime = time + 0.05;
 };
 
 void() MoseyClear = {
@@ -792,8 +792,10 @@ void() MoseySet = {
     force_retouch = 2;
 
     if (!(self.spawnflags & MOSEY_SPAWNFLAG_TOGGLE)) {
-        self.think = MoseyClear;
-        self.nextthink = time + self.wait;
+        if (self.wait > 0) {
+            self.think = MoseyClear;
+            self.nextthink = time + self.wait;
+        } 
     }
 };
 

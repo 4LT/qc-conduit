@@ -84,6 +84,13 @@ void(entity targ, entity attacker) Killed =
     if (self.movetype == MOVETYPE_PUSH || self.movetype == MOVETYPE_NONE)
     { // doors, triggers, etc
         self.th_die();
+
+        // logic to run on death, e.g. for misc_explobox to use targets
+        if (self.th_run) {
+            self.enemy = attacker;
+            self.th_run();
+        }
+
         self = oself;
         return;
     }

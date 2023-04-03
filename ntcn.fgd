@@ -331,8 +331,8 @@
 	event_lightning : "Chthon's lightning" []
 @PointClass base(Appearflags) model({ "path": ":progs/lavaball.mdl" }) = misc_fireball : "Small fireball"
 	[ speed(integer) : "Speed" : 40 ]
-@PointClass base(Appearflags) size(0 0 0, 32 32 64) model({ "path": ":maps/b_explob.bsp" }) = misc_explobox : "Large exploding container" []
-@PointClass base(Appearflags) size(0 0 0, 32 32 32) model({ "path": ":maps/b_exbox2.bsp" }) = misc_explobox2 : "Small exploding container" []
+@PointClass base(Appearflags, TargetVar) size(0 0 0, 32 32 64) model({ "path": ":maps/b_explob.bsp" }) = misc_explobox : "Large exploding container" []
+@PointClass base(Appearflags, TargetVar) size(0 0 0, 32 32 32) model({ "path": ":maps/b_exbox2.bsp" }) = misc_explobox2 : "Small exploding container" []
 @PointClass base(Appearflags) size(-8 -8 -8, 8 8 8) model({ "path": ":progs/teleport.mdl" }) = misc_teleporttrain : "Flying teleporter destination"
 [
 	target(string) : "First stop target"
@@ -410,6 +410,7 @@
 		8 : "Gold Key required" : 0
         	16: "Silver Key required" : 0
         	32: "Toggle" : 0
+        64: "Don't allow player to open" : 0
 	]
 ]
 

@@ -155,6 +155,11 @@ void() path_corner =
     movetarget_f();
 };
 
+void() corner_rethink = {
+    force_retouch = 2;
+    self.think = SUB_Null;
+};
+
 
 /*
 =============
@@ -206,6 +211,8 @@ void() t_movetarget =
         }
     } else {
         pause_length = other.wait >= 0 ? other.wait : 999999;
+        other.think = corner_rethink;
+        other.nextthink = time + 0.1;
 
         self.pausetime = time + pause_length;
         self.th_stand();

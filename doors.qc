@@ -23,6 +23,9 @@ float DOOR_GOLD_KEY = 8;
 float DOOR_SILVER_KEY = 16;
 float DOOR_TOGGLE = 32;
 
+// don't let player activate door trigger brush
+float DOOR_NO_PLAYER = 64;
+
 /*
 
 Doors are similar to buttons, but can spawn a fat trigger field around them
@@ -207,6 +210,14 @@ void() door_trigger_touch =
 
     if (time < self.attack_finished)
         return;
+
+    if (
+        (self.owner.spawnflags & DOOR_NO_PLAYER)
+        && other.classname == "player"
+    ) {
+        return;
+    }
+
     self.attack_finished = time + 1;
 
     activator = other;
@@ -250,6 +261,11 @@ void() door_touch =
     if (self.owner.message != "")
     {
         centerprint(other, self.owner.message);
+    }
+
+    if (self.owner.noise3 != "" && self.owner.state == STATE_BOTTOM) {
+        sound(self.owner, CHAN_VOICE, self.noise3, 1, ATTN_NORM);
+    } else if (self.owner.message != "") {
         sound(other, CHAN_VOICE, "misc/talk.wav", 1, ATTN_NORM);
     }
 
@@ -472,6 +488,10 @@ void() func_door =
         self.items = IT_KEY1;
     if (self.spawnflags & DOOR_GOLD_KEY)
         self.items = IT_KEY2;
+
+    if ((self.spawnflags & DOOR_NO_PLAYER) && self.noise3 != "") {
+        precache_sound(self.noise3);
+    }
 
     if (self.items) {
         if (self.noise3 == "") {

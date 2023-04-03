@@ -410,3 +410,7 @@ float() OnTopOf = {
     }
 }
 
+void() InanimateDefaultDeath = {
+    activator = self.enemy;
+    SUB_UseTargets();
+}

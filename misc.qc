@@ -243,6 +243,9 @@ void() barrel_explode =
     sound(self, CHAN_VOICE, "weapons/r_exp3.wav", 1, ATTN_NORM);
     particle(self.origin, '0 0 0', 75, 255);
 
+    activator = self;
+    SUB_UseTargets();
+
     self.origin_z = self.origin_z + 32;
     BecomeExplosion();
 };
@@ -257,8 +260,8 @@ void() misc_explobox =
 {
     float oldz;
 
-    self.solid = SOLID_BBOX;
-    self.movetype = MOVETYPE_NONE;
+    self.solid = SOLID_BSP;
+    self.movetype = MOVETYPE_PUSH;
     precache_model("maps/b_explob.bsp");
     setmodel(self, "maps/b_explob.bsp");
     precache_sound("weapons/r_exp3.wav");
@@ -276,6 +279,8 @@ void() misc_explobox =
         dprint("\n");
         remove(self);
     }
+
+    self.th_run = InanimateDefaultDeath;
 };
 
 
@@ -289,8 +294,8 @@ void() misc_explobox2 =
 {
     float oldz;
 
-    self.solid = SOLID_BBOX;
-    self.movetype = MOVETYPE_NONE;
+    self.solid = SOLID_BSP;
+    self.movetype = MOVETYPE_PUSH;
     precache_model2 ("maps/b_exbox2.bsp");
     setmodel(self, "maps/b_exbox2.bsp");
     precache_sound("weapons/r_exp3.wav");
@@ -308,6 +313,8 @@ void() misc_explobox2 =
         dprint("\n");
         remove(self);
     }
+
+    self.th_run = InanimateDefaultDeath;
 };
 
 //============================================================================

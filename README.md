@@ -107,6 +107,10 @@ operation on its **received** value and its `io_arg2` field.  Then the entity
 will **send** the result of the evaluation.  If an error occurs during
 evaluation it will not fire, instead broadcasting a message to players.
 
+### misc_explobox / misc_explobox2
+
+Now targets entities when killed.  Can be jumped on.
+
 ### monster_spawner
 
 Spawns monsters at its location.  Set `think` to the classname of the monster
