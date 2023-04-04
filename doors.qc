@@ -156,7 +156,10 @@ void() door_fire =
     if (self.items)
         sound(self, CHAN_ITEM, self.noise4, 1, ATTN_NORM);
 
-    self.message = string_null; // no more message
+    if (!(self.spawnflags & DOOR_NO_PLAYER)) {
+        self.message = string_null; // no more message
+    }
+
     oself = self;
 
     if (((self.spawnflags & DOOR_TOGGLE) && self.io_received == 0) || received_closing())
@@ -193,9 +196,12 @@ void() door_use =
 {
     entity oself;
 
-    self.message = ""; // door message are for touch only
-    self.owner.message = "";
-    self.enemy.message = "";
+    if (!(self.spawnflags & DOOR_NO_PLAYER)) {
+        self.message = ""; // door message are for touch only
+        self.owner.message = "";
+        self.enemy.message = "";
+    }
+
     oself = self;
     self = self.owner;
     door_fire();
@@ -258,8 +264,7 @@ void() door_touch =
 
     self.owner.attack_finished = time + 2;
 
-    if (self.owner.message != "")
-    {
+    if (self.owner.message != "" && self.owner.state == STATE_BOTTOM) {
         centerprint(other, self.owner.message);
     }
 
