@@ -268,10 +268,12 @@ void() door_touch =
         centerprint(other, self.owner.message);
     }
 
-    if (self.owner.noise3 != "" && self.owner.state == STATE_BOTTOM) {
-        sound(self.owner, CHAN_VOICE, self.noise3, 1, ATTN_NORM);
-    } else if (self.owner.message != "") {
-        sound(other, CHAN_VOICE, "misc/talk.wav", 1, ATTN_NORM);
+    if (self.owner.state == STATE_BOTTOM) {
+        if (self.owner.noise3 != "") {
+            sound(self.owner, CHAN_VOICE, self.noise3, 1, ATTN_NORM);
+        } else if (self.owner.message != "") {
+            sound(other, CHAN_VOICE, "misc/talk.wav", 1, ATTN_NORM);
+        }
     }
 
 // key door stuff
