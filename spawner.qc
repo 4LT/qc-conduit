@@ -87,6 +87,10 @@ void() SpawnerUse = {
                 }
             }
 
+            if (monster.enemy.flags & FL_NOTARGET) {
+                monster.enemy = world;
+            }
+
             if (monster.enemy) {
                 monster.think = FoundTarget;
                 monster.nextthink = time + 0.01;
