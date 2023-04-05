@@ -338,7 +338,7 @@ void() ogre_nail7 = [ $shoot6, ogre_run1 ] { ai_face(); };
 
 void() ogre_burst1 = [ $shoot2, ogre_burst2 ] { ai_face(); };
 void() ogre_burst2 = [ $shoot2, ogre_burst3 ] { ai_face(); };
-void() ogre_burst3 = [ $shoot3, ogre_nail5 ] { ai_face(); OgreFireGrenade(80); };
+void() ogre_burst3 = [ $shoot3, ogre_nail5 ] { ai_face(); OgreFireGrenade(40); };
 
 void() ogre_pain1 = [ $pain1, ogre_pain2 ] {};
 void() ogre_pain2 = [ $pain2, ogre_pain3 ] {};
