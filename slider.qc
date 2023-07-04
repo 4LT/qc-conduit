@@ -68,8 +68,6 @@ void() SliderUse = {
     float ahead = self.height > self.io_received;
     float nextmove = self.cnt + self.wait;
 
-    dprint3("Height: ", ftos(self.height), "\n");
-
     if (self.state == SLIDER_STATE_STOPPED) {
         // Start moving eventually
         if (nextmove <= self.ltime) {
