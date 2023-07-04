@@ -50,7 +50,8 @@ void() SliderMove = {
 };
 
 void() CalcScalarPos = {
-    self.height = vlen(self.origin - self.pos1) / self.t_length;
+    float sign = (self.origin - self.pos1) * self.pos2 < 0 ? -1 : 1;
+    self.height = vlen(self.origin - self.pos1) / self.t_length * sign;
 };
 
 void() SliderRecalcAndMove = {
@@ -64,7 +65,10 @@ void() SliderUse = {
 
     CalcScalarPos();
     float behind = self.height < self.io_received;
+    float ahead = self.height > self.io_received;
     float nextmove = self.cnt + self.wait;
+
+    dprint3("Height: ", ftos(self.height), "\n");
 
     if (self.state == SLIDER_STATE_STOPPED) {
         // Start moving eventually
@@ -75,7 +79,7 @@ void() SliderUse = {
             self.nextthink = nextmove;
         }
     } else if ((self.state == SLIDER_STATE_FORWARD && behind)
-            || (self.state == SLIDER_STATE_REVERSE && (!behind))) {
+            || (self.state == SLIDER_STATE_REVERSE && ahead)) {
         // Keep moving
         // Call again to update destination
         SliderMove();
