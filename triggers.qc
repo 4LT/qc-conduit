@@ -37,6 +37,7 @@ float SPAWNFLAG_NOTOUCH = 1;
 float SPAWNFLAG_COUNTDOWN = 1;
 float MOSEY_SPAWNFLAG_TOGGLE = 1;
 float MOSEY_SPAWNFLAG_START_ON = 2;
+float TRIGGER_SPAWNFLAG_LATENT = 4;
 
 // the wait time has passed, so set back up for another activation
 void() multi_wait =
@@ -100,12 +101,21 @@ void() multi_killed =
 
 void() multi_use =
 {
+    if (self.spawnflags & TRIGGER_SPAWNFLAG_LATENT) {
+        self.spawnflags-= TRIGGER_SPAWNFLAG_LATENT;
+        return;
+    }
+
     self.enemy = activator;
     multi_trigger();
 };
 
 void() multi_touch =
 {
+    if (self.spawnflags & TRIGGER_SPAWNFLAG_LATENT) {
+        return;
+    }
+
     if (other.classname != "player")
         return;
 

@@ -71,6 +71,11 @@ Cause monsters in its volume to continue to the next `path_corner` if waiting.
 Holds a value of 0 or 1, and assigns itself the *opposite* and **send**s that
 value to its target.  Can be initializd with `io_send`.
 
+### trigger_once, trigger_multiple, trigger_secret
+
+Added spawnflag "Latent" (4).  Latent triggers are inactive until another entity
+targets them.
+
 ### dbg_io
 
 This entity center-prints its **received** value.  A prefix can be provided

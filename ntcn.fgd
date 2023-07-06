@@ -546,13 +546,19 @@
 @SolidClass base(Trigger, IoVar) = trigger_once : "Trigger: Activate once"
 [
 	health(integer) : "Health (shootable)"
-	spawnflags(flags) = [ 1: "Not touchable" : 0 ]
+	spawnflags(flags) = [
+        1 : "Not touchable" : 0
+        4 : "Latent" : 0
+    ]
 ]
 @SolidClass base(Trigger, IoVar) = trigger_multiple : "Trigger: Activate multiple"
 [
 	wait(string) : "Wait before reset" : "0.2"
 	health(integer) : "Health (shootable)"
-	spawnflags(flags) = [ 1: "Not touchable" : 0 ]
+	spawnflags(flags) = [
+        1 : "Not touchable" : 0
+        4 : "Latent" : 0
+    ]
 ]
 @SolidClass base(Trigger, IoVar) = trigger_onlyregistered : "Trigger: Registered only"
 [
@@ -565,7 +571,10 @@
 		1 : "Secret sound"
 		2 : "Beep beep"
 	]
-	spawnflags(flags) = [ 1: "Not touchable" : 0 ]
+	spawnflags(flags) = [
+        1 : "Not touchable" : 0
+        4 : "Latent" : 0
+    ]
 ]
 
 @SolidClass base(Appearflags, TargetVar, Targetname) = trigger_teleport : "Trigger: Teleporter"
