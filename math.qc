@@ -5,8 +5,6 @@ static const float MAX_ANG = 180;
 const float NAN = 0/0;
 const float INF = 1/0;
 
-float math_err;
-
 float(float x) isnan = {
     return x != x;
 };
@@ -33,26 +31,6 @@ float(float a, float b) min = {
 
 float(float a, float b) mod = {
     return a - floor(a / b) * b;
-};
-
-float(float a, float b) safe_div = {
-    math_err = 0;
-    if (b == 0) {
-        math_err = 1;
-        return 0;
-    } else {
-        return a/b;
-    }
-};
-
-float(float a, float b) safe_mod = {
-    math_err = 0;
-    if (b == 0) {
-        math_err = 1;
-        return 0;
-    } else {
-        return mod(a, b);
-    }
 };
 
 // reflect incident over normal, dampening it against the normal

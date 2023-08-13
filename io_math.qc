@@ -24,61 +24,62 @@ float IOM_CMP_NE = 5;
 
 void() ApplyOp = {
     float reverse = self.spawnflags & IOM_SPAWNFLAG_REVERSE;
-    math_err = 0;
+    float send;
 
     switch (self.style) {
         case IOM_OP_SUB:
             if (reverse) {
-                self.io_send = self.io_arg2 - self.io_received;
+                send = self.io_arg2 - self.io_received;
             } else {
-                self.io_send = self.io_received - self.io_arg2;
+                send = self.io_received - self.io_arg2;
             }
             break;
 
         case IOM_OP_MUL:
-            self.io_send = self.io_received * self.io_arg2;
+            send = self.io_received * self.io_arg2;
             break;
 
         case IOM_OP_DIV:
             if (reverse) {
-                self.io_send = safe_div(self.io_arg2, self.io_received);
+                send = self.io_arg2 / self.io_received;
             } else {
-                self.io_send = safe_div(self.io_received, self.io_arg2);
+                send = self.io_received / self.io_arg2;
             }
             break;
 
         case IOM_OP_MOD:
             if (reverse) {
-                self.io_send = safe_mod(self.io_arg2, self.io_received);
+                send = mod(self.io_arg2, self.io_received);
             } else {
-                self.io_send = safe_mod(self.io_received, self.io_arg2);
+                send = mod(self.io_received, self.io_arg2);
             }
             break;
 
         case IOM_OP_FLOOR:
-            self.io_send = floor(self.io_received);
+            send = floor(self.io_received);
             break;
 
         case IOM_OP_CEIL:
-            self.io_send = ceil(self.io_received);
+            send = ceil(self.io_received);
             break;
 
         case IOM_OP_MIN:
-            self.io_send = min(self.io_received, self.io_arg2);
+            send = min(self.io_received, self.io_arg2);
             break;
 
         case IOM_OP_MAX:
-            self.io_send = max(self.io_received, self.io_arg2);
+            send = max(self.io_received, self.io_arg2);
             break;
 
         default: // IOM_OP_ADD
-            self.io_send = self.io_received + self.io_arg2;
+            send = self.io_received + self.io_arg2;
     }
 
-    if (math_err) {
-        dprint("math_op: illegal math operation\n");
-    } else {
+    if (isfinite(send)) {
+        self.io_send = send;
         SUB_UseTargets();
+    } else {
+        dprint("math_op: illegal math operation\n");
     }
 };
 
