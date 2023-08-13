@@ -1,9 +1,19 @@
 // General-purpose math functions
 
-float MIN_ANG = -180;
-float MAX_ANG = 180;
+static const float MIN_ANG = -180;
+static const float MAX_ANG = 180;
+const float NAN = 0/0;
+const float INF = 1/0;
 
 float math_err;
+
+float(float x) isnan = {
+    return x != x;
+};
+
+float(float x) isfinite = {
+    return x == x && x != INF && x != -INF;
+};
 
 float(float a, float b) max = {
     if (a > b) {
