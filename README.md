@@ -1,9 +1,8 @@
-
-# Necrotelecomnicon
+# Conduit
 
 _Based on Shpuld's Cleaned up Quake id1 v1.01 QuakeC source_
 
-**Necrotelecomnicon** is a Quake mod that allows entities to transfer values
+**Conduit** is a Quake mod that allows entities to transfer values
 between eachother.
 
 ## General Changes

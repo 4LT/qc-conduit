@@ -1,7 +1,7 @@
-MODDIR=$(QUAKEDIR)/ntcn
+MODDIR=$(QUAKEDIR)/conduit
 PROGS=progs.dat
 OUTPUT=$(MODDIR)/$(PROGS)
-FGD=ntcn.fgd
+FGD=conduit.fgd
 FGD_OUT=$(MODDIR)/$(FGD)
 
 .PHONY: all chkdir install package clean
@@ -19,11 +19,11 @@ chkdir:
 install: chkdir all $(OUTPUT) $(FGD_OUT)
 
 package: all $(PROGS) $(FGD)
-	mkdir -p build/ntcn
-	cp $(PROGS) build/ntcn/
-	cp $(FGD) build/ntcn/
-	cp README.md build/ntcn/
-	cd build && rm -f ntcn.zip && zip -r ntcn.zip ntcn/
+	mkdir -p build/conduit
+	cp $(PROGS) build/conduit/
+	cp $(FGD) build/conduit/
+	cp README.md build/conduit/
+	cd build && rm -f conduit.zip && zip -r conduit.zip conduit/
 
 clean:
 	rm -f progs.dat
