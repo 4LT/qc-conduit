@@ -109,8 +109,11 @@ the `io_send` field can be set to provide a value to send to targeted entities.
 
 This entity evaluates a unary operation on its **received** value, or a binary
 operation on its **received** value and its `io_arg2` field.  Then the entity
-will **send** the result of the evaluation.  If an error occurs during
-evaluation it will not fire, instead broadcasting a message to players.
+will **send** the result of the evaluation.  Unless "Propagate non-reals\*" is
+checked, if an error occurs during evaluation it will not fire.
+
+\* Non-reals are any value encoding `infinity`, `-infinity`, or `NaN`
+(not-a-number).   These are usually caused by division by zero.
 
 ### misc_explobox / misc_explobox2
 

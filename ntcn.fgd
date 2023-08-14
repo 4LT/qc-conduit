@@ -663,6 +663,7 @@
     spawnflags(flags) =
     [
         1 : "Reverse operands"
+        64 : "Propagate non-reals"
     ]
     style(choices) : "Operator" : 0 =
     [
@@ -675,6 +676,8 @@
         6 : "Round Up"
         7 : "Min (Lowest)"
         8 : "Max (Highest)"
+        9 : "Is NaN"
+        10 : "Is Real"
     ]
     io_arg2(float) : "2nd Operand" : "0"
 	delay(float) : "Delay before trigger" : "0"
@@ -688,6 +691,7 @@
         2 : "Use Lower Bound"
         4 : "Fire on change only"
         8 : "Fire on hitting bounds only"
+        64 : "Alow non-real inputs"
     ]
     waitmax(float) : "Upper Bound"
     waitmin(float) : "Lower Bound"

@@ -172,7 +172,6 @@ void() main =
     precache_file2 ("maps/dm6.bsp");
 };
 
-
 entity lastspawn;
 
 //=======================
@@ -189,6 +188,9 @@ World Types:
 //=======================
 void() worldspawn =
 {
+    float Max = 0x0007FFFF;
+    float Min = -Max;
+
     lastspawn = world;
     InitBodyQue();
 

@@ -1,26 +1,38 @@
-float IOM_SPAWNFLAG_REVERSE = 1;
+const float IOM_SPAWNFLAG_REVERSE = 1;
 
-float IOM_SPAWNFLAG_BOUND_U = 1;
-float IOM_SPAWNFLAG_BOUND_L = 2;
-float IOM_SPAWNFLAG_FIRE_CHANGE_ONLY = 4;
-float IOM_SPAWNFLAG_FIRE_BOUNDS_ONLY = 8;
+const float IOM_SPAWNFLAG_BOUND_U = 1;
+const float IOM_SPAWNFLAG_BOUND_L = 2;
+const float IOM_SPAWNFLAG_FIRE_CHANGE_ONLY = 4;
+const float IOM_SPAWNFLAG_FIRE_BOUNDS_ONLY = 8;
 
-float IOM_OP_ADD = 0;
-float IOM_OP_SUB = 1;
-float IOM_OP_MUL = 2;
-float IOM_OP_DIV = 3;
-float IOM_OP_MOD = 4;
-float IOM_OP_FLOOR = 5;
-float IOM_OP_CEIL = 6;
-float IOM_OP_MIN = 7;
-float IOM_OP_MAX = 8;
+const float SPAWNFLAG_ALLOW_NONREAL = 64;
 
-float IOM_CMP_LT = 0;
-float IOM_CMP_LTE = 1;
-float IOM_CMP_GT = 2;
-float IOM_CMP_GTE = 3;
-float IOM_CMP_EQ = 4;
-float IOM_CMP_NE = 5;
+const float IOM_OP_ADD = 0;
+const float IOM_OP_SUB = 1;
+const float IOM_OP_MUL = 2;
+const float IOM_OP_DIV = 3;
+const float IOM_OP_MOD = 4;
+const float IOM_OP_FLOOR = 5;
+const float IOM_OP_CEIL = 6;
+const float IOM_OP_MIN = 7;
+const float IOM_OP_MAX = 8;
+const float IOM_OP_ISNAN = 9;
+const float IOM_OP_ISREAL = 10;
+
+const float IOM_CMP_LT = 0;
+const float IOM_CMP_LTE = 1;
+const float IOM_CMP_GT = 2;
+const float IOM_CMP_GTE = 3;
+const float IOM_CMP_EQ = 4;
+const float IOM_CMP_NE = 5;
+
+static float(float x) AllowedValue = {
+    if ((self.spawnflags & SPAWNFLAG_ALLOW_NONREAL) || isfinite(x)) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
+}
 
 void() ApplyOp = {
     float reverse = self.spawnflags & IOM_SPAWNFLAG_REVERSE;
@@ -71,15 +83,23 @@ void() ApplyOp = {
             send = max(self.io_received, self.io_arg2);
             break;
 
+        case IOM_OP_ISNAN:
+            send = isnan(self.io_received);
+            break;
+
+        case IOM_OP_ISREAL:
+            send = isfinite(self.io_received);
+            break;
+
         default: // IOM_OP_ADD
             send = self.io_received + self.io_arg2;
     }
 
-    if (isfinite(send)) {
+    if (AllowedValue(send)) {
         self.io_send = send;
         SUB_UseTargets();
     } else {
-        dprint("math_op: illegal math operation\n");
+        dprint("math_op: dropping non-real result\n");
     }
 };
 
@@ -92,6 +112,11 @@ void() AddToAdder = {
     float hit_bound = 0;
     float change_clearance = 1;
     float bound_clearance = 1;
+
+    if (!AllowedValue(self.io_received)) {
+        dprint("math_adder: ignoring non-real input\n");
+        return;
+    }
 
     self.io_send+= self.io_received;
 

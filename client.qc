@@ -38,7 +38,7 @@ float modelindex_eyes, modelindex_player;
 float intermission_running;
 float intermission_exittime;
 
-float SPAWN2_MASK = 31;
+const float SPAWN2_MASK;
 float SPAWN2_FLAG = 16;
 
 /*QUAKED info_intermission (1 0.5 0.5) (-16 -16 -16) (16 16 16)
