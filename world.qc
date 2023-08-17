@@ -188,9 +188,6 @@ World Types:
 //=======================
 void() worldspawn =
 {
-    float Max = 0x0007FFFF;
-    float Min = -Max;
-
     lastspawn = world;
     InitBodyQue();
 
