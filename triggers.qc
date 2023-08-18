@@ -757,6 +757,10 @@ void() TriggerInitFire = {
         case 1:
             self.io_send = skill;
             break;
+
+        case 2:
+            self.io_send = LoadMapGlobal();
+            break;
     }
     
     self.delay = 0;

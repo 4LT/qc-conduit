@@ -20,3 +20,4 @@ float() LoadMapGlobal = {
     float flags = serverflags * sign;
     return (MAP_GLOBAL_MASK_UNSIGNED & flags) * sign / MAP_GLOBAL_SHIFT;
 };
+

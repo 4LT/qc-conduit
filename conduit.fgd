@@ -40,15 +40,16 @@
 	target(target_destination) : "Target"
 	killtarget(target_destination) : "Killtarget"
 ]
+@baseclass base(Target) = Target2 [
+    target2(target_destination) : "Secondary target"
+]
 @baseclass base(Targetname) = Controller [
     target(target_destination) : "Control target"
 ]
 @baseclass base(Target) = IoVar [
     io_send(integer) : "Value to send on fire" : 0
 ]
-@baseclass base(Target, IoVar) = TargetVar [
-    target2(target_destination) : "Secondary target"
-]
+@baseclass base(IoVar, Target2) = TargetVar []
 
 
 
@@ -624,6 +625,7 @@
     [
         0 : "Default"
         1 : "Skill"
+        2 : "Map global variable"
     ]
 ]
 @PointClass base(Appearflags, Targetname) = dbg_io : "Debug: Print received value"
@@ -886,4 +888,14 @@
     delay(float) : "Spawned monster's use target delay" : 0
     speed(float) : "Horizontal velocity on spawn" : 0
     height(float) : "Vertical velocity on spawn" : 0
+]
+
+@PointClass base(Appearflags, Targetname, Target2) = math_global : "Manipulate map global variable"
+[
+    style(choices) : "Mode" =
+    [
+        0 : "Query global & trigger"
+        1 : "Store received to global"
+        2 : "Add received to  global"
+    ]
 ]

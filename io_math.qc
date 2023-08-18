@@ -195,3 +195,37 @@ void() CompareAndFire = {
 void() math_compare = {
     self.use = CompareAndFire;
 };
+
+static const float GLOBAL_TYPE_QUERY = 0;
+static const float GLOBAL_TYPE_STORE = 1;
+static const float GLOBAL_TYPE_ADDER = 2;
+
+void() GlobalQueryUse = {
+    self.io_send = LoadMapGlobal();
+    SUB_UseTargets();
+};
+
+void() GlobalStoreUse = {
+    StoreMapGlobal(self.io_received);
+};
+
+void() GlobalAddUse = {
+    float count = LoadMapGlobal();
+    count+= self.io_received;
+    StoreMapGlobal(count);
+};
+
+void() math_global = {
+    switch (self.style) {
+        case GLOBAL_TYPE_STORE:
+            self.use = GlobalStoreUse;
+            break;
+
+        case GLOBAL_TYPE_ADDER:
+            self.use = GlobalAddUse;
+            break;
+
+        default:
+            self.use = GlobalQueryUse;
+    }
+};

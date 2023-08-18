@@ -104,6 +104,20 @@ comparison can be _greater than_, _less than_, _equal_, etc.  If the comparison
 evaluates to true, it fires its targeted entity.  Like the vanilla entities, 
 the `io_send` field can be set to provide a value to send to targeted entities.
 
+### math_global
+
+Load/store a global variable that transitions between maps.  Variable must be an
+integer in the approx. range of +/-500,000 (19 bits + sign bit).  Set mode with
+`style`.
+
+Modes:
+
+* Query.  **Send** global to targets.
+
+* Store. **Received** value is stored to the global.
+
+* Adder. Global is increased by **received** value.
+
 ### math_op
 
 This entity evaluates a unary operation on its **received** value, or a binary
