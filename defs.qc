@@ -629,6 +629,13 @@ entity(vector org, float rad) findradius = #22;
 void(string s) bprint = #23;
 void(entity client, string s) sprint = #24;
 
+void(entity client, string s1, string s2) sprint2 = #24;
+void(entity client, string s1, string s2, string s3) sprint3 = #24;
+void(entity client, string s1, string s2, string s3, string s4) sprint4 = #24;
+void(entity client, string s1, string s2, string s3, string s4, string s5) sprint5 = #24;
+void(entity client, string s1, string s2, string s3, string s4, string s5, string s6) sprint6 = #24;
+void(entity client, string s1, string s2, string s3, string s4, string s5, string s6, string s7) sprint7 = #24;
+
 void(string s) dprint = #25;
 
 void(string s1, string s2) dprint2 = #25;

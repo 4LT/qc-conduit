@@ -39,7 +39,7 @@ float intermission_running;
 float intermission_exittime;
 
 const float SPAWN2_MASK;
-float SPAWN2_FLAG = 16;
+const float SPAWN2_FLAG;
 
 /*QUAKED info_intermission (1 0.5 0.5) (-16 -16 -16) (16 16 16)
 This is the camera point for the intermission.
@@ -318,8 +318,10 @@ void() changelevel_touch =
     nextmap = self.map;
 
     SUB_UseTargets();
-    
+
+    dprint3("Map Global before: ", ftos(LoadMapGlobal()), "\n");
     serverflags = serverflags | SPAWN2_FLAG;
+    dprint3("Map Global after: ", ftos(LoadMapGlobal()), "\n");
 
     if ((self.spawnflags & 1) && (deathmatch == 0))
     { // NO_INTERMISSION

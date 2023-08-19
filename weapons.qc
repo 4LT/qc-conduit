@@ -1229,7 +1229,7 @@ Just for development
 */
 void() ServerflagsCommand =
 {
-    serverflags = serverflags * 2 + 1;
+    //serverflags = serverflags * 2 + 1;
 };
 
 void() QuadCheat =
@@ -1264,6 +1264,14 @@ void() ImpulseCommands =
 
     if (self.impulse == 255)
         QuadCheat();
+
+    // Mod commands
+    if (self.impulse == 128) {
+        sprint3(self, "Map global = ", ftos(LoadMapGlobal()), "\n");
+    } else if (self.impulse == 129) {
+        sprint3(self, "Runes = ", ftos(SPAWN2_MASK & serverflags), "\n");
+    }
+
 
     self.impulse = 0;
 };

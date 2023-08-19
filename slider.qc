@@ -64,6 +64,13 @@ void() SliderUse = {
     self.enemy = activator;
 
     CalcScalarPos();
+
+    // Fix bug related to triggering with 0 movement
+    if (self.height == self.io_received) {
+        SliderStop();
+        return;
+    }
+
     float behind = self.height < self.io_received;
     float ahead = self.height > self.io_received;
     float nextmove = self.cnt + self.wait;
