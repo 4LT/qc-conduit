@@ -89,10 +89,14 @@ void() SliderUse = {
         // Call again to update destination
         SliderMove();
     } else {
-        // Stop & reverse direction
-        SliderStop();
-        self.think = SliderRecalcAndMove;
-        self.nextthink = self.cnt + self.wait;
+        if (self.wait <= 0) {
+            SliderRecalcAndMove();
+        } else {
+            // Stop & reverse direction
+            SliderStop();
+            self.think = SliderRecalcAndMove;
+            self.nextthink = self.cnt + self.wait;
+        }
     }
 };
 
