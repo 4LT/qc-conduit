@@ -256,7 +256,7 @@ void() DelayThink =
 };
 
 void() SUB_UseTrigger = {
-    if (self.noise && self.noise != "")
+    if (self.noise != "")
         sound(self, CHAN_VOICE, self.noise, 1, ATTN_NORM);
     SUB_UseTargets();
 };
@@ -345,7 +345,7 @@ void() SUB_UseTargets =
         }
     } else if (activator.classname == "player" && self.message != "") {
         centerprint(activator, self.message);
-        if (!self.noise)
+        if (self.noise == "")
             sound(activator, CHAN_VOICE, "misc/talk.wav", 1, ATTN_NORM);
     }
 

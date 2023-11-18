@@ -51,8 +51,6 @@
 ]
 @baseclass base(IoVar, Target2) = TargetVar []
 
-
-
 //
 // player starts, deathmatch, coop, teleport
 //
@@ -549,7 +547,7 @@
 	health(integer) : "Health (shootable)"
 	spawnflags(flags) = [
         1 : "Not touchable" : 0
-        4 : "Latent" : 0
+        4 : "Start inactive" : 0
     ]
 ]
 @SolidClass base(Trigger, IoVar) = trigger_multiple : "Trigger: Activate multiple"
@@ -558,7 +556,7 @@
 	health(integer) : "Health (shootable)"
 	spawnflags(flags) = [
         1 : "Not touchable" : 0
-        4 : "Latent" : 0
+        4 : "Start inactive" : 0
     ]
 ]
 @SolidClass base(Trigger, IoVar) = trigger_onlyregistered : "Trigger: Registered only"
@@ -574,7 +572,7 @@
 	]
 	spawnflags(flags) = [
         1 : "Not touchable" : 0
-        4 : "Latent" : 0
+        4 : "Start inactive" : 0
     ]
 ]
 
@@ -636,10 +634,14 @@
         1 : "Broadcast" : 0
     ]
 ]
-@SolidClass base(Angle, Appearflags, Targetname) = trigger_monsterjump : "Trigger: Monster jump"
+@SolidClass base(Angle, Appearflags, Targetname, Target2) = trigger_monsterjump : "Trigger: Monster jump"
 [
 	speed(integer) : "Jump Speed" : 200
 	height(integer) : "Jump Height" : 200
+    spawnflags(flags) =
+    [
+        4 : "Start inactive"
+    ]
 ]
 @PointClass base(Appearflags, TargetVar, Targetname) = trigger_counter : "Trigger: Counter"
 [
@@ -898,4 +900,8 @@
         1 : "Store received to global"
         2 : "Add received to  global"
     ]
+]
+
+@SolidClass base(Trigger) = trigger_bucket : "Outputs 1 on player entering, -1 on exit"
+[
 ]

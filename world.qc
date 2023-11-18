@@ -188,6 +188,20 @@ World Types:
 //=======================
 void() worldspawn =
 {
+    float x = -0.0;
+
+    if (-0.0) {
+        dprint("truthy\n");
+    } else {
+        dprint("falsy\n");
+    }
+
+    if (x) {
+        dprint("truthy\n");
+    } else {
+        dprint("falsy\n");
+    }
+
     lastspawn = world;
     InitBodyQue();
 

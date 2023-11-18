@@ -37,7 +37,7 @@ float SPAWNFLAG_NOTOUCH = 1;
 float SPAWNFLAG_COUNTDOWN = 1;
 float MOSEY_SPAWNFLAG_TOGGLE = 1;
 float MOSEY_SPAWNFLAG_START_ON = 2;
-float TRIGGER_SPAWNFLAG_LATENT = 4;
+float TRIGGER_SPAWNFLAG_INACTIVE = 4;
 
 // the wait time has passed, so set back up for another activation
 void() multi_wait =
@@ -101,8 +101,18 @@ void() multi_killed =
 
 void() multi_use =
 {
-    if (self.spawnflags & TRIGGER_SPAWNFLAG_LATENT) {
-        self.spawnflags-= TRIGGER_SPAWNFLAG_LATENT;
+    if (self.io_received > 0) {
+        self.spawnflags = self.spawnflags | TRIGGER_SPAWNFLAG_INACTIVE;
+        return;
+    } else if (self.io_received > 0) {
+        if (self.spawnflags & TRIGGER_SPAWNFLAG_INACTIVE) {
+            self.spawnflags-= TRIGGER_SPAWNFLAG_INACTIVE;
+            return;
+        }
+    }
+
+    if (self.spawnflags & TRIGGER_SPAWNFLAG_INACTIVE) {
+        self.spawnflags-= TRIGGER_SPAWNFLAG_INACTIVE;
         return;
     }
 
@@ -112,7 +122,7 @@ void() multi_use =
 
 void() multi_touch =
 {
-    if (self.spawnflags & TRIGGER_SPAWNFLAG_LATENT) {
+    if (self.spawnflags & TRIGGER_SPAWNFLAG_INACTIVE) {
         return;
     }
 
@@ -675,6 +685,10 @@ void() trigger_monsterjump_touch =
     if (other.flags & (FL_MONSTER | FL_FLY | FL_SWIM) != FL_MONSTER)
         return;
 
+    if (self.spawnflags & TRIGGER_SPAWNFLAG_INACTIVE) {
+        return;
+    }
+
 // set XY even if not on ground, so the jump will clear lips
     other.velocity_x = self.movedir_x * self.speed;
     other.velocity_y = self.movedir_y * self.speed;
@@ -685,6 +699,16 @@ void() trigger_monsterjump_touch =
     other.flags = other.flags - FL_ONGROUND;
 
     other.velocity_z = self.height;
+};
+
+void() MonsterjumpUse = {
+    if (self.io_received > 0) {
+        if (self.spawnflags & TRIGGER_SPAWNFLAG_INACTIVE) {
+            self.spawnflags-= TRIGGER_SPAWNFLAG_INACTIVE;
+        }
+    } else if (self.io_received < 0) {
+        self.spawnflags = self.spawnflags | TRIGGER_SPAWNFLAG_INACTIVE;
+    }
 };
 
 /*QUAKED trigger_monsterjump (.5 .5 .5) ?
@@ -702,6 +726,7 @@ void() trigger_monsterjump =
         self.angles = '0 360 0';
     InitTrigger();
     self.touch = trigger_monsterjump_touch;
+    self.use = MonsterjumpUse;
 };
 
 void() StartRepeat;
@@ -841,4 +866,39 @@ void() trigger_mosey = {
     }
 
     InitTrigger();
+};
+
+static void() BucketUse = {
+    SUB_UseTrigger();
+};
+
+static void() BucketThink = {
+    if (self.io_send > 0) {
+        self.io_send = -1;
+        activator = self.enemy;
+        SUB_UseTrigger();
+    }
+};
+
+static void() BucketTouch = {
+    if (other.classname != "player") {
+        return;
+    }
+
+    self.enemy = other;
+    self.nextthink = time + 0.1;
+    self.think = BucketThink;
+    
+    if (self.io_send < 0) {
+        self.io_send = 1;
+        activator = self.enemy;
+        SUB_UseTrigger();
+    }
+};
+
+void() trigger_bucket = {
+    InitTrigger();
+    self.use = BucketUse;
+    self.touch = BucketTouch;
+    self.io_send = -1;
 };
