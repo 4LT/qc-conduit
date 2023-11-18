@@ -240,11 +240,18 @@ void() barrel_use_targets = {
 };
 
 void() barrel_explode;
+void() barrel_explode2;
 
 void() barrel_explode0 = {
     self.takedamage = DAMAGE_NO;
+
+    if (self.classname == "misc_explobox2") {
+        self.think = barrel_explode2;
+    } else {
+        self.think = barrel_explode;
+    }
+
     self.classname = "explo_box";
-    self.think = barrel_explode;
 
     // so we don't have to think about it again
     if (self.movetype == MOVETYPE_PUSH) {
@@ -267,6 +274,13 @@ void() barrel_explode =
     BecomeExplosion();
 };
 
+void() barrel_explode2 = {
+    self.origin = (self.absmin + self.absmax) / 2.0;
+    T_RadiusDamage(self, self, 160, world);
+    sound(self, CHAN_VOICE, "weapons/r_exp3.wav", 1, ATTN_NORM);
+    particle(self.origin, '0 0 0', 75, 255);
+    BecomeExplosion();
+}
 
 
 /*QUAKED misc_explobox (0 .5 .8) (0 0 0) (32 32 64)
