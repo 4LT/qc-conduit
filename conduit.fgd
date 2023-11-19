@@ -402,6 +402,7 @@
 	message(string) : "Message if touched"
 	health(integer) : "Health (shootable)" : 0
     squad(string) : "Explicitly link doors" : ""
+    trig_override(target_source) : "Override trigger"
 	spawnflags(flags) =
 	[
 		1 : "Starts Open" : 0
@@ -488,6 +489,7 @@
 	]
 	speed(integer) : "Speed" : 150
 	height(integer) : "Travel altitude (can be negative)" : 0
+    trig_override(target_source) : "Override trigger"
 	sounds(choices) : "Sound" : 1 =
 	[
 		0: "None"

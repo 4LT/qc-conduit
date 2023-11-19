@@ -574,6 +574,8 @@ float AS_MISSILE = 4;
 .vector pos1, pos2; // top and bottom positions
 .float height;
 
+.string trig_override;
+
 //
 // sounds
 //

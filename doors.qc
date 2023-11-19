@@ -344,15 +344,26 @@ entity(vector fmins, vector fmaxs) spawn_field =
     entity trigger;
     vector t1, t2;
 
-    trigger = spawn();
+    if (self.trig_override != "") {
+        trigger = find(world, targetname, self.trig_override);
+        if (!trigger) {
+            objerror("Invalid override trigger");
+        }
+    } else {
+        trigger = spawn();
+    }
+
     trigger.movetype = MOVETYPE_NONE;
     trigger.solid = SOLID_TRIGGER;
     trigger.owner = self;
     trigger.touch = door_trigger_touch;
 
-    t1 = fmins;
-    t2 = fmaxs;
-    setsize(trigger, t1 - '60 60 8', t2 + '60 60 8');
+    if (self.trig_override == "") {
+        t1 = fmins;
+        t2 = fmaxs;
+        setsize(trigger, t1 - '60 60 8', t2 + '60 60 8');
+    } 
+
     return(trigger);
 };
 
@@ -403,6 +414,10 @@ void() LinkDoors =
     do
     {
         self.owner = starte; // master door
+
+        if (self.trig_override != "") {
+            self.owner.trig_override = self.trig_override;
+        }
 
         if (self.health)
             starte.health = self.health;

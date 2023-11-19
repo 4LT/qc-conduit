@@ -34,11 +34,23 @@ void() plat_spawn_inside_trigger =
 //
 // middle trigger
 //
-    trigger = spawn();
+    if (self.trig_override != "") {
+        trigger = find(world, targetname, self.trig_override);
+        if (!trigger) {
+            objerror("Invalid override trigger");
+        }
+    } else {
+        trigger = spawn();
+    }
+
     trigger.touch = plat_center_touch;
     trigger.movetype = MOVETYPE_NONE;
     trigger.solid = SOLID_TRIGGER;
     trigger.enemy = self;
+
+    if (self.trig_override != "") {
+        return;
+    }
 
     tmin = self.mins + '25 25 0';
     tmax = self.maxs - '25 25 -8';
@@ -214,7 +226,8 @@ void() func_plat =
 
     self.use = plat_trigger_use;
 
-    plat_spawn_inside_trigger(); // the "start moving" trigger
+    self.think = plat_spawn_inside_trigger; // the "start moving" trigger
+    self.nextthink = self.ltime + 0.1;
 
     if (self.targetname)
     {
