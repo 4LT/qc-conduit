@@ -206,9 +206,7 @@ void() ShalHome =
         ) {
             vtemp = self.movedir;
             use_proxy = TRUE;
-        } else {
-            use_proxy = FALSE;
-        }
+        } 
     }
 
     delta = vtemp - self.origin;
@@ -220,8 +218,6 @@ void() ShalHome =
         if ((skill == 3 && vlen(delta) >= VOREBALL_NEAR) || use_proxy) {
             self.velocity = dir * 350;
         }
-    } else {
-        self.movedir = VOREBALL_NO_PROXY;
     }
 
     // cache old player position as a "proxy"
