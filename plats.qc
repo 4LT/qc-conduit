@@ -277,10 +277,19 @@ void() train_next =
 {
     entity targ;
 
+    if (self.target == "") {
+        sound(self, CHAN_VOICE, self.noise, 1, ATTN_NORM);
+        return;
+    }
+
     targ = find(world, targetname, self.target);
+
+    if (!targ) {
+        sound(self, CHAN_VOICE, self.noise, 1, ATTN_NORM);
+        return;
+    }
+
     self.target = targ.target;
-    if (!self.target)
-        objerror("train_next: no next target");
     if (targ.wait)
         self.wait = targ.wait;
     else
