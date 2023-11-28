@@ -77,3 +77,58 @@ vector(vector in) normalize_delta_angles = {
     out_z = wrap(in_z, MIN_ANG, MAX_ANG);
     return out;
 };
+
+/*
+ * Find the sqrt of an integer by leveraging vlen in O(log x) instructions
+ */
+float(float x) isqrt {
+    float quot, rem, rt;
+
+    quot = floor(x/2);
+    rem = x - quot * 2;
+
+    if (quot > 1) {
+        rt = isqrt(quot);
+        return vlen([rt, rt, rem]);
+    } else {
+        return vlen([quot, quot, rem]);
+    }
+};
+
+/*
+ * Approximate the sqrt of a number in O(log x) instructions
+ */
+float(float x) sqrt {
+    // boost precision for low values while avoiding saturation on high values
+    if (x < 256) {
+        return isqrt(rint(x * 256)) / 16;
+    } else if (x <= 0xFFFFFF) { // check for EXCEEDINGLY large values
+        return isqrt(rint(x));
+    } else {
+        return isqrt(x);
+    }
+};
+
+/* Find the roots to a quadratic equation
+ * a - Quadratic coefficient
+ * b - Linear coefficient
+ * c - Constant coefficient
+ *
+ * Roots are returned as _x and _y of vector, or 1 is returned for _z of vector
+ */
+vector(float a, float b, float c) quadratic {
+    float det, det_sqrt;
+    vector ret_vec;
+
+    det = b*b - 4 * a * c;
+    if (det < 0) {
+        return [NAN, NAN, 1];
+    }
+
+    ret_vec = '0 0 0';
+    det_sqrt = sqrt(det);
+    ret_vec_x = (-b + det_sqrt) / 2 / a;
+    ret_vec_y = (-b - det_sqrt) / 2 / a;
+
+    return ret_vec;
+};

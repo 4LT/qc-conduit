@@ -356,6 +356,7 @@ void() StartFrame =
 {
     teamplay = cvar("teamplay");
     skill = cvar("skill");
+    gravity = cvar("sv_gravity");
     framecount = framecount + 1;
 };
 

@@ -429,6 +429,12 @@ float framecount;
 
 float skill;
 
+//
+// Conduit globals
+//
+
+float gravity;
+
 //================================================
 
 //

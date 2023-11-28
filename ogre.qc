@@ -24,6 +24,9 @@ OGRE
 ==============================================================================
 */
 
+static const float MIN_GRENADE_SLOPE = -0.5;
+static const float MAX_GRENADE_SLOPE = 0.85;
+
 $cd /raid/quake/id1/models/ogre_c
 $origin 0 0 24
 $base base
@@ -104,12 +107,49 @@ void() OgreGrenadeTouch =
         self.avelocity = '0 0 0';
 };
 
+static vector(vector start, vector end, float speed) ArcTo = {
+    float dz, dist, dist_sq, slope, speed_sq, det;
+    vector vel_0, v_components;
+
+    float too_far = FALSE;
+    float picked_2nd_root = FALSE;
+    vector disp = end - start;
+    dz = disp_z;
+    disp_z = 0;
+    dist = vlen(disp);
+    dist_sq = dist * dist;
+    speed_sq = speed * speed;
+
+    // Apply quadratic formula to find slope
+    det = speed_sq * speed_sq - gravity *
+        (gravity * dist_sq + 2 * speed_sq * dz);
+
+    if (det < 0) {
+        slope = MAX_GRENADE_SLOPE;
+    } else {
+        slope = (speed_sq - sqrt(det)) / gravity / dist;
+    }
+
+    if (slope < MIN_GRENADE_SLOPE) {
+        slope = MIN_GRENADE_SLOPE;
+    } else if (slope > MAX_GRENADE_SLOPE) {
+        slope = MAX_GRENADE_SLOPE;
+    }
+
+    v_components = normalize([1, 0, slope]) * speed;
+
+    vel_0 = v_components_x * normalize(disp);
+    vel_0_z = v_components_z;
+
+    return vel_0;
+}
+
 /*
 ================
 OgreFireGrenade
 ================
 */
-void(float hopup) OgreFireGrenade =
+void(float grenade_speed) OgreFireGrenade =
 {
     entity missile;
 
@@ -126,9 +166,15 @@ void(float hopup) OgreFireGrenade =
 
     makevectors(self.angles);
 
-    missile.velocity = normalize(self.enemy.origin - self.origin);
-    missile.velocity = missile.velocity * 600;
-    missile.velocity_z = 200 + hopup;
+    //missile.velocity = normalize(self.enemy.origin - self.origin);
+    //missile.velocity = missile.velocity * 600;
+    //missile.velocity_z = 200 + hopup;
+    
+    missile.velocity = ArcTo(
+        self.origin,
+        self.enemy.origin + '0 0 16',
+        grenade_speed
+    );
 
     missile.avelocity = '300 300 300';
 
@@ -324,7 +370,7 @@ void() ogre_nail3 = [ $shoot2, ogre_nail4 ] { ai_face(); };
 //void() ogre_nail4 = [ $shoot3, ogre_nail5 ] { ai_face(); OgreFireGrenade(); };
 void() ogre_nail4 = {
     self.frame = $shoot3;
-    ai_face(); OgreFireGrenade(0);
+    ai_face(); OgreFireGrenade(630);
     self.nextthink = time + 0.1;
     if (skill > 2) {
         self.think = ogre_burst1;
@@ -338,7 +384,7 @@ void() ogre_nail7 = [ $shoot6, ogre_run1 ] { ai_face(); };
 
 void() ogre_burst1 = [ $shoot2, ogre_burst2 ] { ai_face(); };
 void() ogre_burst2 = [ $shoot2, ogre_burst3 ] { ai_face(); };
-void() ogre_burst3 = [ $shoot3, ogre_nail5 ] { ai_face(); OgreFireGrenade(40); };
+void() ogre_burst3 = [ $shoot3, ogre_nail5 ] { ai_face(); OgreFireGrenade(700); };
 
 void() ogre_pain1 = [ $pain1, ogre_pain2 ] {};
 void() ogre_pain2 = [ $pain2, ogre_pain3 ] {};
