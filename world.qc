@@ -188,6 +188,13 @@ World Types:
 //=======================
 void() worldspawn =
 {
+#if defined(DEBUG_MODE)
+    if (DEBUG_MODE > cvar("developer")) {
+        cvar_set("developer", ftos(DEBUG_MODE));
+        dprint3("developer mode set to ", ftos(cvar("developer")), "\n");
+    }
+#endif
+
     lastspawn = world;
     InitBodyQue();
 

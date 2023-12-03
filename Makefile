@@ -3,6 +3,7 @@ PROGS=progs.dat
 OUTPUT=$(MODDIR)/$(PROGS)
 FGD=conduit.fgd
 FGD_OUT=$(MODDIR)/$(FGD)
+DEBUG=0
 
 .PHONY: all chkdir install package clean
 
@@ -32,7 +33,7 @@ clean:
 
 
 $(PROGS): *.qc progs.src
-	fteqcc
+	fteqcc -DDEBUG_MODE=$(DEBUG)
 
 $(OUTPUT): $(PROGS) $(MODDIR)
 	cp $(PROGS) "$(OUTPUT)"
