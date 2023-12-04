@@ -46,3 +46,5 @@ grenade_fix.qc
 squads.qc
 ai_entity.qc
 spawner.qc
+
+aop.qc // must come last
