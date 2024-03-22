@@ -5,8 +5,8 @@ vector(vector incident, vector normal, float dampening) reflect;
 float GRENADE_BACKOFF = 1.5;
 
 void() GrenadeHandlePhysics = {
-    float dot, horiz_mag;
-    vector horiz_vel, horiz_dir;
+    float dot;
+    vector horiz_vel, horiz_normal;
 
     // if same frame that think was called
     if (self.count == framecount) {
@@ -35,20 +35,18 @@ void() GrenadeHandlePhysics = {
 
     horiz_vel = self.velocity;
     horiz_vel_z = 0;
-    horiz_mag = vlen(horiz_vel);
+    horiz_normal = trace_plane_normal;
+    horiz_normal_z = 0;
 
-    // if moving straight down
-    if (horiz_mag == 0) {
-        // probably okay?
-        return;
-    } else {
-        horiz_dir = horiz_vel/horiz_mag;
+    dot = horiz_vel * horiz_normal;
 
-        dot = horiz_dir * trace_plane_normal;
-
-        if (dot > 0) {
-            GrenadeForceBounce(trace_plane_normal);
-        } 
+    // if moving down-slope, bounce
+    if (dot > 0) {
+        GrenadeForceBounce(trace_plane_normal);
+    // if surface slope is > 1/2
+    } else if (trace_plane_normal_z < 2*vlen(horiz_normal)) {
+        dprint("STEEP\n");
+        GrenadeForceBounce(trace_plane_normal);
     }
 };
 
