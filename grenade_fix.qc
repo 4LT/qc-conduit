@@ -45,7 +45,6 @@ void() GrenadeHandlePhysics = {
         GrenadeForceBounce(trace_plane_normal);
     // if surface slope is > 1/2
     } else if (trace_plane_normal_z < 2*vlen(horiz_normal)) {
-        dprint("STEEP\n");
         GrenadeForceBounce(trace_plane_normal);
     }
 };
