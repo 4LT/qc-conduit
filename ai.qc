@@ -194,11 +194,9 @@ void() t_movetarget =
 
     if (self.movetarget && other.wait == 0) {
         old_corner_run =
-            ((other.classname == "path_corner")
-            && (other.spawnflags & CORNER_SPAWNFLAG_RUN_TO))
-            ? TRUE : FALSE;
+            (other.spawnflags & CORNER_SPAWNFLAG_RUN_TO) ? TRUE : FALSE;
         new_corner_run =
-            ((self.movetarget.classname == "path_corner")
+            (self.movetarget.classname == "path_corner"
             && (self.movetarget.spawnflags & CORNER_SPAWNFLAG_RUN_TO))
             ? TRUE : FALSE;
 
