@@ -893,6 +893,7 @@
     ]
     netname(string) : "Spawned monster's targetname"
     target(string) : "Spawned monster's target"
+    target2(string) : "Spawned monster's 2nd target"
     io_send(float) : "Spawned monster's send value" : "0"
     squad(string) : "Spawned monster's squad name"
     angle(float) : "Spawned monster's direction" : "0"

@@ -147,6 +147,7 @@ void() monster_spawner = {
         self.origin = spawner.origin;
         self.angles = spawner.angles;
         self.target = spawner.target;
+        self.target2 = spawner.target2;
         self.squad = spawner.squad;
         self.io_send = spawner.io_send;
         self.delay = spawner.delay;
