@@ -261,6 +261,8 @@ float FL_JUMPRELEASED = 4096; // for jump debouncing
 
 // generic spawnflags .gflags
 float GFL_BROADCAST = 1;
+float GFL_MINKILL = 2;
+float GFL_INSTAGIB = 4;
 
 // edict.movetype values
 float MOVETYPE_NONE = 0; // never moves

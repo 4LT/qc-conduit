@@ -25,6 +25,14 @@
 
 @baseclass = Angle [ angle(integer) : "Direction" ]
 
+@baseclass = Crusher [
+    gflags(Flags) =
+    [
+        2 : "Never gib"
+        4 : "Instagib/instakill on block"
+    ]
+]
+
 @baseclass = Appearflags [
 	spawnflags(Flags) =
 	[
@@ -380,7 +388,7 @@
 //
 
 
-@SolidClass base(Angle, Appearflags, Targetname, TargetVar) = func_door : "Basic door"
+@SolidClass base(Angle, Appearflags, Targetname, TargetVar, Crusher) = func_door : "Basic door"
 [
 	speed(integer) : "Speed" : 100
 	sounds(choices) : "Sound" : 0 =
@@ -414,7 +422,7 @@
 	]
 ]
 
-@SolidClass base(Appearflags, Targetname, TargetVar) = func_door_secret : "Secret door"
+@SolidClass base(Appearflags, Targetname, TargetVar, Crusher) = func_door_secret : "Secret door"
 [
 	angle(integer) : "Direction of second move"
 	t_width(integer) : "First move length"
@@ -458,7 +466,7 @@
 	message(string) : "Message"
 ]
 
-@SolidClass base(Appearflags, Targetname) = func_train : "Moving platform"
+@SolidClass base(Appearflags, Targetname, Crusher) = func_train : "Moving platform"
 [
 	sounds(choices) : "Sound" : 1 =
 	[
@@ -481,7 +489,7 @@
     ]
 ]
 
-@SolidClass base(Appearflags, Targetname) = func_plat : "Elevator"
+@SolidClass base(Appearflags, Targetname, Crusher) = func_plat : "Elevator"
 [
 	spawnflags(Flags) =
 	[
@@ -767,7 +775,7 @@
     noise2(string) : "Move noise"
 ]
 
-@SolidClass base(Appearflags, Targetname, Target, MoverSounds) = func_slider : "Linear moving brush"
+@SolidClass base(Appearflags, Targetname, Target, MoverSounds, Crusher) = func_slider : "Linear moving brush"
 [
     speed(float) : "Speed" : "40"
     dmg(float) : "Damage on block" : "2"

@@ -190,7 +190,16 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage=
         return;
 
 // do the damage
+
     targ.health = targ.health - take;
+
+    if (inflictor.gflags & GFL_INSTAGIB) {
+        targ.health = min(targ.health, -61); // minimum to gib shambler
+    }
+
+    if (inflictor.gflags & GFL_MINKILL) {
+        targ.health = max(targ.health, 0);
+    }
 
     if (targ.health <= 0)
     {
