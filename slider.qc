@@ -103,7 +103,13 @@ void() SliderUse = {
 void() SliderInit = {
     entity dest_ent = find(world, targetname, self.target);
     if (!dest_ent) {
-        error("func_slider requires a target!");
+        //error("func_slider requires a target!");
+        dprint("func_slider ");
+        if (self.targetname != "") {
+            dprint3("\"", self.targetname, "\" ");
+        }
+        dprint("requires a target\n");
+        return;
     }
     
     // displacement from start to target dest
