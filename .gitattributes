@@ -1,2 +1,6 @@
-* text=auto
-*.qc linguist-language=C
+*.qc text=auto
+*.src text=auto
+*.md text=auto
+Makefile text=auto
+todo text=auto
+COPYING text=auto
